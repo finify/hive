@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DemoController;
+use App\Http\Controllers\DocumentDownloadController;
 use App\Http\Controllers\InvitationController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
@@ -48,13 +49,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/finance/billing', Livewire\Finance\Billing::class)->name('billing')->middleware('can:billing.view');
 
         Route::get('/people', Livewire\People\Directory::class)->name('people.index');
+        Route::get('/people/new', Livewire\People\Form::class)->name('people.create');
+        Route::get('/people/{person}/edit', Livewire\People\Form::class)->name('people.edit')->whereNumber('person');
+        Route::get('/documents/{document}/download', DocumentDownloadController::class)->name('documents.download')->middleware('signed');
         Route::get('/people/{person}', Livewire\People\Show::class)->name('people.show')->whereNumber('person');
         Route::get('/people/leave', Livewire\People\Leave::class)->name('leave')->middleware('can_any:leave.view_calendar,leave.request');
         Route::get('/people/documents', Livewire\People\Documents::class)->name('documents')->middleware('can_any:documents.view,documents.view_status');
 
         Route::get('/directory/clients', Livewire\Directory\Clients::class)->name('clients')->middleware('can:directory.view');
+        Route::get('/directory/clients/new', Livewire\Directory\ClientForm::class)->name('clients.create');
+        Route::get('/directory/clients/{client}/edit', Livewire\Directory\ClientForm::class)->name('clients.edit');
         Route::get('/directory/suppliers', Livewire\Directory\Suppliers::class)->name('suppliers')->middleware('can:directory.view');
+        Route::get('/directory/suppliers/new', Livewire\Directory\SupplierForm::class)->name('suppliers.create');
+        Route::get('/directory/suppliers/{supplier}/edit', Livewire\Directory\SupplierForm::class)->name('suppliers.edit');
         Route::get('/directory/venues', Livewire\Directory\Venues::class)->name('venues')->middleware('can:directory.view');
+        Route::get('/directory/venues/new', Livewire\Directory\VenueForm::class)->name('venues.create');
+        Route::get('/directory/venues/{venue}/edit', Livewire\Directory\VenueForm::class)->name('venues.edit');
 
         Route::get('/admin/users', Livewire\Admin\Users::class)->name('admin.users')->middleware('can:users.manage');
         Route::get('/admin/audit', Livewire\Admin\AuditLog::class)->name('admin.audit')->middleware('can:audit.view');

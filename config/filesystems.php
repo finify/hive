@@ -16,6 +16,13 @@ return [
     'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
+    | Private disk for HR documents and receipts. Never the public disk.
+    | Use an S3-compatible disk (DigitalOcean Spaces) in production.
+    */
+
+    'documents_disk' => env('DOCUMENTS_DISK', 'local'),
+
+    /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------

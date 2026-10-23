@@ -1,4 +1,4 @@
-@php($unread = app(\App\Demo\Workspace::class)->notificationsFor(auth()->user()->person_id)->where('read', false)->count())
+@php($unread = app(\App\Demo\Workspace::class)->inboxFor(auth()->user())->where('read', false)->count())
 <header class="topbar">
     <button class="icon-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-nav" aria-controls="mobile-nav" aria-label="Open navigation">
         <i class="bi bi-list fs-5" aria-hidden="true"></i>

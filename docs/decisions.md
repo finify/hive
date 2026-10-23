@@ -61,3 +61,27 @@ In the build container Composer cannot download phpstan (GitHub release archives
 ## 14. Planned modules
 
 Navigation items for modules in later phases (freelancer invoices, exports, onboarding, skills, reports, settings, integrations) are shown to permitted roles and open a page that names the phase that delivers them, so the information architecture of section 4 is complete from the start.
+
+## 15. Phase 1: people and the directory are in the database
+
+People, departments, skills, day rates, restricted details, documents, clients, suppliers, venues and contacts are Eloquent models with migrations. `DemoDirectorySeeder` loads them from the same JSON, keeping its ids so the modules still on JSON (events, bookings, timesheets, finance) point at the right people. `Workspace` reads these tables and returns the same array shapes as before, so no other screen changed.
+
+## 16. Who sets day rates
+
+The matrix gives HR view-only access to rates, but the phase 1 brief has HR create a freelancer with a rate. HR (`people.manage`) sets the **starting** rate when adding a freelancer; every later rate is a new effective-dated rate added by finance (`rates.edit`). Adding a rate ends the current one for the same role the day before.
+
+## 17. Supplier insurance is a document
+
+Suppliers' insurance is stored as a `documents` row on the supplier, like people's. Changing the expiry date on the supplier form records a new insurance document rather than editing the old one, so the history stays.
+
+## 18. Document files
+
+Uploads go to a private disk (`DOCUMENTS_DISK`, local by default, S3-compatible in production), accept PDF, JPG, PNG and Word up to 10 MB, and are opened through a signed link that lasts five minutes. The policy is checked again when the link is opened, and every opening is logged. HR and the person see files; producers and finance see a document's status only.
+
+## 19. Expiry reminders
+
+`SendDocumentExpiryReminders` runs daily at 07:00 UK time and tells the person and HR 30 and 7 days before a document expires. `documents.reminded_days` makes each reminder go once. Reminders arrive in the bell and by email (email preferences arrive in phase 6).
+
+## 20. Self-service profile edits
+
+People can upload their own documents now. Editing their own pronouns, dietary and access needs is left for phase 6, with the rest of self-service.

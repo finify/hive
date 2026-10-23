@@ -5,6 +5,10 @@
 <div>
     <x-page-head title="Directory" :answer="$people->total() === $total ? $total.' people, staff and freelance.' : $people->total().' of '.$total.' people match.'">
         <x-slot:actions>
+            @can('create', \App\Models\Person::class)
+                <a href="{{ route('people.create', ['type' => 'freelancer']) }}" class="btn btn-secondary" wire:navigate>Add a freelancer</a>
+                <a href="{{ route('people.create') }}" class="btn btn-primary" wire:navigate>Add a person</a>
+            @endcan
             <div class="btn-group" role="group" aria-label="Layout">
                 <button type="button" @class(['btn btn-secondary', 'active' => $layout === 'cards']) wire:click="$set('layout', 'cards')" aria-label="Card view"><i class="bi bi-grid" aria-hidden="true"></i></button>
                 <button type="button" @class(['btn btn-secondary', 'active' => $layout === 'table']) wire:click="$set('layout', 'table')" aria-label="Table view"><i class="bi bi-list-ul" aria-hidden="true"></i></button>

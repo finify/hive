@@ -14,6 +14,14 @@ use App\Enums\LeaveStatus;
 use App\Enums\PurchaseOrderStatus;
 use App\Enums\SupplierInvoiceStatus;
 use App\Enums\TimesheetStatus;
+use App\Models\Client;
+use App\Models\Department;
+use App\Models\Document;
+use App\Models\Person;
+use App\Models\Skill;
+use App\Models\Supplier;
+use App\Models\User;
+use App\Models\Venue;
 use App\Support\DateRange;
 use App\Support\Finance\HealthCalculator;
 use App\Support\Finance\InvoiceTolerance;
@@ -22,10 +30,12 @@ use App\Support\Money;
 use App\Support\Resourcing\ClashDetector;
 use App\Support\Time\WorkingTimeRules;
 use Carbon\CarbonImmutable;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Collection;
 
 /**
- * The demo agency: JSON data with this session's demo changes applied.
+ * The agency: people and the directory from the database (phase 1), and the
+ * modules still on demo JSON, with this session's demo changes applied.
  *
  * Queries here return everything; scope what a user sees with Viewer. In the
  * later build phases each section moves to Eloquent models with the same
@@ -77,7 +87,9 @@ class Workspace
      */
     public function departments(): Collection
     {
-        return Rows::keyed(Rows::of($this->organisation()['departments']));
+        return $this->memo('departments', fn () => Rows::keyed(
+            Department::query()->orderBy('id')->get()->map(fn (Department $d) => ['id' => $d->id, 'name' => $d->name, 'head_person_id' => $d->head_person_id])->all(),
+        ));
     }
 
     public function departmentName(?int $id): string
@@ -105,7 +117,9 @@ class Workspace
      */
     public function people(): Collection
     {
-        return $this->memo('people', fn () => $this->data->collect('people'));
+        return $this->memo('people', fn () => Rows::keyed(
+            Person::query()->with(['restricted', 'dayRates', 'skills'])->orderBy('id')->get()->map(fn (Person $p) => $p->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -137,7 +151,9 @@ class Workspace
      */
     public function skills(): Collection
     {
-        return $this->memo('skills', fn () => $this->data->collect('skills'));
+        return $this->memo('skills', fn () => Rows::keyed(
+            Skill::query()->orderBy('id')->get()->map(fn (Skill $s) => ['id' => $s->id, 'name' => $s->name, 'category' => $s->category])->all(),
+        ));
     }
 
     public function skillLevel(int $personId, ?int $skillId): int
@@ -165,7 +181,9 @@ class Workspace
      */
     public function clients(): Collection
     {
-        return $this->memo('clients', fn () => $this->data->collect('clients'));
+        return $this->memo('clients', fn () => Rows::keyed(
+            Client::query()->with('contacts')->orderBy('id')->get()->map(fn (Client $c) => $c->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -173,7 +191,9 @@ class Workspace
      */
     public function suppliers(): Collection
     {
-        return $this->memo('suppliers', fn () => $this->data->collect('suppliers'));
+        return $this->memo('suppliers', fn () => Rows::keyed(
+            Supplier::query()->with(['contacts', 'documents'])->orderBy('id')->get()->map(fn (Supplier $s) => $s->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -181,7 +201,9 @@ class Workspace
      */
     public function venues(): Collection
     {
-        return $this->memo('venues', fn () => $this->data->collect('venues'));
+        return $this->memo('venues', fn () => Rows::keyed(
+            Venue::query()->orderBy('id')->get()->map(fn (Venue $v) => $v->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -189,7 +211,13 @@ class Workspace
      */
     public function documents(): Collection
     {
-        return $this->memo('documents', fn () => $this->data->collect('documents'));
+        return $this->memo('documents', fn () => Rows::keyed(
+            Document::query()->where('documentable_type', Person::class)->orderBy('id')->get()->map(fn (Document $d) => [
+                'id' => $d->id, 'person_id' => $d->documentable_id, 'type' => $d->type->value, 'title' => $d->title,
+                'issued_at' => $d->issued_at?->toDateString(), 'expires_at' => $d->expires_at?->toDateString(),
+                'mandatory' => $d->mandatory, 'has_file' => $d->file_path !== null, 'original_name' => $d->original_name,
+            ])->all(),
+        ));
     }
 
     /**
@@ -867,6 +895,29 @@ class Workspace
             })
             ->sortByDesc('at')
             ->values();
+    }
+
+    /**
+     * Everything in a user's bell: their stored notifications (document
+     * reminders, from phase 1) and the demo notifications for their person.
+     *
+     * @return Collection<int, array<string, mixed>>
+     */
+    public function inboxFor(User $user): Collection
+    {
+        $stored = $user->notifications()->latest()->limit(50)->get()->toBase()->map(fn (DatabaseNotification $n) => [
+            'key' => $n->id,
+            'person_id' => $user->person_id,
+            'type' => $n->data['type'] ?? 'notice',
+            'title' => $n->data['title'] ?? 'Notice',
+            'body' => $n->data['body'] ?? '',
+            'link' => $n->data['link'] ?? 'dashboard',
+            'at' => $n->created_at?->utc()->format('Y-m-d\TH:i:s\Z'),
+            'read' => $n->read_at !== null,
+            'stored' => true,
+        ]);
+
+        return $stored->merge($this->notificationsFor($user->person_id))->sortByDesc('at')->values();
     }
 
     public function notify(int $personId, string $type, string $title, string $body, string $link): void

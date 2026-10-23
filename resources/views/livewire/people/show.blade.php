@@ -13,6 +13,11 @@
 @endphp
 <div>
     <x-page-head :title="$name">
+        @if ($canEdit)
+            <x-slot:actions>
+                <a href="{{ route('people.edit', $p['id']) }}" class="btn btn-secondary" wire:navigate>Edit details</a>
+            </x-slot:actions>
+        @endif
         <x-slot:crumbs>
             @if ($viewer->canSeeDirectory())
                 <a href="{{ route('people.index') }}" wire:navigate>Directory</a> <span aria-hidden="true">/</span>
@@ -158,9 +163,9 @@
     @endif
 
     @if ($tab === 'documents')
-        <div class="table-wrap">
+        <div class="table-wrap mb-3">
             <table class="table">
-                <thead><tr><th>Document</th>@if ($canSeeDocumentDetail)<th>Issued</th>@endif<th>Expires</th><th>Status</th></tr></thead>
+                <thead><tr><th>Document</th>@if ($canSeeDocumentDetail)<th>Issued</th>@endif<th>Expires</th><th>Status</th><th><span class="visually-hidden">File</span></th></tr></thead>
                 <tbody>
                     @foreach ($documents as $doc)
                         <tr>
@@ -170,11 +175,55 @@
                             @endif
                             <td class="tnum">{{ Display::date($doc['expires_at']) }}</td>
                             <td><x-status :value="$workspace->documentStatus($doc)" /></td>
+                            <td class="text-end">
+                                @if (isset($downloads[$doc['id']]))
+                                    <a href="{{ $downloads[$doc['id']] }}" class="btn btn-quiet btn-sm">Open file</a>
+                                @elseif ($canSeeDocumentDetail && ! ($doc['has_file'] ?? false))
+                                    <span class="small text-muted">No file</span>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
+
+        @if ($canUpload)
+            <section class="card mw-form">
+                <div class="card-header"><h2 class="card-title">Upload a document</h2><span class="small text-muted ms-auto">PDF, JPG, PNG or Word, up to 10 MB. Stored privately.</span></div>
+                <form class="card-body row g-3" wire:submit="uploadDocument">
+                    <div class="col-sm-6">
+                        <label for="d-type" class="form-label">Type</label>
+                        <select id="d-type" class="form-select" wire:model="newDocument.type">
+                            @foreach ($documentTypes as $value => $label)
+                                <option value="{{ $value }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="d-title" class="form-label">Title</label>
+                        <input id="d-title" @class(['form-control', 'is-invalid' => $errors->has('newDocument.title')]) wire:model="newDocument.title" placeholder="For example Public liability insurance £5m">
+                        @error('newDocument.title')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="d-issued" class="form-label">Issued (optional)</label>
+                        <input id="d-issued" type="date" class="form-control" wire:model="newDocument.issued_at">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="d-expires" class="form-label">Expires (optional)</label>
+                        <input id="d-expires" type="date" @class(['form-control', 'is-invalid' => $errors->has('newDocument.expires_at')]) wire:model="newDocument.expires_at">
+                        @error('newDocument.expires_at')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-12">
+                        <label for="d-file" class="form-label">File</label>
+                        <input id="d-file" type="file" accept=".pdf,.jpg,.jpeg,.png,.docx,image/*" capture="environment" @class(['form-control', 'is-invalid' => $errors->has('upload')]) wire:model="upload">
+                        @error('upload')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <div wire:loading wire:target="upload" class="small text-muted mt-1">Uploading…</div>
+                    </div>
+                    <div class="col-12"><button type="submit" class="btn btn-primary" wire:loading.attr="disabled">Upload document</button></div>
+                </form>
+            </section>
+        @endif
     @endif
 
     @if ($tab === 'skills')
@@ -197,7 +246,7 @@
     @endif
 
     @if ($tab === 'rates' && array_key_exists('day_rates', $p))
-        <div class="table-wrap">
+        <div class="table-wrap mb-3">
             @if ($p['day_rates'] === [])
                 <x-empty title="No day rates">Freelancers’ day rates are effective-dated. A new rate never changes costs already posted.</x-empty>
             @else
@@ -216,6 +265,30 @@
                 </table>
             @endif
         </div>
+
+        @if ($canAddRate)
+            <section class="card mw-form">
+                <div class="card-header"><h2 class="card-title">Add a new rate</h2><span class="small text-muted ms-auto">The current rate for the role ends the day before.</span></div>
+                <form class="card-body row g-3" wire:submit="addRate">
+                    <div class="col-sm-5">
+                        <label for="nr-role" class="form-label">Role</label>
+                        <input id="nr-role" @class(['form-control', 'is-invalid' => $errors->has('newRate.role_name')]) wire:model="newRate.role_name">
+                        @error('newRate.role_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="nr-amount" class="form-label">Day rate (£)</label>
+                        <input id="nr-amount" inputmode="decimal" @class(['form-control tnum', 'is-invalid' => $errors->has('newRate.amount')]) wire:model="newRate.amount">
+                        @error('newRate.amount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="nr-from" class="form-label">From</label>
+                        <input id="nr-from" type="date" @class(['form-control', 'is-invalid' => $errors->has('newRate.effective_from')]) wire:model="newRate.effective_from">
+                        @error('newRate.effective_from')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-12"><button type="submit" class="btn btn-primary" wire:loading.attr="disabled">Save new rate</button></div>
+                </form>
+            </section>
+        @endif
     @endif
 
     @if ($tab === 'restricted' && array_key_exists('restricted', $p))

@@ -20,6 +20,8 @@ class Notifications extends Component
             $this->workspace()->ledger->put('notifications_read', $n['key'], true);
         }
 
+        auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+
         $this->workspace()->forget();
         $this->redirectRoute('notifications', navigate: true);
     }
@@ -27,7 +29,7 @@ class Notifications extends Component
     public function render(): View
     {
         return view('livewire.notifications', [
-            'notifications' => $this->workspace()->notificationsFor(auth()->user()->person_id),
+            'notifications' => $this->workspace()->inboxFor(auth()->user()),
         ]);
     }
 }

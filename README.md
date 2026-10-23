@@ -64,7 +64,8 @@ Sign-in, roles, permissions, invitations, two-factor and the audit log are real 
 | Rota (2 weeks or a month), clashes, resolve flow with suggestions, availability search, crew calls | Built on demo data |
 | Timesheets, approvals inbox with working time flags, return with comment, period lock | Built on demo data |
 | Budgets, cost lines, purchase orders, supplier invoices with tolerance, expenses, client billing | Built on demo data |
-| Directory, profiles with restricted rates and personal fields, leave, documents | Built on demo data |
+| People and directory: add and edit staff and freelancers, skills, effective-dated day rates, encrypted restricted fields, document uploads with signed links, expiry reminders; clients, suppliers and venues with contacts | Built on the database and tested (phase 1) |
+| Leave | Built on demo data |
 | Ask Hive with policy-scoped read-only tools, citations, logging and rate limits | Built with a local engine; the Anthropic engine is phase 7 |
 | Freelancer invoices, exports, onboarding, skills admin, reports, settings, integrations | Later phases (each has a page saying which) |
 

@@ -2,7 +2,11 @@
     use App\Support\Display;
 @endphp
 <div>
-    <x-page-head title="Suppliers" :answer="$items->count().' suppliers, '.$items->where('is_approved', false)->count().' not yet approved.'" />
+    <x-page-head title="Suppliers" :answer="$items->count().' suppliers, '.$items->where('is_approved', false)->count().' not yet approved.'">
+        @can('directory.manage')
+            <x-slot:actions><a href="{{ route('suppliers.create') }}" class="btn btn-primary" wire:navigate>Add a supplier</a></x-slot:actions>
+        @endcan
+    </x-page-head>
     <div class="filters"><label class="visually-hidden" for="sp-search">Search suppliers</label><input id="sp-search" type="search" class="form-control is-search" placeholder="Search suppliers" wire:model.live.debounce.300ms="search"></div>
     <div class="table-wrap">
         @if ($items->isEmpty())
@@ -14,7 +18,7 @@
                     @foreach ($items as $s)
                         @php($expired = $s['insurance_expires_at'] < app(\App\Demo\Workspace::class)->today()->toDateString())
                         <tr>
-                            <td class="fw-medium">{{ $s['name'] }}<span class="d-block small text-muted fw-normal">{{ $s['contacts'][0]['email'] ?? '' }}</span></td>
+                            <td class="fw-medium">@can('directory.manage')<a href="{{ route('suppliers.edit', $s['id']) }}" wire:navigate>{{ $s['name'] }}</a>@else{{ $s['name'] }}@endcan<span class="d-block small text-muted fw-normal">{{ $s['contacts'][0]['email'] ?? '' }}</span></td>
                             <td>{{ ucfirst(str_replace('-', ' ', $s['category'])) }}</td>
                             <td class="num">{{ $s['rating'] }}</td>
                             <td @class(['tnum', 'text-negative' => $expired])>{{ Display::date($s['insurance_expires_at']) }}</td>

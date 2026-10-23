@@ -2,18 +2,36 @@
 
 namespace App\Livewire\People;
 
+use App\Actions\People\AddDayRate;
+use App\Actions\People\UploadDocument;
+use App\Enums\DocumentType;
+use App\Http\Controllers\DocumentDownloadController;
 use App\Livewire\Concerns\UsesWorkspace;
+use App\Models\Document;
+use App\Models\Person;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.app')]
 class Show extends Component
 {
-    use UsesWorkspace;
+    use UsesWorkspace, WithFileUploads;
 
     public int $person;
+
+    /** @var array<string, string> */
+    public array $newRate = ['role_name' => '', 'amount' => '', 'effective_from' => ''];
+
+    /** @var array<string, string> */
+    public array $newDocument = ['type' => 'public-liability-insurance', 'title' => '', 'issued_at' => '', 'expires_at' => ''];
+
+    /** @var TemporaryUploadedFile|null */
+    public $upload = null;
 
     #[Url(except: 'overview')]
     public string $tab = 'overview';
@@ -22,6 +40,48 @@ class Show extends Component
     {
         abort_unless($this->workspace()->person($person) && $this->viewer()->canSeePerson($person), 404);
         $this->person = $person;
+        $this->newRate['role_name'] = (string) ($this->workspace()->person($person)['job_title'] ?? '');
+        $this->newRate['effective_from'] = $this->workspace()->today()->addDay()->toDateString();
+    }
+
+    private function model(): Person
+    {
+        return Person::query()->findOrFail($this->person);
+    }
+
+    public function addRate(AddDayRate $add): void
+    {
+        $this->resetValidation();
+
+        try {
+            $add->handle(auth()->user(), $this->model(), $this->newRate);
+        } catch (ValidationException $e) {
+            $this->setErrorBag(collect($e->errors())->mapWithKeys(fn ($m, $k) => ['newRate.'.$k => $m])->all());
+
+            return;
+        }
+
+        $this->workspace()->forget();
+        $this->newRate['amount'] = '';
+        $this->toast('New day rate saved. Costs already posted keep their old rate.');
+    }
+
+    public function uploadDocument(UploadDocument $uploadDocument): void
+    {
+        $this->resetValidation();
+
+        try {
+            $uploadDocument->handle(auth()->user(), $this->model(), $this->newDocument + ['file' => $this->upload]);
+        } catch (ValidationException $e) {
+            $this->setErrorBag(collect($e->errors())->mapWithKeys(fn ($m, $k) => [($k === 'file' ? 'upload' : 'newDocument.'.$k) => $m])->all());
+
+            return;
+        }
+
+        $this->workspace()->forget();
+        $this->reset('upload');
+        $this->newDocument = ['type' => 'public-liability-insurance', 'title' => '', 'issued_at' => '', 'expires_at' => ''];
+        $this->toast('Document uploaded.');
     }
 
     /**
@@ -88,6 +148,13 @@ class Show extends Component
             'leave' => $workspace->leaveRequests()->where('person_id', $this->person)->sortByDesc('start_date'),
             'documents' => $workspace->documents()->where('person_id', $this->person),
             'canSeeDocumentDetail' => $viewer->isSelf($this->person) || auth()->user()->can('documents.view'),
+            'canEdit' => auth()->user()->can('update', $model = $this->model()),
+            'canAddRate' => auth()->user()->can('addRate', $model),
+            'canUpload' => auth()->user()->can('uploadDocument', $model),
+            'downloads' => Document::query()->whereMorphedTo('documentable', $model)->whereNotNull('file_path')->get()
+                ->filter(fn (Document $d) => auth()->user()->can('download', $d))
+                ->mapWithKeys(fn (Document $d) => [$d->id => DocumentDownloadController::link($d)]),
+            'documentTypes' => DocumentType::options(),
             'expired' => $workspace->expiredMandatoryDocuments($this->person),
         ])->title(($person['preferred_name'] ?: $person['first_name']).' '.$person['last_name']);
     }

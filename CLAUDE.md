@@ -43,7 +43,9 @@ Run Pint, Larastan and the tests before calling a phase done.
 | `app/Services/AskHive` | `Tools` (read-only, viewer-scoped), `AskHiveEngine` interface, `LocalEngine` (deterministic, for the demo and tests). |
 | `config/hive.php` | Thresholds, demo mode, two-factor roles, AI settings. |
 | `config/hive-permissions.php` | Section 6 as data: every permission and every role's grants. |
-| `database/demo/*.json` | The fictional agency. Edit freely; ids must stay consistent across files. |
+| `database/demo/*.json` | The fictional agency. Edit freely; ids must stay consistent across files. People, skills, departments, documents, clients, suppliers and venues are loaded into the database by `DemoDirectorySeeder`; the rest is still read directly. |
+| `app/Models` | Phase 1 models: `Person` (+ `PersonRestricted`, encrypted), `DayRate`, `Skill`, `Department`, `Document`, `Client`, `Supplier`, `Venue`, `Contact`. Each has `toWorkspaceArray()` for the Workspace. |
+| `app/Jobs` | Scheduled jobs (`routes/console.php`): `SendDocumentExpiryReminders` daily at 07:00 UK time. |
 | `resources/scss/app.scss` | The whole theme: tokens, light and dark. See `DESIGN.md`. |
 | `PRODUCT.md`, `DESIGN.md` | Product context and design system, read by the design skills. |
 
@@ -76,4 +78,4 @@ From the "five free plugins that make Claude good at design" list:
 
 ## Build phases
 
-See the README for status. Phase 0 is complete; screens for later phases run on the demo data layer, and each phase replaces its part of `app/Demo` with Eloquent models without changing the Actions' contracts.
+See the README for status. Phases 0 and 1 are complete; screens for later phases run on the demo data layer, and each phase replaces its part of `app/Demo` with Eloquent models without changing the Actions' contracts.
