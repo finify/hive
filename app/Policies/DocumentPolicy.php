@@ -2,7 +2,10 @@
 
 namespace App\Policies;
 
+use App\Demo\Viewer;
+use App\Demo\Workspace;
 use App\Models\Document;
+use App\Models\Event;
 use App\Models\Person;
 use App\Models\Supplier;
 use App\Models\User;
@@ -21,6 +24,12 @@ class DocumentPolicy
 
         if ($document->documentable_type === Supplier::class) {
             return $user->can('directory.manage');
+        }
+
+        if ($document->documentable_type === Event::class) {
+            $event = app(Workspace::class)->event($document->documentable_id);
+
+            return $event !== null && (new Viewer($user, app(Workspace::class)))->canSeeEvent($event);
         }
 
         return false;

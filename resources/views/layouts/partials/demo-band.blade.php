@@ -31,6 +31,6 @@
             <button type="submit" class="btn btn-link">Reset demo ({{ $changes }} {{ $changes === 1 ? 'change' : 'changes' }})</button>
         </form>
     @else
-        <span class="ms-md-auto opacity-75 demo-hint">Changes you make last until you sign out</span>
+        <span class="ms-md-auto opacity-75 demo-hint">Events reset nightly; other changes last until you sign out</span>
     @endif
 </div>

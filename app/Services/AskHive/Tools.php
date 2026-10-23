@@ -285,7 +285,7 @@ class Tools
             'code' => $e['code'], 'name' => $e['name'], 'stage' => EventStage::from($e['stage'])->label(),
             'client' => $this->workspace->clients()->get($e['client_id'])['name'] ?? null,
             'city' => $e['city'], 'country' => $e['country'],
-            'dates' => DateRange::of($e['start_date'], $e['end_date'])->format(),
+            'dates' => Display::eventDates($e),
             'start_date' => $e['start_date'], 'end_date' => $e['end_date'],
             'producer' => $this->workspace->personName($e['producer_id']),
             'phases' => Rows::of($e['phases'])->map(fn ($p) => ucfirst($p['type']).' '.DateRange::of($p['start_date'], $p['end_date'])->format())->implode(', '),

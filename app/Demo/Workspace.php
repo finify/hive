@@ -17,6 +17,7 @@ use App\Enums\TimesheetStatus;
 use App\Models\Client;
 use App\Models\Department;
 use App\Models\Document;
+use App\Models\Event;
 use App\Models\Person;
 use App\Models\Skill;
 use App\Models\Supplier;
@@ -258,12 +259,10 @@ class Workspace
      */
     public function events(): Collection
     {
-        return $this->memo('events', function () {
-            $changes = $this->ledger->section('events');
-
-            return $this->data->collect('events')
-                ->map(fn (array $event) => isset($changes[$event['id']]) ? array_merge($event, $changes[$event['id']]) : $event);
-        });
+        return $this->memo('events', fn () => Rows::keyed(
+            Event::query()->with(['phases', 'team', 'stageChanges', 'tasks', 'documents'])->orderBy('id')->get()
+                ->map(fn (Event $e) => $e->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -305,8 +304,8 @@ class Workspace
      */
     public function eventSpan(array $event): DateRange
     {
-        $start = $event['start_date'];
-        $end = $event['end_date'];
+        $start = $event['start_date'] ?? $this->today()->toDateString();
+        $end = $event['end_date'] ?? $start;
 
         foreach (Rows::of($event['phases']) as $phase) {
             $start = min($start, $phase['start_date']);

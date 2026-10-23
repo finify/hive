@@ -12,6 +12,9 @@
                 <a href="{{ route('events.pipeline') }}" class="btn btn-secondary" wire:navigate><i class="bi bi-kanban me-1" aria-hidden="true"></i>Pipeline</a>
             @endcan
             <a href="{{ route('events.calendar') }}" class="btn btn-secondary" wire:navigate><i class="bi bi-calendar3 me-1" aria-hidden="true"></i>Calendar</a>
+            @can('events.create')
+                <a href="{{ route('events.create') }}" class="btn btn-primary" wire:navigate>Add enquiry</a>
+            @endcan
         </x-slot:actions>
     </x-page-head>
 
@@ -93,7 +96,7 @@
                             </td>
                             <td>{{ $workspace->clients()->get($event['client_id'])['name'] ?? '—' }}</td>
                             <td>{{ $workspace->personName($event['producer_id']) }}</td>
-                            <td class="tnum text-nowrap">{{ DateRange::of($event['start_date'], $event['end_date'])->format() }}</td>
+                            <td class="tnum text-nowrap">{{ \App\Support\Display::eventDates($event) }}</td>
                             <td><x-status :value="EventStage::from($event['stage'])" /></td>
                             <td>
                                 @if ($canBudget)

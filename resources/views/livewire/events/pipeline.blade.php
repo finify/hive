@@ -6,6 +6,9 @@
     <x-page-head title="Pipeline board" :answer="collect($columns)->sum(fn ($c) => $c['events']->count()).' events from enquiry to confirmed. Win rate '.($winRate ?? '—').'% this year. Drag a card to move it; the stage rules still apply.'">
         <x-slot:actions>
             <a href="{{ route('events.index') }}" class="btn btn-secondary" wire:navigate>Events list</a>
+            @can('events.create')
+                <a href="{{ route('events.create') }}" class="btn btn-primary" wire:navigate>Add enquiry</a>
+            @endcan
         </x-slot:actions>
     </x-page-head>
 
@@ -31,7 +34,7 @@
                         </div>
                         <div class="board-card-title">{{ $event['name'] }}</div>
                         <div class="board-card-meta">{{ $workspace->clients()->get($event['client_id'])['name'] }}</div>
-                        <div class="board-card-meta tnum">{{ DateRange::of($event['start_date'], $event['end_date'])->format() }}, {{ $event['city'] }}</div>
+                        <div class="board-card-meta tnum">{{ \App\Support\Display::eventDates($event) }}, {{ $event['city'] }}</div>
                         <div class="d-flex align-items-center gap-2 mt-2">
                             <x-avatar :name="$workspace->personName($event['producer_id'])" :id="$event['producer_id']" size="sm" />
                             <span class="small text-muted">{{ $workspace->personName($event['producer_id']) }}</span>

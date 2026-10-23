@@ -1,11 +1,14 @@
 <?php
 
 use App\Actions\Events\ChangeEventStage;
-use App\Actions\Events\RecordSignedContract;
+use App\Actions\Events\UploadEventFile;
 use App\Enums\EventStage;
 use App\Enums\Role;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Spatie\Activitylog\Models\Activity;
 
@@ -22,11 +25,14 @@ it('takes a producer’s event from enquiry to confirmed, logging every move (ph
 
     expect(fn () => $change->handle($chloe, 16, EventStage::Confirmed))->toThrow(ValidationException::class, 'Upload the signed contract.');
 
-    app(RecordSignedContract::class)->handle($chloe, 16);
+    Storage::fake('local');
+    app(UploadEventFile::class)->handle($chloe, Event::query()->findOrFail(16), ['type' => 'contract', 'file' => UploadedFile::fake()->create('signed.pdf', 200, 'application/pdf')]);
     $change->handle($chloe, 16, EventStage::Confirmed);
 
     expect($this->workspace()->event(16)['stage'])->toBe('confirmed')
-        ->and(collect($this->workspace()->event(16)['stage_history'])->pluck('to')->all())->toBe(['proposal-sent', 'confirmed']);
+        ->and(collect($this->workspace()->event(16)['stage_history'])->pluck('to')->all())->toBe(['proposal-sent', 'confirmed'])
+        ->and($this->workspace()->event(16)['tasks'])->not->toBeEmpty();
+    $this->assertDatabaseHas('event_stage_changes', ['event_id' => 16, 'from_stage' => 'proposal-sent', 'to_stage' => 'confirmed', 'changed_by' => 6]);
     expect(Activity::query()->where('causer_id', $chloe->id)->where('event', 'stage-changed')->count())->toBe(2)
         ->and(Activity::query()->where('causer_id', $chloe->id)->where('event', 'contract-signed')->count())->toBe(1);
 });

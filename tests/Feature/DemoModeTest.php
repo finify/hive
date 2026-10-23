@@ -4,7 +4,7 @@ use App\Demo\Workspace;
 
 it('switches persona without losing demo changes', function () {
     $this->actingAs(persona('hannah'));
-    app(Workspace::class)->ledger->put('events', 17, ['contract_signed' => true]);
+    app(Workspace::class)->ledger->put('notifications_read', 1, true);
 
     $this->post(route('demo.switch'), ['email' => 'grace@lumenco.test'])->assertRedirect(route('supplier-invoices'));
 
@@ -29,7 +29,7 @@ it('does not switch personas outside demo mode', function () {
 
 it('resets demo changes', function () {
     $this->actingAs(persona('hannah'));
-    app(Workspace::class)->ledger->put('events', 17, ['contract_signed' => true]);
+    app(Workspace::class)->ledger->put('notifications_read', 1, true);
 
     $this->post(route('demo.reset'))->assertRedirect();
 

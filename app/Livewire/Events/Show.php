@@ -2,23 +2,32 @@
 
 namespace App\Livewire\Events;
 
+use App\Actions\Events\ApplyTaskTemplate;
 use App\Actions\Events\ChangeEventStage;
-use App\Actions\Events\RecordSignedContract;
+use App\Actions\Events\SaveTask;
+use App\Actions\Events\UploadEventFile;
 use App\Demo\Rows;
+use App\Enums\DocumentType;
 use App\Enums\EventStage;
+use App\Http\Controllers\DocumentDownloadController;
 use App\Livewire\Concerns\UsesWorkspace;
+use App\Models\Document;
+use App\Models\Event;
+use App\Models\Task;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 use Spatie\Activitylog\Models\Activity;
 
 #[Layout('layouts.app')]
 class Show extends Component
 {
-    use UsesWorkspace;
+    use UsesWorkspace, WithFileUploads;
 
     public string $code;
 
@@ -31,6 +40,14 @@ class Show extends Component
 
     /** @var list<string> */
     public array $stageBlockers = [];
+
+    /** @var array{title: string, assignee_id: string, due_date: string} */
+    public array $newTask = ['title' => '', 'assignee_id' => '', 'due_date' => ''];
+
+    public string $fileType = 'brief';
+
+    /** @var TemporaryUploadedFile|null */
+    public $upload = null;
 
     public function mount(string $code): void
     {
@@ -49,7 +66,7 @@ class Show extends Component
      */
     private function tabs(array $event): array
     {
-        $tabs = ['overview', 'crew'];
+        $tabs = ['overview', 'tasks', 'crew'];
 
         if ($this->viewer()->canSeeBudget($event)) {
             array_push($tabs, 'budget', 'purchase-orders', 'invoices');
@@ -93,10 +110,72 @@ class Show extends Component
         $this->toast("Moved to {$to->label()}.");
     }
 
-    public function recordContract(RecordSignedContract $record): void
+    public function addTask(SaveTask $save): void
     {
-        $record->handle(auth()->user(), $this->event()['id']);
-        $this->toast('Signed contract added.');
+        $this->resetValidation();
+
+        try {
+            $save->add(auth()->user(), $this->model(), $this->newTask);
+        } catch (ValidationException $e) {
+            $this->setErrorBag(collect($e->errors())->mapWithKeys(fn ($m, $k) => ['newTask.'.$k => $m])->all());
+
+            return;
+        }
+
+        $this->newTask = ['title' => '', 'assignee_id' => $this->newTask['assignee_id'], 'due_date' => ''];
+        $this->toast('Task added.');
+    }
+
+    public function cycleTask(int $taskId, SaveTask $save): void
+    {
+        $task = Task::query()->where('event_id', $this->event()['id'])->findOrFail($taskId);
+        $save->setStatus(auth()->user(), $task, $task->status->next());
+    }
+
+    public function applyTemplate(ApplyTaskTemplate $apply): void
+    {
+        $this->resetValidation();
+
+        try {
+            $count = $apply->handle(auth()->user(), $this->model());
+        } catch (ValidationException $e) {
+            $this->setErrorBag($e->errors());
+
+            return;
+        }
+
+        $this->toast("Added {$count} tasks from the standard list.");
+    }
+
+    /**
+     * Opens the files tab with the contract chosen, from the overview.
+     */
+    public function startContractUpload(): void
+    {
+        $this->fileType = DocumentType::Contract->value;
+        $this->tab = 'files';
+    }
+
+    public function uploadFile(UploadEventFile $uploadFile): void
+    {
+        $this->resetValidation();
+
+        try {
+            $uploadFile->handle(auth()->user(), $this->model(), ['type' => $this->fileType, 'file' => $this->upload]);
+        } catch (ValidationException $e) {
+            $this->setErrorBag(collect($e->errors())->mapWithKeys(fn ($m, $k) => [($k === 'file' ? 'upload' : 'fileType') => $m])->all());
+
+            return;
+        }
+
+        $this->reset('upload');
+        $this->toast($this->fileType === DocumentType::Contract->value ? 'Signed contract uploaded. The event can now be confirmed.' : 'File uploaded.');
+        $this->fileType = 'brief';
+    }
+
+    private function model(): Event
+    {
+        return Event::query()->findOrFail($this->event()['id']);
     }
 
     /**
@@ -145,8 +224,21 @@ class Show extends Component
             'clashKeys' => $clashKeys,
             'canManageCrew' => $viewer->canManageCrew($event),
             'canSeeRates' => $user->can('rates.view'),
-            'canEdit' => $user->can('events.edit_all') || ($user->can('events.edit') && $viewer->isProducerOf($event)),
+            'canEdit' => $user->can('event.edit', [$event]),
         ];
+
+        if ($this->tab === 'tasks') {
+            $data['tasks'] = Rows::of($event['tasks'])->map(fn ($t) => $t + ['can_update' => $user->can('event.update-task', [$event, $t['assignee_id']])]);
+            $data['assignees'] = collect([$event['producer_id'], ...array_column($event['team'], 'person_id')])
+                ->filter()->unique()->mapWithKeys(fn ($id) => [$id => $workspace->personName($id)]);
+        }
+
+        if ($this->tab === 'files') {
+            $data['downloads'] = Document::query()->whereMorphedTo('documentable', $this->model())->whereNotNull('file_path')->get()
+                ->filter(fn (Document $d) => $user->can('download', $d))
+                ->mapWithKeys(fn (Document $d) => [$d->id => DocumentDownloadController::link($d)]);
+            $data['fileTypes'] = DocumentType::eventOptions();
+        }
 
         if ($this->tab === 'budget') {
             $data['lines'] = $workspace->budgetLines($event['id']);

@@ -85,3 +85,27 @@ Uploads go to a private disk (`DOCUMENTS_DISK`, local by default, S3-compatible 
 ## 20. Self-service profile edits
 
 People can upload their own documents now. Editing their own pronouns, dietary and access needs is left for phase 6, with the rest of self-service.
+
+## 21. Phase 2: events are in the database
+
+Events, phases, team, stage history, tasks, task templates and event files are Eloquent models. `DemoEventsSeeder` loads them from `events.json` with the same ids, so bookings, budgets and timesheets (still JSON) point at the right events. `Event::toWorkspaceArray()` returns the shape the screens already read, so the list, pipeline, calendar, rota and Ask Hive did not change.
+
+## 22. The stage only moves through ChangeEventStage
+
+The details form never sets the stage. A new event starts as an enquiry; every move goes through `ChangeEventStage`, which checks the rules, writes an `event_stage_changes` row and the activity log. Enquiries may have no dates, client or fee; the rules ask for them before a proposal goes out.
+
+## 23. Event codes
+
+`EV-` plus the two-digit year and the next number for that year (`EV-26128`), counting soft-deleted events so a code is never reused.
+
+## 24. Task templates
+
+One standard list per event type, with due dates as offsets from the event's start and an assignee role. Confirming an event with no tasks adds its list; a producer can also add it to an empty event by hand. A task goes to the team member holding the item's role, or to the producer. The producer (or anyone who edits all events) manages tasks; the person a task is assigned to may also move its status. Conference has 30 items.
+
+## 25. The signed contract is a file
+
+Rule 1's "signed contract" is a `documents` row of type contract on the event, uploaded on the Files tab. Event files can be opened by anyone who can see the event; seeded files are records without a file.
+
+## 26. Shared demo data is refreshed nightly
+
+Moving events into the database means changes made on the public demo are seen by every visitor, not kept in one session. `hive:demo-refresh` puts the seeded events, tasks and event files back, and is scheduled at 03:00 UK time while demo mode is on. It refuses to run in production. The rest of the walkthrough still lives in the session.

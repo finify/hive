@@ -137,7 +137,7 @@
                         <li>
                             <div class="row-main">
                                 <div class="row-title text-truncate"><a href="{{ route('events.show', $event['code']) }}" wire:navigate>{{ $event['name'] }}</a></div>
-                                <div class="row-sub"><span class="code">{{ $event['code'] }}</span> <span class="ms-1">{{ DateRange::of($event['start_date'], $event['end_date'])->format() }}</span></div>
+                                <div class="row-sub"><span class="code">{{ $event['code'] }}</span> <span class="ms-1">{{ \App\Support\Display::eventDates($event) }}</span></div>
                             </div>
                             <x-status :value="EventStage::from($event['stage'])" />
                             @if ($health)

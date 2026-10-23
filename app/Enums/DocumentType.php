@@ -11,6 +11,9 @@ enum DocumentType: string
     case Qualification = 'qualification';
     case Nda = 'nda';
     case Ir35Determination = 'ir35-determination';
+    case Brief = 'brief';
+    case FloorPlan = 'floor-plan';
+    case RunOfShow = 'run-of-show';
     case Other = 'other';
 
     public function label(): string
@@ -23,6 +26,9 @@ enum DocumentType: string
             self::Qualification => 'Qualification or certificate',
             self::Nda => 'NDA',
             self::Ir35Determination => 'IR35 determination',
+            self::Brief => 'Client brief',
+            self::FloorPlan => 'Floor plan',
+            self::RunOfShow => 'Run of show',
             self::Other => 'Other',
         };
     }
@@ -37,6 +43,8 @@ enum DocumentType: string
     }
 
     /**
+     * Types offered when uploading for a person.
+     *
      * @return array<string, string>
      */
     public static function options(): array
@@ -44,9 +52,33 @@ enum DocumentType: string
         $options = [];
 
         foreach (self::cases() as $case) {
-            $options[$case->value] = $case->label();
+            if (! $case->isEventFile()) {
+                $options[$case->value] = $case->label();
+            }
         }
 
         return $options;
+    }
+
+    public function isEventFile(): bool
+    {
+        return in_array($this, [self::Brief, self::FloorPlan, self::RunOfShow], true);
+    }
+
+    /**
+     * Types offered when uploading to an event. A contract here is the signed
+     * client contract that lets the event move to Confirmed.
+     *
+     * @return array<string, string>
+     */
+    public static function eventOptions(): array
+    {
+        return [
+            self::Contract->value => 'Signed client contract',
+            self::Brief->value => self::Brief->label(),
+            self::FloorPlan->value => self::FloorPlan->label(),
+            self::RunOfShow->value => self::RunOfShow->label(),
+            self::Other->value => self::Other->label(),
+        ];
     }
 }

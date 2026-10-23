@@ -97,7 +97,7 @@ class LocalEngine implements AskHiveEngine
             return "{$e['code']} {$e['name']} is ".($e['health'] === 'At risk' ? 'at risk' : 'on watch').': '.implode('; ', $why).'.';
         })->values()->all();
 
-        $thisMonth = $flagged->filter(fn ($e) => str_starts_with($e['start_date'], $month))->count();
+        $thisMonth = $flagged->filter(fn ($e) => str_starts_with((string) $e['start_date'], $month))->count();
 
         return new Answer(
             [sprintf('%d %s need attention, %d of them running this month:', $flagged->count(), $flagged->count() === 1 ? 'event needs' : 'events', $thisMonth)],
@@ -123,7 +123,7 @@ class LocalEngine implements AskHiveEngine
         $context = null;
 
         foreach ($this->workspace->events() as $event) {
-            if (str_contains($q, mb_strtolower($event['city'])) && ! in_array($event['stage'], ['cancelled', 'lost', 'closed'], true)) {
+            if ($event['city'] && $event['start_date'] && str_contains($q, mb_strtolower($event['city'])) && ! in_array($event['stage'], ['cancelled', 'lost', 'closed'], true)) {
                 $phase = Rows::of($event['phases'])->first(fn ($p) => str_contains($q, $p['type']))
                     ?? Rows::of($event['phases'])->firstWhere('type', 'build')
                     ?? ['start_date' => $event['start_date'], 'end_date' => $event['end_date'], 'type' => 'live'];

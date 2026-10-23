@@ -10,7 +10,7 @@
     use App\Support\Display;
     use App\Support\Money;
     $workspace = app(\App\Demo\Workspace::class);
-    $tabLabels = ['overview' => 'Overview', 'crew' => 'Crew and resourcing', 'budget' => 'Budget', 'purchase-orders' => 'Purchase orders', 'invoices' => 'Invoices', 'timesheets' => 'Timesheets', 'files' => 'Files', 'activity' => 'Activity'];
+    $tabLabels = ['overview' => 'Overview', 'tasks' => 'Tasks', 'crew' => 'Crew and resourcing', 'budget' => 'Budget', 'purchase-orders' => 'Purchase orders', 'invoices' => 'Invoices', 'timesheets' => 'Timesheets', 'files' => 'Files', 'activity' => 'Activity'];
     $span = $workspace->eventSpan($event);
 @endphp
 <div>
@@ -19,6 +19,9 @@
             <a href="{{ route('events.index') }}" wire:navigate>Events</a> <span aria-hidden="true">/</span> <span class="code">{{ $event['code'] }}</span>
         </x-slot:crumbs>
         <x-slot:actions>
+            @if ($canEdit)
+                <a href="{{ route('events.edit', $event['code']) }}" class="btn btn-secondary" wire:navigate>Edit details</a>
+            @endif
             @foreach ($nextStages as $to)
                 @if ($to === EventStage::Cancelled || $to === EventStage::Lost)
                     <button type="button" class="btn btn-quiet text-negative" wire:click="prepareStage('{{ $to->value }}')" wire:loading.attr="disabled">{{ $to === EventStage::Cancelled ? 'Cancel event' : 'Mark as lost' }}</button>
@@ -36,8 +39,8 @@
         @endif
         <span class="text-muted">{{ EventType::from($event['event_type'])->label() }}</span>
         <span class="text-muted">{{ $client['name'] ?? '—' }}</span>
-        <span class="text-muted">{{ $venue['name'] ?? '' }}, {{ $event['city'] }}</span>
-        <span class="text-muted tnum">{{ DateRange::of($event['start_date'], $event['end_date'])->format() }}</span>
+        <span class="text-muted">{{ collect([$venue['name'] ?? null, $event['city']])->filter()->implode(', ') ?: 'Venue to be agreed' }}</span>
+        <span class="text-muted tnum">{{ \App\Support\Display::eventDates($event) }}</span>
     </div>
 
     <nav class="tabs" aria-label="Event sections">
@@ -72,7 +75,7 @@
                         <dt>Client</dt><dd>{{ $client['name'] ?? '—' }}</dd>
                         <dt>Producer</dt><dd>{{ $workspace->personName($event['producer_id']) }}</dd>
                         <dt>Venue</dt><dd>{{ $venue['name'] ?? '—' }}<div class="small text-muted">{{ $venue['address'] ?? '' }}</div></dd>
-                        <dt>Attendance</dt><dd class="tnum">{{ number_format($event['expected_attendance']) }} expected</dd>
+                        <dt>Attendance</dt><dd class="tnum">{{ $event['expected_attendance'] ? number_format($event['expected_attendance']).' expected' : '—' }}</dd>
                         <dt>Timezone</dt><dd>{{ $event['timezone'] }}</dd>
                         <dt>Contract</dt>
                         <dd>
@@ -81,7 +84,7 @@
                             @else
                                 <span class="text-warning-ink">Not signed yet</span>
                                 @if ($canEdit)
-                                    <button type="button" class="btn btn-secondary btn-sm ms-2" wire:click="recordContract" wire:loading.attr="disabled">Upload signed contract</button>
+                                    <button type="button" class="btn btn-secondary btn-sm ms-2" wire:click="startContractUpload">Upload signed contract</button>
                                 @endif
                             @endif
                         </dd>
@@ -105,29 +108,33 @@
                 @endif
             </section>
 
+            @php($open = collect($event['tasks'])->where('status', '!=', 'done')->sortBy(fn ($t) => $t['due_date'] ?? '9999')->take(5))
             <section class="card span-7">
-                <div class="card-header"><h2 class="card-title">Tasks</h2><span class="small text-muted ms-auto">{{ collect($event['tasks'])->where('status', 'done')->count() }} of {{ count($event['tasks']) }} done</span></div>
-                @if ($event['tasks'])
+                <div class="card-header"><h2 class="card-title">Next tasks</h2><button type="button" class="btn btn-quiet btn-sm ms-auto" wire:click="$set('tab', 'tasks')">{{ collect($event['tasks'])->where('status', 'done')->count() }} of {{ count($event['tasks']) }} done</button></div>
+                @if ($open->isNotEmpty())
                     <ul class="list-rows">
-                        @foreach ($event['tasks'] as $task)
+                        @foreach ($open as $task)
                             <li>
-                                <i @class(['bi', 'bi-check-circle-fill text-positive' => $task['status'] === 'done', 'bi-circle-half text-warning-ink' => $task['status'] === 'in-progress', 'bi-circle text-muted' => $task['status'] === 'to-do']) aria-hidden="true"></i>
+                                <i @class(['bi', 'bi-circle-half text-warning-ink' => $task['status'] === 'in-progress', 'bi-circle text-muted' => $task['status'] === 'to-do']) aria-hidden="true"></i>
                                 <div class="row-main">
-                                    <div @class(['row-title', 'text-muted text-decoration-line-through' => $task['status'] === 'done'])>{{ $task['title'] }}</div>
+                                    <div class="row-title">{{ $task['title'] }}</div>
                                     <div class="row-sub">{{ $workspace->personName($task['assignee_id']) }}</div>
                                 </div>
-                                <span class="small text-muted tnum">Due {{ Display::date($task['due_date']) }}</span>
+                                <span @class(['small tnum', 'text-negative' => $task['due_date'] && $task['due_date'] < $workspace->today()->toDateString(), 'text-muted' => ! $task['due_date'] || $task['due_date'] >= $workspace->today()->toDateString()])>{{ $task['due_date'] ? 'Due '.Display::date($task['due_date']) : 'No due date' }}</span>
                                 <span class="visually-hidden">{{ str_replace('-', ' ', $task['status']) }}</span>
                             </li>
                         @endforeach
                     </ul>
+                @elseif ($event['tasks'])
+                    <x-empty title="Every task is done">Nothing is outstanding on this event.</x-empty>
                 @else
-                    <x-empty title="No tasks yet">A task list from the template for this event type is added when the event is confirmed.</x-empty>
+                    <x-empty title="No tasks yet">The standard task list for this event type is added when the event is confirmed.</x-empty>
                 @endif
             </section>
 
             <section class="card span-5">
                 <div class="card-header"><h2 class="card-title">Team</h2></div>
+                @if ($event['team'])
                 <ul class="list-rows">
                     @foreach ($event['team'] as $member)
                         <li>
@@ -137,7 +144,73 @@
                         </li>
                     @endforeach
                 </ul>
+                @else
+                    <x-empty title="No team yet">Add the producer, coordinators and leads on the event's details.</x-empty>
+                @endif
             </section>
+        </div>
+    @endif
+
+    {{-- ============================================================ tasks --}}
+    @if ($tab === 'tasks')
+        <div class="grid-12">
+            <section class="card span-8">
+                <div class="card-header">
+                    <h2 class="card-title">Tasks</h2>
+                    <span class="small text-muted ms-auto">{{ $tasks->where('status', 'done')->count() }} of {{ $tasks->count() }} done</span>
+                </div>
+                @if ($tasks->isNotEmpty())
+                    <ul class="list-rows">
+                        @foreach ($tasks as $task)
+                            @php($status = \App\Enums\TaskStatus::from($task['status']))
+                            <li wire:key="task-{{ $task['id'] }}">
+                                @if ($task['can_update'])
+                                    <button type="button" class="icon-btn" wire:click="cycleTask({{ $task['id'] }})" wire:loading.attr="disabled" aria-label="{{ $task['title'] }}: {{ $status->label() }}. Mark as {{ $status->next()->label() }}" title="Mark as {{ $status->next()->label() }}">
+                                        <i @class(['bi', 'bi-check-circle-fill text-positive' => $task['status'] === 'done', 'bi-circle-half text-warning-ink' => $task['status'] === 'in-progress', 'bi-circle text-muted' => $task['status'] === 'to-do']) aria-hidden="true"></i>
+                                    </button>
+                                @else
+                                    <i @class(['bi', 'bi-check-circle-fill text-positive' => $task['status'] === 'done', 'bi-circle-half text-warning-ink' => $task['status'] === 'in-progress', 'bi-circle text-muted' => $task['status'] === 'to-do']) aria-hidden="true"></i>
+                                @endif
+                                <div class="row-main">
+                                    <div @class(['row-title', 'text-muted text-decoration-line-through' => $task['status'] === 'done'])>{{ $task['title'] }}</div>
+                                    <div class="row-sub">{{ $task['assignee_id'] ? $workspace->personName($task['assignee_id']) : 'Unassigned' }}</div>
+                                </div>
+                                <x-status :value="$status" />
+                                <span @class(['small tnum text-nowrap', 'text-negative' => $task['status'] !== 'done' && $task['due_date'] && $task['due_date'] < $workspace->today()->toDateString(), 'text-muted' => $task['status'] === 'done' || ! $task['due_date'] || $task['due_date'] >= $workspace->today()->toDateString()])>{{ $task['due_date'] ? Display::date($task['due_date']) : 'No due date' }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <x-empty title="No tasks yet">
+                        The standard list for {{ mb_strtolower(EventType::from($event['event_type'])->label()) }} events is added automatically when the event is confirmed.
+                        @if ($canEdit)
+                            <div class="mt-2"><button type="button" class="btn btn-secondary btn-sm" wire:click="applyTemplate" wire:loading.attr="disabled">Add the standard list now</button></div>
+                        @endif
+                    </x-empty>
+                    @error('template')<div class="callout is-warning m-3"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><div>{{ $message }}</div></div>@enderror
+                @endif
+            </section>
+
+            @if ($canEdit)
+                <section class="card span-4">
+                    <div class="card-header"><h2 class="card-title">Add a task</h2></div>
+                    <form class="card-body row g-3" wire:submit="addTask">
+                        <x-form-field name="title" model="newTask.title" label="Task" col="col-12" />
+                        <div class="col-12">
+                            <label for="t-assignee" class="form-label">Assigned to</label>
+                            <select id="t-assignee" @class(['form-select', 'is-invalid' => $errors->has('newTask.assignee_id')]) wire:model="newTask.assignee_id">
+                                <option value="">Nobody yet</option>
+                                @foreach ($assignees as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                            @error('newTask.assignee_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+                        <x-form-field name="due_date" model="newTask.due_date" label="Due (optional)" type="date" col="col-12" />
+                        <div class="col-12"><button type="submit" class="btn btn-primary" wire:loading.attr="disabled">Add task</button></div>
+                    </form>
+                </section>
+            @endif
         </div>
     @endif
 
@@ -410,14 +483,21 @@
 
     {{-- ============================================================ files --}}
     @if ($tab === 'files')
-        <div class="card">
+        <div class="card mb-3">
             @if ($event['files'])
                 <ul class="list-rows">
                     @foreach ($event['files'] as $file)
-                        <li>
+                        <li wire:key="file-{{ $file['id'] }}">
                             <i class="bi bi-file-earmark{{ str_ends_with($file['name'], '.xlsx') ? '-spreadsheet' : '-pdf' }} text-muted" aria-hidden="true"></i>
-                            <div class="row-main">{{ $file['name'] }}</div>
-                            <span class="small text-muted">{{ ucfirst(str_replace('-', ' ', $file['type'])) }}</span>
+                            <div class="row-main">
+                                <div>{{ $file['name'] }}</div>
+                                <div class="row-sub">{{ $file['title'] }}</div>
+                            </div>
+                            @if (isset($downloads[$file['id']]))
+                                <a href="{{ $downloads[$file['id']] }}" class="btn btn-quiet btn-sm">Open file</a>
+                            @elseif (! $file['has_file'])
+                                <span class="small text-muted">Seeded record, no file</span>
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -425,6 +505,33 @@
                 <x-empty title="No files yet">Briefs, contracts, floor plans and the run of show live here. Files are stored privately and shared with signed links.</x-empty>
             @endif
         </div>
+
+        @if ($canEdit)
+            <section class="card mw-form">
+                <div class="card-header"><h2 class="card-title">Upload a file</h2><span class="small text-muted ms-auto">PDF, JPG, PNG or Word, up to 10 MB. Stored privately.</span></div>
+                <form class="card-body row g-3" wire:submit="uploadFile">
+                    <div class="col-sm-6">
+                        <label for="f-type" class="form-label">Type</label>
+                        <select id="f-type" @class(['form-select', 'is-invalid' => $errors->has('fileType')]) wire:model="fileType">
+                            @foreach ($fileTypes as $value => $label)
+                                <option value="{{ $value }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        @error('fileType')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="f-file" class="form-label">File</label>
+                        <input id="f-file" type="file" accept=".pdf,.jpg,.jpeg,.png,.docx,image/*" @class(['form-control', 'is-invalid' => $errors->has('upload')]) wire:model="upload">
+                        @error('upload')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <div wire:loading wire:target="upload" class="small text-muted mt-1">Uploading…</div>
+                    </div>
+                    @if ($fileType === 'contract' && ! $event['contract_signed'])
+                        <div class="col-12 small text-muted">Uploading the signed contract lets this event move to Confirmed.</div>
+                    @endif
+                    <div class="col-12"><button type="submit" class="btn btn-primary" wire:loading.attr="disabled">Upload file</button></div>
+                </form>
+            </section>
+        @endif
     @endif
 
     {{-- ============================================================ activity --}}
@@ -438,7 +545,7 @@
                             <li>
                                 <div class="row-main">
                                     <div>{{ $a['description'] }}</div>
-                                    <div class="row-sub">{{ $a['who'] }}, {{ Display::dateTime($a['at']) }} @if ($a['live'])<x-pill tone="info" class="ms-1">This session</x-pill>@endif</div>
+                                    <div class="row-sub">{{ $a['who'] }}, {{ Display::dateTime($a['at']) }} @if ($a['live'])<x-pill tone="info" class="ms-1">Since the demo reset</x-pill>@endif</div>
                                 </div>
                             </li>
                         @endforeach

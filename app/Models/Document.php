@@ -50,7 +50,13 @@ class Document extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->useLogName('people')->logOnly(['type', 'title', 'issued_at', 'expires_at', 'mandatory'])->logOnlyDirty();
+        $log = match ($this->documentable_type) {
+            Event::class => 'events',
+            Supplier::class => 'directory',
+            default => 'people',
+        };
+
+        return LogOptions::defaults()->useLogName($log)->logOnly(['type', 'title', 'issued_at', 'expires_at', 'mandatory'])->logOnlyDirty();
     }
 
     /**

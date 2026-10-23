@@ -46,6 +46,17 @@ final class Display
         return $utc->setTimezone(config('hive.display_timezone'))->format('j M Y, H:i');
     }
 
+    /**
+     * An event's dates, or a note that they are still to be agreed (an
+     * enquiry may not have dates yet).
+     *
+     * @param  array<string, mixed>  $event
+     */
+    public static function eventDates(array $event): string
+    {
+        return $event['start_date'] ? DateRange::of($event['start_date'], $event['end_date'])->format() : 'Dates to be agreed';
+    }
+
     public static function hours(float|int $hours): string
     {
         $text = rtrim(rtrim(number_format((float) $hours, 2), '0'), '.');

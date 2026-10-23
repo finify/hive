@@ -52,6 +52,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('assignment.reassign', [AssignmentPolicy::class, 'reassign']);
         Gate::define('supplier-invoice.approve', [SupplierInvoicePolicy::class, 'approve']);
         Gate::define('event.change-stage', [EventPolicy::class, 'changeStage']);
+        Gate::define('event.edit', [EventPolicy::class, 'edit']);
+        Gate::define('event.update-task', [EventPolicy::class, 'updateTask']);
         Gate::define('leave.approve-request', [LeaveRequestPolicy::class, 'approve']);
 
         $this->logSignIns();

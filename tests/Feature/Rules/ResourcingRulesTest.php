@@ -6,6 +6,7 @@ use App\Actions\Resourcing\ConfirmAssignment;
 use App\Actions\Resourcing\ResolveClash;
 use App\Actions\Resourcing\RespondToBookingRequest;
 use App\Enums\EventStage;
+use App\Models\Event;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\ValidationException;
 
@@ -84,7 +85,8 @@ it('blocks confirmation over approved leave (rule 2)', function () {
 });
 
 it('keeps holds on events that are not confirmed (rule 3)', function () {
-    $this->workspace()->ledger->put('events', 9, ['stage' => EventStage::ProposalSent->value]);
+    Event::query()->whereKey(9)->update(['stage' => EventStage::ProposalSent]);
+    $this->workspace()->forget();
     $kofiLisbon = $this->workspace()->assignments()->first(fn ($a) => $a['person_id'] === 26 && $a['event_id'] === 9);
 
     $status = app(RespondToBookingRequest::class)->handle(persona('kofi'), $kofiLisbon['id'], true);

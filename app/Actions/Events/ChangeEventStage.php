@@ -5,13 +5,19 @@ namespace App\Actions\Events;
 use App\Demo\Workspace;
 use App\Enums\AssignmentStatus;
 use App\Enums\EventStage;
+use App\Models\Event;
+use App\Models\EventStageChange;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class ChangeEventStage
 {
-    public function __construct(private readonly Workspace $workspace) {}
+    public function __construct(
+        private readonly Workspace $workspace,
+        private readonly ApplyTaskTemplate $templates,
+    ) {}
 
     /**
      * Why an event cannot move to a stage. Empty when the move is allowed.
@@ -86,20 +92,29 @@ class ChangeEventStage
         }
 
         $from = $event['stage'];
-        $history = $event['stage_history'];
-        $history[] = ['from' => $from, 'to' => $to->value, 'by' => $user->person_id, 'at' => now()->utc()->format('Y-m-d\TH:i:s\Z'), 'note' => $note];
+        $tasksAdded = 0;
 
-        $this->workspace->ledger->put('events', $eventId, array_merge(
-            $this->workspace->ledger->section('events')[$eventId] ?? [],
-            ['stage' => $to->value, 'stage_history' => $history],
-        ));
+        DB::transaction(function () use ($user, $eventId, $from, $to, $note, &$tasksAdded) {
+            $model = Event::query()->lockForUpdate()->findOrFail($eventId);
+            $model->update(['stage' => $to]);
+
+            EventStageChange::query()->create([
+                'event_id' => $eventId, 'from_stage' => $from, 'to_stage' => $to,
+                'changed_by' => $user->person_id, 'note' => $note, 'changed_at' => now(),
+            ]);
+
+            // A confirmed event gets the standard task list if it has none yet.
+            if ($to === EventStage::Confirmed && ! $model->tasks()->exists()) {
+                $tasksAdded = $this->templates->apply($model);
+            }
+        });
 
         $released = $to === EventStage::Cancelled ? $this->releaseBookings($eventId) : 0;
         $this->workspace->forget();
 
         activity('events')
             ->causedBy($user)
-            ->withProperties(['ref' => $event['code'], 'old' => ['stage' => $from], 'attributes' => ['stage' => $to->value, 'note' => $note, 'released_bookings' => $released]])
+            ->withProperties(['ref' => $event['code'], 'old' => ['stage' => $from], 'attributes' => ['stage' => $to->value, 'note' => $note, 'released_bookings' => $released, 'tasks_added' => $tasksAdded]])
             ->event('stage-changed')
             ->log("Moved {$event['name']} to {$to->label()}".($released ? " and released {$released} bookings" : ''));
     }

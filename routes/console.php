@@ -9,3 +9,8 @@ use Illuminate\Support\Facades\Schedule;
 */
 
 Schedule::job(new SendDocumentExpiryReminders)->dailyAt('07:00')->timezone('Europe/London')->name('document-expiry-reminders');
+
+// The demo's events are shared by every visitor; put them back each night.
+Schedule::command('hive:demo-refresh')->dailyAt('03:00')->timezone('Europe/London')
+    ->when(fn () => (bool) config('hive.demo.enabled') && ! app()->isProduction())
+    ->name('demo-refresh');

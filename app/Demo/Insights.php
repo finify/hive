@@ -66,7 +66,7 @@ class Insights
             $month = $start->addMonths($i);
             $labels[] = $month->format('M y');
             $fees = $this->viewer->events()
-                ->filter(fn ($e) => EventStage::from($e['stage'])->isConfirmedOrLater() && str_starts_with($e['start_date'], $month->format('Y-m')))
+                ->filter(fn ($e) => EventStage::from($e['stage'])->isConfirmedOrLater() && str_starts_with((string) $e['start_date'], $month->format('Y-m')))
                 ->sum(fn ($e) => (int) ($e['client_fee_minor'] ?? 0));
             $values[] = round($fees / 100, 2);
         }

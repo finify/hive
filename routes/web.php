@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/events', Livewire\Events\Index::class)->name('events.index')->middleware('can:events.view');
         Route::get('/events/pipeline', Livewire\Events\Pipeline::class)->name('events.pipeline')->middleware('can:events.view_all');
         Route::get('/events/calendar', Livewire\Events\Calendar::class)->name('events.calendar')->middleware('can:events.view');
+        Route::get('/events/new', Livewire\Events\Form::class)->name('events.create')->middleware('can:events.create');
+        Route::get('/events/{code}/edit', Livewire\Events\Form::class)->name('events.edit')->middleware('can:events.edit');
         Route::get('/events/{code}', Livewire\Events\Show::class)->name('events.show')->middleware('can:events.view');
 
         Route::get('/resourcing/rota', Livewire\Resourcing\Rota::class)->name('rota')->middleware('can:rota.view');
