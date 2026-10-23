@@ -3,16 +3,21 @@
 namespace App\Actions\People;
 
 use App\Demo\Workspace;
+use App\Enums\ApprovalStatus;
 use App\Enums\LeaveStatus;
 use App\Models\LeaveRequest;
 use App\Models\User;
+use App\Services\Approvals\ApprovalEngine;
 use App\Support\DateRange;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class DecideLeaveRequest
 {
-    public function __construct(private readonly Workspace $workspace) {}
+    public function __construct(
+        private readonly Workspace $workspace,
+        private readonly ApprovalEngine $approvals,
+    ) {}
 
     /**
      * Bookings the leave would overlap. The approver sees these first.
@@ -47,8 +52,17 @@ class DecideLeaveRequest
 
         Gate::forUser($user)->authorize('leave.approve-request', [$leave]);
 
+        $model = LeaveRequest::query()->findOrFail($leaveId);
+        $outcome = $this->approvals->decide((int) $user->person_id, $model, $approve);
+
+        if ($outcome === ApprovalStatus::Pending) {
+            $this->workspace->forget();
+
+            return;
+        }
+
         $status = $approve ? LeaveStatus::Approved : LeaveStatus::Declined;
-        LeaveRequest::query()->whereKey($leaveId)->update(['status' => $status, 'approved_by' => $user->person_id, 'approved_at' => now()]);
+        $model->update(['status' => $status, 'approved_by' => $user->person_id, 'approved_at' => now()]);
         $this->workspace->forget();
 
         activity('people')

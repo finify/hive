@@ -1,5 +1,10 @@
 <?php
 
+use App\Models\LeaveRequest;
+use App\Models\TimesheetEntry;
+use App\Services\Approvals\Rules\LeaveRequestRule;
+use App\Services\Approvals\Rules\TimesheetEntryRule;
+
 return [
 
     /*
@@ -107,6 +112,25 @@ return [
         'api_key' => env('ANTHROPIC_API_KEY'),
         'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-5-5'),
         'hourly_limit' => (int) env('ASK_HIVE_HOURLY_LIMIT', 30),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Approvals engine
+    |--------------------------------------------------------------------------
+    |
+    | Who approves each kind of thing (section 5.9). Purchase orders, supplier
+    | invoices and expenses join in phase 5. Approvers with items older than
+    | remind_after_days are reminded on Monday mornings.
+    |
+    */
+
+    'approvals' => [
+        'rules' => [
+            TimesheetEntry::class => TimesheetEntryRule::class,
+            LeaveRequest::class => LeaveRequestRule::class,
+        ],
+        'remind_after_days' => 3,
     ],
 
 ];

@@ -9,7 +9,12 @@
 <div>
     <x-page-head title="Approvals" :answer="$total ? $total.' '.($total === 1 ? 'item waits' : 'items wait').' for you, oldest first. Nothing here is approved until you approve it.' : 'Nothing is waiting for you.'" />
 
+    @if ($coveringFor->isNotEmpty())
+        <div class="callout mb-3"><i class="bi bi-people" aria-hidden="true"></i><div>You’re covering approvals for {{ $coveringFor->map(fn ($d) => $workspace->personName($d->person_id).' until '.Display::date($d->ends_on))->implode(' and ') }}. Their items are included below.</div></div>
+    @endif
+
     <nav class="tabs" aria-label="Approval types">
+        <button type="button" @class(['active' => $tab === 'all']) wire:click="$set('tab', 'all')">Everything <span class="count">{{ $total }}</span></button>
         @can('timesheets.approve')
             <button type="button" @class(['active' => $tab === 'timesheets']) wire:click="$set('tab', 'timesheets')">Timesheets <span class="count">{{ $entryCount }}</span></button>
         @endcan
@@ -20,6 +25,69 @@
             <button type="button" @class(['active' => $tab === 'leave']) wire:click="$set('tab', 'leave')">Leave <span class="count">{{ $leave->count() }}</span></button>
         @endcan
     </nav>
+
+    @if ($tab === 'all')
+        <div class="grid-12">
+            <section class="card span-8">
+                <div class="card-header"><h2 class="card-title">Waiting for you, oldest first</h2></div>
+                @if ($everything->isEmpty())
+                    <x-empty title="Nothing is waiting for you">Timesheets, leave and invoices you approve appear here as they’re submitted, oldest first. You never see your own.</x-empty>
+                @else
+                    <ul class="list-rows">
+                        @foreach ($everything as $row)
+                            <li>
+                                <div class="row-main">
+                                    <div class="row-title">{{ $row['title'] }}</div>
+                                    <div class="row-sub">{{ $row['type'] }}@if ($row['detail']), {{ $row['detail'] }}@endif, waiting since {{ Display::date($row['since']) }}@if ($row['for']), for {{ $row['for'] }}@endif</div>
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-sm" wire:click="$set('tab', '{{ $row['tab'] }}')">Review</button>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </section>
+
+            <section class="card span-4">
+                <div class="card-header"><h2 class="card-title">Cover while you’re away</h2></div>
+                @if ($myCover->isNotEmpty())
+                    <ul class="list-rows">
+                        @foreach ($myCover as $d)
+                            <li wire:key="cover-{{ $d->id }}">
+                                <div class="row-main"><div class="row-title">{{ $workspace->personName($d->delegate_id) }}</div><div class="row-sub tnum">{{ DateRange::of($d->starts_on->toDateString(), $d->ends_on->toDateString())->format() }}</div></div>
+                                <button type="button" class="btn btn-quiet btn-sm" wire:click="endCover({{ $d->id }})" wire:confirm="End this cover?">End</button>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+                <form class="card-body d-grid gap-3" wire:submit="delegate" novalidate>
+                    <div>
+                        <label for="cv-who" class="form-label">Who approves for you</label>
+                        <select id="cv-who" @class(['form-select', 'is-invalid' => $errors->has('cover.delegate_id')]) wire:model="cover.delegate_id">
+                            <option value="">Choose…</option>
+                            @foreach ($candidates as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                        @error('cover.delegate_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label for="cv-from" class="form-label">From</label>
+                            <input id="cv-from" type="date" @class(['form-control', 'is-invalid' => $errors->has('cover.starts_on')]) wire:model="cover.starts_on">
+                            @error('cover.starts_on')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+                        <div class="col-6">
+                            <label for="cv-to" class="form-label">To</label>
+                            <input id="cv-to" type="date" @class(['form-control', 'is-invalid' => $errors->has('cover.ends_on')]) wire:model="cover.ends_on">
+                            @error('cover.ends_on')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary" wire:loading.attr="disabled">Set cover</button>
+                    <p class="small text-muted mb-0">They see your items alongside theirs and decide in their own name. Nobody approves their own time or spend.</p>
+                </form>
+            </section>
+        </div>
+    @endif
 
     @if ($tab === 'timesheets')
         @forelse ($groups as $key => $group)
@@ -59,7 +127,7 @@
                             @foreach ($group['items'] as $item)
                                 @php($entry = $item['entry'])
                                 <tr wire:key="entry-{{ $entry['id'] }}">
-                                    <td>{{ $workspace->personName($item['sheet']['person_id']) }}</td>
+                                    <td>{{ $workspace->personName($item['sheet']['person_id']) }}@if ($item['delegated_from'])<span class="d-block small text-muted">Covering for {{ $workspace->personName($item['delegated_from']) }}</span>@endif</td>
                                     <td class="tnum text-nowrap">{{ Display::date($entry['date'], true) }}</td>
                                     <td>{{ ucfirst($entry['phase'] ?? '—') }}</td>
                                     <td class="tnum">{{ $entry['start_time'] }}–{{ $entry['end_time'] }}<span class="d-block small text-muted">{{ $entry['break_minutes'] }} min break</span></td>

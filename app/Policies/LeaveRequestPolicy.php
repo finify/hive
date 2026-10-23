@@ -2,32 +2,29 @@
 
 namespace App\Policies;
 
-use App\Demo\Workspace;
 use App\Enums\LeaveStatus;
+use App\Models\LeaveRequest;
 use App\Models\User;
+use App\Services\Approvals\ApprovalEngine;
 
 class LeaveRequestPolicy
 {
-    public function __construct(private readonly Workspace $workspace) {}
+    public function __construct(private readonly ApprovalEngine $approvals) {}
 
     /**
-     * HR approves anyone's leave; a line manager approves their reports'.
+     * The line manager or HR (see LeaveRequestRule), or their delegate.
      * Nobody approves their own.
      *
      * @param  array<string, mixed>  $leave
      */
     public function approve(User $user, array $leave): bool
     {
-        if (! $user->can('leave.approve') || $leave['status'] !== LeaveStatus::Pending->value) {
+        if ($leave['status'] !== LeaveStatus::Pending->value || $leave['person_id'] === $user->person_id) {
             return false;
         }
 
-        if ($leave['person_id'] === $user->person_id) {
-            return false;
-        }
+        $model = LeaveRequest::query()->find($leave['id']);
 
-        $manager = $this->workspace->person($leave['person_id'])['line_manager_id'] ?? null;
-
-        return $user->can('leave.manage') || ($manager !== null && $manager === $user->person_id);
+        return $model !== null && $this->approvals->decidableBy($user->person_id, $model) !== null;
     }
 }

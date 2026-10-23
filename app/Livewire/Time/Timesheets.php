@@ -35,6 +35,8 @@ class Timesheets extends Component
 
     public string $notes = '';
 
+    public ?int $editingEntryId = null;
+
     public function mount(): void
     {
         $today = $this->workspace()->today();
@@ -51,22 +53,63 @@ class Timesheets extends Component
     public function addEntry(AddTimesheetEntry $add): void
     {
         $this->resetValidation();
+        $input = [
+            'date' => $this->date, 'work' => $this->work, 'start_time' => $this->start_time,
+            'end_time' => $this->end_time, 'break_minutes' => $this->break_minutes, 'notes' => $this->notes ?: null,
+        ];
+
         try {
-            $add->handle(auth()->user(), [
-                'date' => $this->date, 'work' => $this->work, 'start_time' => $this->start_time,
-                'end_time' => $this->end_time, 'break_minutes' => $this->break_minutes, 'notes' => $this->notes ?: null,
-            ]);
+            $this->editingEntryId ? $add->update(auth()->user(), $this->editingEntryId, $input) : $add->handle(auth()->user(), $input);
         } catch (ValidationException $e) {
             $this->setErrorBag($e->validator->errors());
 
             return;
         }
 
-        $this->resetValidation();
         $this->notes = '';
         $this->week = CarbonImmutable::parse($this->date)->startOfWeek()->toDateString();
+
+        if ($this->editingEntryId) {
+            $this->editingEntryId = null;
+            $this->toast('Entry changed.');
+
+            return;
+        }
+
         $this->date = CarbonImmutable::parse($this->date)->addDay()->toDateString();
         $this->toast('Entry added.');
+    }
+
+    public function editEntry(int $entryId): void
+    {
+        $this->resetValidation();
+        $found = $this->workspace()->findEntry($entryId);
+        abort_unless($found && $found[0]['person_id'] === auth()->user()->person_id, 404);
+        $entry = $found[1];
+
+        $this->editingEntryId = $entryId;
+        $this->date = $entry['date'];
+        $this->work = $entry['event_id'] ? 'event:'.$entry['event_id'] : (string) $entry['internal_code'];
+        $this->start_time = $entry['start_time'];
+        $this->end_time = $entry['end_time'];
+        $this->break_minutes = (int) $entry['break_minutes'];
+        $this->notes = (string) $entry['notes'];
+    }
+
+    public function cancelEdit(): void
+    {
+        $this->editingEntryId = null;
+        $this->notes = '';
+        $this->resetValidation();
+    }
+
+    public function deleteEntry(int $entryId, AddTimesheetEntry $add): void
+    {
+        $this->attempt(fn () => $add->delete(auth()->user(), $entryId), 'Entry removed.');
+
+        if ($this->editingEntryId === $entryId) {
+            $this->cancelEdit();
+        }
     }
 
     public function submit(int $sheetId, SubmitTimesheet $submit): void
@@ -100,7 +143,7 @@ class Timesheets extends Component
             'bookedEvents' => $bookedEvents,
             'codes' => AddTimesheetEntry::INTERNAL_CODES,
             'editable' => ! $sheet || in_array($sheet['status'], ['draft', 'returned'], true),
-            'locked' => $workspace->isLocked($weekStart->addDays(6)->toDateString()),
+            'locked' => $workspace->isLocked($weekStart->toDateString()) && $workspace->isLocked($weekStart->addDays(6)->toDateString()),
         ]);
     }
 }

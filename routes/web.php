@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/resourcing/clashes', Livewire\Resourcing\Clashes::class)->name('clashes')->middleware('can:rota.view_all');
 
         Route::get('/time/timesheets', Livewire\Time\Timesheets::class)->name('timesheets')->middleware('can:timesheets.submit');
+        Route::get('/time/payroll-locks', Livewire\Time\PeriodLocks::class)->name('period-locks')->middleware('can:timesheets.lock');
         Route::get('/time/approvals', Livewire\Time\Approvals::class)->name('approvals')
             ->middleware('can_any:timesheets.approve,supplier_invoices.approve,leave.approve');
 

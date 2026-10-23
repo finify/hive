@@ -2,22 +2,27 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Approval;
+use App\Models\ApprovalDelegation;
 use App\Models\Document;
 use App\Models\Event;
 use App\Models\LeaveRequest;
+use App\Models\PeriodLock;
 use App\Models\Task;
 use App\Models\TaskTemplate;
+use App\Models\Timesheet;
 use App\Models\Unavailability;
 use App\Notifications\CallSheetIssued;
 use App\Notifications\HiveNotice;
 use Database\Seeders\DemoEventsSeeder;
 use Database\Seeders\DemoResourcingSeeder;
+use Database\Seeders\DemoTimeSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Events (phase 2) and resourcing (phase 3) live in the database, so changes
+ * Events (phase 2), resourcing (phase 3) and time (phase 4) live in the database, so changes
  * made on the demo are shared by every visitor until this puts the seeded
  * data back. Scheduled hourly while demo mode is on; never runs in
  * production.
@@ -26,7 +31,7 @@ class RefreshDemo extends Command
 {
     protected $signature = 'hive:demo-refresh';
 
-    protected $description = 'Put the demo events, resourcing and notices back to the seeded state';
+    protected $description = 'Put the demo events, resourcing, time and notices back to the seeded state';
 
     public function handle(): int
     {
@@ -45,6 +50,11 @@ class RefreshDemo extends Command
             TaskTemplate::query()->delete();
             // Crew calls and assignments go with their events.
             Event::withTrashed()->forceDelete();
+            Approval::query()->delete();
+            ApprovalDelegation::query()->delete();
+            PeriodLock::query()->delete();
+            // Cost entries went with their events; timesheets belong to people.
+            Timesheet::query()->delete();
             LeaveRequest::query()->delete();
             Unavailability::query()->delete();
             DB::table('notifications')->whereIn('type', [HiveNotice::class, CallSheetIssued::class])->delete();
@@ -53,6 +63,7 @@ class RefreshDemo extends Command
         $disk->delete($files->all());
         $this->callSilently('db:seed', ['--class' => DemoEventsSeeder::class, '--force' => true]);
         $this->callSilently('db:seed', ['--class' => DemoResourcingSeeder::class, '--force' => true]);
+        $this->callSilently('db:seed', ['--class' => DemoTimeSeeder::class, '--force' => true]);
         $this->info('Demo data refreshed.');
 
         return self::SUCCESS;

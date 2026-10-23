@@ -89,6 +89,7 @@ final class Navigation
             'Time' => [
                 ['label' => 'My timesheets', 'icon' => 'clock', 'route' => 'timesheets', 'can' => ['timesheets.submit']],
                 ['label' => 'Approvals', 'icon' => 'check2-square', 'route' => 'approvals', 'can' => ['timesheets.approve', 'supplier_invoices.approve', 'leave.approve']],
+                ['label' => 'Payroll locks', 'icon' => 'lock', 'route' => 'period-locks', 'can' => ['timesheets.lock']],
             ],
             'Finance' => [
                 ['label' => 'Budgets', 'icon' => 'pie-chart', 'route' => 'budgets', 'can' => ['budgets.view']],

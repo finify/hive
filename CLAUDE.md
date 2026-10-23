@@ -40,12 +40,13 @@ Run Pint, Larastan and the tests before calling a phase done.
 | `app/Demo` | The demo data layer: `DemoData` (reads `database/demo/*.json`), `DemoLedger` (session overlay of changes made in the walkthrough), `Workspace` (data + changes, derived views), `Viewer` (what the signed-in user may see), `Insights` (dashboard aggregates), `Rows` (JSON row validation). |
 | `app/Support` | Value objects and pure calculators: `Money`, `DateRange`, `Display`, `Navigation`, `Resourcing\ClashDetector`, `Resourcing\ShiftPattern`, `Finance\RateBook`, `Finance\HealthCalculator`, `Finance\InvoiceTolerance`, `Time\WorkingTimeRules`. |
 | `app/Policies` | Gates for demo records (timesheet entries, assignments, invoices, events, leave) and `UserPolicy`. |
+| `app/Services/Approvals` | The shared approvals engine and a rule per approvable type (`config/hive.php` → `approvals.rules`). Open approvals when something is submitted (`request`), decide through `decide`, read `inbox`. |
 | `app/Services/AskHive` | `Tools` (read-only, viewer-scoped), `AskHiveEngine` interface, `LocalEngine` (deterministic, for the demo and tests). |
 | `config/hive.php` | Thresholds, demo mode, two-factor roles, AI settings. |
 | `config/hive-permissions.php` | Section 6 as data: every permission and every role's grants. |
-| `database/demo/*.json` | The fictional agency. Edit freely; ids must stay consistent across files. People, skills, departments, documents, clients, suppliers and venues are loaded by `DemoDirectorySeeder`, events (phases, team, stage history, tasks, files, task templates) by `DemoEventsSeeder`, crew calls, assignments, unavailability and leave requests by `DemoResourcingSeeder`; the rest is still read directly. |
-| `app/Models` | Phase 1: `Person` (+ `PersonRestricted`, encrypted), `DayRate`, `Skill`, `Department`, `Document`, `Client`, `Supplier`, `Venue`, `Contact`. Phase 2: `Event`, `EventPhase`, `EventTeamMember`, `EventStageChange`, `Task`, `TaskTemplate`, `TaskTemplateItem`. Phase 3: `CrewCall`, `Assignment`, `Unavailability`, `LeaveRequest`. Each top-level model has `toWorkspaceArray()` for the Workspace. |
-| `app/Jobs`, `app/Console/Commands` | Scheduled work (`routes/console.php`): `SendDocumentExpiryReminders` daily at 07:00 UK time, `SendWeeklyRotaDigest` Monday 08:00, `hive:demo-refresh` hourly while demo mode is on (events and bookings are shared in the database). `DetectClashes` is queued after a booking over a clash. |
+| `database/demo/*.json` | The fictional agency. Edit freely; ids must stay consistent across files. People, skills, departments, documents, clients, suppliers and venues are loaded by `DemoDirectorySeeder`, events (phases, team, stage history, tasks, files, task templates) by `DemoEventsSeeder`, crew calls, assignments, unavailability and leave requests by `DemoResourcingSeeder`, timesheets, cost entries, payroll locks and open approvals by `DemoTimeSeeder` (after the users); the rest is still read directly. |
+| `app/Models` | Phase 1: `Person` (+ `PersonRestricted`, encrypted), `DayRate`, `Skill`, `Department`, `Document`, `Client`, `Supplier`, `Venue`, `Contact`. Phase 2: `Event`, `EventPhase`, `EventTeamMember`, `EventStageChange`, `Task`, `TaskTemplate`, `TaskTemplateItem`. Phase 3: `CrewCall`, `Assignment`, `Unavailability`, `LeaveRequest`. Phase 4: `Timesheet`, `TimesheetEntry`, `PeriodLock`, `CostEntry`, `Approval`, `ApprovalDelegation`. Each top-level model has `toWorkspaceArray()` for the Workspace. |
+| `app/Jobs`, `app/Console/Commands` | Scheduled work (`routes/console.php`): `SendDocumentExpiryReminders` daily at 07:00 UK time, `SendWeeklyRotaDigest` Monday 08:00, `RemindApproversOfPendingItems` Monday 09:00, `RemindMissingTimesheets` Friday 14:00, `hive:demo-refresh` hourly while demo mode is on (events and bookings are shared in the database). `DetectClashes` is queued after a booking over a clash. |
 | `resources/scss/app.scss` | The whole theme: tokens, light and dark. See `DESIGN.md`. |
 | `PRODUCT.md`, `DESIGN.md` | Product context and design system, read by the design skills. |
 
@@ -60,6 +61,7 @@ Run Pint, Larastan and the tests before calling a phase done.
 - **Blade gotcha**: never put an inline `@php(...)` above a `@php ... @endphp` block in the same view (Blade swallows the content between them). Avoid `@elseif` straight after a nested `@endif` (Livewire's morph markers break it).
 - After an Action changes the ledger or a model the Workspace reads, call `$workspace->forget()` so memoised reads refresh.
 - Event stages change only through `ChangeEventStage`; `SaveEvent` never sets the stage.
+- Approvals go through `ApprovalEngine`: `request()` on submit, `decide()` on approve or return, `withdraw()` on cancel. Never set an approvable's status without it.
 - Notify people with `$workspace->notify($personId, ...)`: it stores a `HiveNotice` on the `Person` and emails them.
 - Livewire gotcha: don't name a public property after a `$wire` method (`call`, `set`, `get`, `refresh`...); `wire:model="call.x"` silently never syncs.
 - SQLite stores `date` casts with a time, so query them with `whereDate`.
@@ -82,4 +84,4 @@ From the "five free plugins that make Claude good at design" list:
 
 ## Build phases
 
-See the README for status. Phases 0 to 3 are complete; screens for later phases run on the demo data layer, and each phase replaces its part of `app/Demo` with Eloquent models without changing the Actions' contracts.
+See the README for status. Phases 0 to 4 are complete; screens for later phases run on the demo data layer, and each phase replaces its part of `app/Demo` with Eloquent models without changing the Actions' contracts.

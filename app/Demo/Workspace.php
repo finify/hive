@@ -13,17 +13,19 @@ use App\Enums\HealthStatus;
 use App\Enums\LeaveStatus;
 use App\Enums\PurchaseOrderStatus;
 use App\Enums\SupplierInvoiceStatus;
-use App\Enums\TimesheetStatus;
 use App\Models\Assignment;
 use App\Models\Client;
+use App\Models\CostEntry;
 use App\Models\CrewCall;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\Event;
 use App\Models\LeaveRequest;
+use App\Models\PeriodLock;
 use App\Models\Person;
 use App\Models\Skill;
 use App\Models\Supplier;
+use App\Models\Timesheet;
 use App\Models\Unavailability;
 use App\Models\User;
 use App\Models\Venue;
@@ -550,84 +552,37 @@ class Workspace
     // ================================================================== time
 
     /**
-     * Timesheets with entry decisions from the demo applied and their status
-     * derived from their entries.
-     *
      * @return Collection<int, array<string, mixed>>
      */
     public function timesheets(): Collection
     {
-        return $this->memo('timesheets', function () {
-            $changes = $this->ledger->section('entries');
-            $sheetChanges = $this->ledger->section('timesheets');
-            $sheets = $this->data->collect('timesheets');
-
-            foreach ($this->ledger->section('new_timesheets') as $created) {
-                $sheets->put($created['id'], $created);
-            }
-
-            foreach ($this->ledger->section('new_entries') as $added) {
-                $sheet = $sheets->get($added['timesheet_id']);
-
-                if ($sheet) {
-                    $sheet['entries'][] = $added['entry'];
-                    $sheets->put($sheet['id'], $sheet);
-                }
-            }
-
-            return $sheets->map(function (array $sheet) use ($changes, $sheetChanges) {
-                foreach ($sheet['entries'] as $i => $entry) {
-                    if (isset($changes[$entry['id']])) {
-                        $sheet['entries'][$i] = array_merge($entry, $changes[$entry['id']]);
-                    }
-                }
-
-                if (isset($sheetChanges[$sheet['id']])) {
-                    $sheet = array_merge($sheet, $sheetChanges[$sheet['id']]);
-                }
-
-                $sheet['status'] = $this->deriveTimesheetStatus($sheet);
-
-                return Rows::record($sheet);
-            });
-        });
+        return $this->memo('timesheets', fn () => Rows::keyed(
+            Timesheet::query()->with('entries')->orderBy('id')->get()->map(fn (Timesheet $t) => $t->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
-     * @param  array<string, mixed>  $sheet
+     * Active payroll locks, latest first.
+     *
+     * @return Collection<int, array{id: int, start: string, end: string}>
      */
-    private function deriveTimesheetStatus(array $sheet): string
+    public function periodLocks(): Collection
     {
-        if (in_array($sheet['status'], [TimesheetStatus::Draft->value, TimesheetStatus::Locked->value], true)) {
-            return $sheet['status'];
-        }
-
-        $statuses = Rows::of($sheet['entries'])->pluck('status');
-
-        if ($statuses->contains(EntryStatus::Returned->value)) {
-            return TimesheetStatus::Returned->value;
-        }
-
-        if ($statuses->every(fn ($s) => $s === EntryStatus::Approved->value)) {
-            return TimesheetStatus::Approved->value;
-        }
-
-        return TimesheetStatus::Submitted->value;
+        return $this->memo('period_locks', fn () => PeriodLock::query()->active()->orderByDesc('period_end')->get()->toBase()
+            ->map(fn (PeriodLock $l) => ['id' => $l->id, 'start' => $l->period_start->toDateString(), 'end' => $l->period_end->toDateString()]));
     }
 
     /**
-     * Timesheets on or before this date are locked after payroll.
+     * The end of the latest locked period, for messages.
      */
     public function lockedUntil(): ?string
     {
-        return $this->organisation()['timesheets_locked_until'] ?? null;
+        return $this->periodLocks()->max('end');
     }
 
     public function isLocked(string $date): bool
     {
-        $until = $this->lockedUntil();
-
-        return $until !== null && $date <= $until;
+        return $this->periodLocks()->contains(fn ($l) => $l['start'] <= $date && $date <= $l['end']);
     }
 
     /**
@@ -706,7 +661,8 @@ class Workspace
     }
 
     /**
-     * Cost entries with demo changes applied (new actuals, released commitments).
+     * Cost entries, with supplier invoice approvals made in this demo session
+     * applied on top (invoices move to the database in phase 5).
      *
      * @return Collection<int, array<string, mixed>>
      */
@@ -715,9 +671,9 @@ class Workspace
         $all = $this->memo('cost_entries', function () {
             $removed = $this->ledger->section('removed_cost_entries');
 
-            return $this->data->collect('cost_entries')
+            return Rows::keyed(CostEntry::query()->orderBy('id')->get()->map(fn (CostEntry $c) => $c->toWorkspaceArray())->all())
                 ->reject(fn ($c) => isset($removed[$c['id']]))
-                ->merge(collect($this->ledger->section('cost_entries'))->keyBy('id'));
+                ->union(collect($this->ledger->section('cost_entries'))->keyBy('id'));
         });
 
         return $eventId === null ? $all : $all->where('event_id', $eventId);
@@ -746,15 +702,14 @@ class Workspace
         }
 
         $entries = $this->costEntries($eventId);
-        $demoActuals = collect($this->ledger->section('cost_entries'))->where('event_id', $eventId);
 
-        return Rows::of($budget['lines'])->map(function (array $line) use ($entries, $demoActuals): array {
+        return Rows::of($budget['lines'])->map(function (array $line) use ($entries): array {
             $forLine = $entries->where('budget_line_id', $line['id']);
             $committed = Money::of((int) $forLine->where('kind', 'committed')->sum('amount_gbp_minor'));
             $actual = Money::of((int) $forLine->where('kind', 'actual')->sum('amount_gbp_minor'));
 
-            // Crew time approved during the demo was part of the remaining estimate.
-            $drawn = (int) $demoActuals->where('budget_line_id', $line['id'])->where('source.type', 'timesheet-entry')->sum('amount_gbp_minor');
+            // Crew time approved in Hive was part of the remaining estimate.
+            $drawn = (int) $forLine->where('draws_down_remaining', true)->sum('amount_gbp_minor');
             $remaining = Money::of(max(0, $line['remaining_gbp_minor'] - $drawn));
 
             $line['budget'] = Money::of($line['budget_gbp_minor']);

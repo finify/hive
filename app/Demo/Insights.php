@@ -8,9 +8,13 @@ use App\Enums\DocumentStatus;
 use App\Enums\EventStage;
 use App\Enums\HealthStatus;
 use App\Enums\SupplierInvoiceStatus;
+use App\Models\LeaveRequest;
+use App\Models\TimesheetEntry;
+use App\Services\Approvals\ApprovalEngine;
 use App\Support\DateRange;
 use App\Support\Display;
 use App\Support\Money;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
@@ -19,10 +23,15 @@ use Illuminate\Support\Collection;
  */
 class Insights
 {
+    private readonly ApprovalEngine $approvals;
+
     public function __construct(
         private readonly Workspace $workspace,
         private readonly Viewer $viewer,
-    ) {}
+        ?ApprovalEngine $approvals = null,
+    ) {
+        $this->approvals = $approvals ?? app(ApprovalEngine::class);
+    }
 
     /**
      * Fee value of open enquiries and proposals, by stage.
@@ -172,32 +181,47 @@ class Insights
     /**
      * Timesheet entries waiting for this viewer's decision, grouped by event or code.
      *
-     * @return Collection<string, array{label: string, event: ?array<string, mixed>, items: list<array{sheet: array<string, mixed>, entry: array<string, mixed>, flags: list<array{code: string, message: string}>, cost: ?Money}>}>
+     * @return Collection<string, array{label: string, event: ?array<string, mixed>, items: list<array{sheet: array<string, mixed>, entry: array<string, mixed>, flags: list<array{code: string, message: string}>, cost: ?Money, waiting_since: Carbon, delegated_from: ?int}>}>
      */
     public function pendingEntries(): Collection
     {
         $groups = collect();
+        $personId = $this->viewer->personId();
 
-        foreach ($this->workspace->timesheets() as $sheet) {
-            $flags = null;
+        if ($personId === null) {
+            return $groups;
+        }
 
-            foreach ($sheet['entries'] as $entry) {
-                if (! $this->viewer->user->can('timesheet-entry.approve', [$sheet, $entry])) {
-                    continue;
-                }
+        $flagsBySheet = [];
 
-                $flags ??= $this->workspace->entryFlags($sheet);
-                $event = $this->workspace->event($entry['event_id']);
-                $key = $event ? $event['code'] : 'internal-'.$entry['internal_code'];
+        foreach ($this->approvals->inbox($personId)->where('approvable_type', TimesheetEntry::class) as $approval) {
+            $found = $this->workspace->findEntry($approval->approvable_id);
 
-                $group = $groups->get($key, [
-                    'label' => $event ? $event['name'] : "{$entry['internal_code']} (internal)",
-                    'event' => $event,
-                    'items' => [],
-                ]);
-                $group['items'][] = ['sheet' => $sheet, 'entry' => $entry, 'flags' => $flags[$entry['id']] ?? [], 'cost' => $this->viewer->canSeeRatesOf($sheet['person_id']) ? $this->workspace->entryCost($sheet['person_id'], $entry) : null];
-                $groups->put($key, $group);
+            if ($found === null) {
+                continue;
             }
+
+            [$sheet, $entry] = $found;
+
+            if ($entry['status'] !== 'pending' || in_array($sheet['status'], ['draft', 'locked'], true)) {
+                continue;
+            }
+
+            $flags = $flagsBySheet[$sheet['id']] ??= $this->workspace->entryFlags($sheet);
+            $event = $this->workspace->event($entry['event_id']);
+            $key = $event ? $event['code'] : 'internal-'.$entry['internal_code'];
+
+            $group = $groups->get($key, [
+                'label' => $event ? $event['name'] : "{$entry['internal_code']} (internal)",
+                'event' => $event,
+                'items' => [],
+            ]);
+            $group['items'][] = [
+                'sheet' => $sheet, 'entry' => $entry, 'flags' => $flags[$entry['id']] ?? [],
+                'cost' => $this->viewer->canSeeRatesOf($sheet['person_id']) ? $this->workspace->entryCost($sheet['person_id'], $entry) : null,
+                'waiting_since' => $approval->created_at, 'delegated_from' => $approval->approver_id !== $personId ? $approval->approver_id : null,
+            ];
+            $groups->put($key, $group);
         }
 
         return $groups;
@@ -224,10 +248,19 @@ class Insights
      */
     public function leaveAwaitingApproval(): Collection
     {
-        return $this->workspace->leaveRequests()
-            ->filter(fn ($l) => $this->viewer->user->can('leave.approve-request', [$l]))
+        $personId = $this->viewer->personId();
+
+        if ($personId === null) {
+            return collect();
+        }
+
+        $ids = $this->approvals->inbox($personId)->where('approvable_type', LeaveRequest::class)->pluck('approvable_id')->all();
+
+        return Rows::of($this->workspace->leaveRequests()
+            ->filter(fn ($l) => in_array($l['id'], $ids, true) && $this->viewer->user->can('leave.approve-request', [$l]))
             ->sortBy('start_date')
-            ->values();
+            ->values()
+            ->all());
     }
 
     /**

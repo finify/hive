@@ -7,6 +7,7 @@ use Livewire\Livewire;
 it('shows Hannah her entries with the long-shift flag', function () {
     Livewire::actingAs(persona('hannah'))
         ->test(Approvals::class)
+        ->set('tab', 'timesheets')
         ->assertSee('Halcyon Health Clinical Showcase')
         ->assertSee('Approve 9 entries')
         ->assertSee('14-hour shift, over the 12-hour limit')
@@ -20,6 +21,7 @@ it('approves a group and posts crew cost', function () {
 
     Livewire::actingAs(persona('hannah'))
         ->test(Approvals::class)
+        ->set('tab', 'timesheets')
         ->call('approveMany', $ids)
         ->assertDispatched('toast', message: '9 entries approved. Crew costs posted to the event budget.')
         ->assertSee('No timesheets to approve');

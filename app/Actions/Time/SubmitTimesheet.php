@@ -2,57 +2,73 @@
 
 namespace App\Actions\Time;
 
-use App\Demo\Rows;
 use App\Demo\Workspace;
 use App\Enums\EntryStatus;
 use App\Enums\TimesheetStatus;
+use App\Models\Approval;
+use App\Models\Timesheet;
 use App\Models\User;
+use App\Services\Approvals\ApprovalEngine;
 use App\Support\Display;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Submits a week. Each entry goes to the producer of its event, or to the
- * line manager for internal codes.
+ * Submits a week. Each entry not yet approved goes to its approver through
+ * the approvals engine: the event's producer, or the line manager for
+ * internal codes.
  */
 class SubmitTimesheet
 {
-    public function __construct(private readonly Workspace $workspace) {}
+    public function __construct(
+        private readonly Workspace $workspace,
+        private readonly ApprovalEngine $approvals,
+    ) {}
 
     public function handle(User $user, int $sheetId): void
     {
-        $sheet = $this->workspace->timesheets()->get($sheetId);
+        $sheet = Timesheet::query()->with('entries.timesheet')->find($sheetId);
 
-        abort_unless($sheet && $sheet['person_id'] === $user->person_id && $user->can('timesheets.submit'), 403);
+        abort_unless($sheet && $sheet->person_id === $user->person_id && $user->can('timesheets.submit'), 403);
 
-        if (! in_array($sheet['status'], [TimesheetStatus::Draft->value, TimesheetStatus::Returned->value], true)) {
+        if (! in_array($sheet->status, [TimesheetStatus::Draft, TimesheetStatus::Returned], true)) {
             throw ValidationException::withMessages(['sheet' => 'This week has already been submitted.']);
         }
 
-        if ($sheet['entries'] === []) {
+        if ($sheet->entries->isEmpty()) {
             throw ValidationException::withMessages(['sheet' => 'Add at least one entry before submitting.']);
         }
 
-        foreach ($sheet['entries'] as $entry) {
-            if ($entry['status'] !== EntryStatus::Approved->value) {
-                $this->workspace->ledger->put('entries', $entry['id'], ['status' => EntryStatus::Pending->value, 'return_comment' => null]);
-            }
-        }
+        $old = $sheet->status;
 
-        $this->workspace->ledger->put('timesheets', $sheetId, ['status' => TimesheetStatus::Submitted->value, 'submitted_at' => now()->utc()->format('Y-m-d\TH:i:s\Z')]);
+        $approvers = DB::transaction(function () use ($sheet) {
+            $approvers = collect();
+
+            foreach ($sheet->entries as $entry) {
+                if ($entry->status === EntryStatus::Approved) {
+                    continue;
+                }
+
+                $entry->update(['status' => EntryStatus::Pending, 'return_comment' => null]);
+                $approvers = $approvers->merge($this->approvals->request($entry)->map(fn (Approval $a) => $a->approver_id));
+            }
+
+            $sheet->update(['status' => TimesheetStatus::Submitted, 'submitted_at' => now()]);
+
+            return $approvers->unique();
+        });
+
         $this->workspace->forget();
 
         activity('time')
             ->causedBy($user)
-            ->withProperties(['ref' => 'TS-'.$sheetId, 'old' => ['status' => $sheet['status']], 'attributes' => ['status' => TimesheetStatus::Submitted->value]])
+            ->performedOn($sheet)
+            ->withProperties(['ref' => 'TS-'.$sheetId, 'old' => ['status' => $old->value], 'attributes' => ['status' => TimesheetStatus::Submitted->value]])
             ->event('submitted')
-            ->log('Submitted timesheet for the week of '.Display::date($sheet['week_start']));
-
-        $approvers = Rows::of($sheet['entries'])
-            ->map(fn ($e) => $e['event_id'] ? ($this->workspace->event($e['event_id'])['producer_id'] ?? null) : ($this->workspace->person($sheet['person_id'])['line_manager_id'] ?? null))
-            ->filter()->unique();
+            ->log('Submitted timesheet for the week of '.Display::date($sheet->week_start));
 
         foreach ($approvers as $approver) {
-            $this->workspace->notify($approver, 'approval', 'Timesheet to approve', $this->workspace->personName($sheet['person_id']).', week of '.Display::date($sheet['week_start']).'.', 'approvals');
+            $this->workspace->notify($approver, 'approval', 'Timesheet to approve', $this->workspace->personName($sheet->person_id).', week of '.Display::date($sheet->week_start).'.', 'approvals');
         }
     }
 }

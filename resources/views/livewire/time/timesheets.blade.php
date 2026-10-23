@@ -37,7 +37,7 @@
                 <ul class="list-rows">
                     @foreach (collect($sheet['entries'])->sortBy('date') as $entry)
                         @php($event = $workspace->event($entry['event_id']))
-                        <li class="flex-wrap">
+                        <li class="flex-wrap" wire:key="te-{{ $entry['id'] }}" @if ($editingEntryId === $entry['id']) aria-current="true" style="background: var(--hive-raised)" @endif>
                             <div style="min-width: 7.5rem" class="tnum">{{ Display::date($entry['date'], true) }}</div>
                             <div class="row-main">
                                 <div class="row-title">{{ $event ? $event['code'].' '.$event['name'] : $entry['internal_code'] }}</div>
@@ -52,6 +52,12 @@
                             @if ($sheet['status'] !== 'draft')
                                 <x-status :value="EntryStatus::from($entry['status'])" />
                             @endif
+                            @if ($editable && ! $locked && $entry['status'] !== 'approved')
+                                <span class="text-nowrap">
+                                    <button type="button" class="btn btn-quiet btn-sm" wire:click="editEntry({{ $entry['id'] }})" aria-label="Change {{ Display::date($entry['date']) }}">Change</button>
+                                    <button type="button" class="btn btn-quiet btn-sm" wire:click="deleteEntry({{ $entry['id'] }})" wire:confirm="Remove this entry?" aria-label="Remove {{ Display::date($entry['date']) }}">Remove</button>
+                                </span>
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -59,9 +65,11 @@
         </section>
 
         <section class="card span-4">
-            <div class="card-header"><h2 class="card-title">Add time</h2></div>
+            <div class="card-header"><h2 class="card-title">{{ $editingEntryId ? 'Change time' : 'Add time' }}</h2></div>
             <div class="card-body">
-                @if (! $editable)
+                @if ($locked)
+                    <p class="text-muted mb-0">This week is locked after payroll, so time can’t be added or changed.</p>
+                @elseif (! $editable)
                     <p class="text-muted mb-0">This week has been submitted. If something is missing, ask your approver to return it.</p>
                 @else
                     <form wire:submit="addEntry" class="d-grid gap-3">
@@ -106,7 +114,13 @@
                             <label for="ts-notes" class="form-label">Notes (optional)</label>
                             <input id="ts-notes" class="form-control" wire:model="notes" placeholder="For example: stayed to reset for day 2">
                         </div>
-                        <button type="submit" class="btn btn-secondary" wire:loading.attr="disabled">Add entry</button>
+                        @error('entry')<div class="small text-negative">{{ $message }}</div>@enderror
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-secondary flex-grow-1" wire:loading.attr="disabled">{{ $editingEntryId ? 'Save change' : 'Add entry' }}</button>
+                            @if ($editingEntryId)
+                                <button type="button" class="btn btn-quiet" wire:click="cancelEdit">Cancel</button>
+                            @endif
+                        </div>
                     </form>
                 @endif
             </div>

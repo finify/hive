@@ -142,7 +142,7 @@ Each booked day counts as a shift from the crew call's call time to its wrap tim
 
 One PDF per event per day with anyone booked: venue address with access and power notes, first call and last wrap, crew by call time with role and where to report, and the event team as contacts with their work phones. Crew phone numbers are left off. Producers and crew managers can open and email them; people booked that day can open them. Emailing attaches the PDF and leaves a notice in the person's history. The PDF uses DejaVu Sans because dompdf can't read the self-hosted woff2 fonts.
 
-## 35. The shared demo resets every hour
+## 35. The shared demo resets every hour (time added in 44)
 
 Events and bookings are shared by everyone using the public demo, and the walkthrough depends on Kofi's clash being there. `hive:demo-refresh` now restores events, resourcing and the notices they sent every hour while demo mode is on; the demo band says so. It still refuses to run in production.
 
@@ -157,3 +157,35 @@ Monday at 08:00, producers hear about clashes and unfilled crew calls on their e
 ## 38. S3 for documents
 
 `league/flysystem-aws-s3-v3` is added (approved by the project owner) so `DOCUMENTS_DISK=s3` can store documents in an S3-compatible bucket in production. Local and test environments keep the private local disk.
+
+## 39. Phase 4: time and costs are in the database
+
+Timesheets, entries, payroll locks and cost entries are Eloquent models, seeded from the JSON with the same ids. Approved crew time now posts a cost entry every visitor sees, which is what makes the phase 4 test hold: each event shows the crew cost as Actual. Supplier invoice approvals still apply their cost movements to the session until invoices move in phase 5; `Workspace::costEntries()` lays those over the database rows. A cost entry posted from approved time is marked `draws_down_remaining`, so it comes out of the crew line's remaining estimate (decision 6) and the forecast only moves if crew overspends.
+
+## 40. The approvals engine
+
+`App\Services\Approvals\ApprovalEngine` is the shared component of section 5.9. Each submission opens one `approvals` row per approver per step; rules per type (`config/hive.php`, `approvals.rules`) say who approves and how: single, sequential (each step opens when the one before is approved) or any-of (the first decision settles it). Approvers are people, not sign-ins, because producers and managers are people first; a decision is recorded with who made it. Timesheet entries are single (the event's producer, or the line manager for internal codes and for a producer's own time on their event); leave is any-of (line manager or HR). Purchase orders, supplier invoices and expenses join in phase 5; until then supplier invoices still appear in the inbox through their own gate. It lives in `app/Services` with Ask Hive because it is shared infrastructure rather than a calculator.
+
+## 41. Nobody approves their own
+
+Rule 5 is enforced twice: the engine leaves the requester out of the approvers when it opens a request, and refuses a decision from the requester. A rejection closes every other open approval on the item; resubmitting opens fresh ones.
+
+## 42. Delegation
+
+An approver can hand their approvals to a colleague for some dates. The colleague must have a Hive sign-in and approve something themselves (so they can reach the inbox), can't be the approver, and the dates can't overlap other cover. Covered items appear in the delegate's inbox marked "Covering for"; the decision is recorded as the delegate's. Delegation never lets anyone approve their own submission.
+
+## 43. Payroll locks
+
+Finance locks a date range after payroll (the demo has July to September locked). Inside an active lock, time can't be added, changed, removed or returned (rule 9); entries still waiting can be approved, since approving doesn't change the hours. Fully approved weeks inside the period read Locked. Unlocking needs a written reason and is logged; the weeks go back to Approved.
+
+## 44. Hourly pay
+
+Section 5.6 lets freelancers be paid by the day or by the hour. Everyone in the demo is on a day rate, so entries count as a day (six hours or more) or half a day, and cost is days times the rate on that date. Hourly rates arrive with freelancer invoices in phase 5 if needed. The hourly demo refresh now also restores timesheets, approvals, cover and locks.
+
+## 45. Reminders
+
+Friday 14:00: anyone confirmed on an event this week whose timesheet is missing or still a draft. Monday 09:00: every approver with items waiting more than three days (configurable), with the count and the oldest date. Both arrive in the bell and by email.
+
+## 46. One inbox
+
+"My approvals" opens on Everything: timesheet entries, leave and supplier invoices waiting for the user, oldest first, with a tab per type to act on them. Cover is set from the same page.

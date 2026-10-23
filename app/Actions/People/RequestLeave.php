@@ -7,6 +7,7 @@ use App\Demo\Workspace;
 use App\Enums\LeaveStatus;
 use App\Models\LeaveRequest;
 use App\Models\User;
+use App\Services\Approvals\ApprovalEngine;
 use App\Support\DateRange;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Validator;
@@ -15,12 +16,15 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Basic leave for phase 3: an employee asks for days off, their line manager
- * (or HR) decides. Days count weekdays that aren't bank holidays. Balances,
+ * or HR decides, through the approvals engine. Days count weekdays that aren't bank holidays. Balances,
  * half days and the full leave module arrive in phase 5.
  */
 class RequestLeave
 {
-    public function __construct(private readonly Workspace $workspace) {}
+    public function __construct(
+        private readonly Workspace $workspace,
+        private readonly ApprovalEngine $approvals,
+    ) {}
 
     /**
      * @param  array{leave_type?: mixed, start_date?: mixed, end_date?: mixed, reason?: mixed}  $input
@@ -58,6 +62,7 @@ class RequestLeave
             'status' => LeaveStatus::Pending, 'requested_at' => now(),
         ]);
 
+        $approvers = $this->approvals->request($leave)->pluck('approver_id')->unique();
         $this->workspace->forget();
         $dates = DateRange::of($data['start_date'], $data['end_date'])->format();
         $name = $this->workspace->personName($user->person_id);
@@ -69,8 +74,9 @@ class RequestLeave
             ->event('leave-requested')
             ->log("Requested {$days} days’ leave, {$dates}");
 
-        $approver = $this->workspace->person($user->person_id)['line_manager_id'] ?? null;
-        $this->workspace->notify($approver, 'leave', "{$name} asked for leave", "{$dates}, {$days} days.", 'approvals');
+        foreach ($approvers as $approver) {
+            $this->workspace->notify($approver, 'leave', "{$name} asked for leave", "{$dates}, {$days} days.", 'approvals');
+        }
 
         return $leave;
     }
@@ -85,6 +91,7 @@ class RequestLeave
 
         $old = $leave->status;
         $leave->update(['status' => LeaveStatus::Cancelled]);
+        $this->approvals->withdraw($leave);
         $this->workspace->forget();
 
         activity('people')
