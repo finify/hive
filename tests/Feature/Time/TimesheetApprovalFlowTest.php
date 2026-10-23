@@ -235,5 +235,5 @@ it('reminds approvers of items waiting more than three days', function () {
 
     $notice = Person::query()->findOrFail(4)->notifications()->latest()->first();
     expect($notice->data['title'])->toEndWith('approvals are waiting')
-        ->and($notice->data['body'])->toBe('The oldest has waited since 16 Oct 2026.');
+        ->and($notice->data['body'])->toBe('The oldest has waited since 14 Oct 2026.');
 });

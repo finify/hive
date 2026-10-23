@@ -4,7 +4,13 @@
     $workspace = app(\App\Demo\Workspace::class);
 @endphp
 <div>
-    <x-page-head title="Purchase orders" :answer="$pos->total().' purchase orders. Approved POs count as committed spend until their invoice is approved.'" />
+    <x-page-head title="Purchase orders" :answer="$pos->total().' purchase orders. Approved POs count as committed spend until their invoice is approved.'">
+        <x-slot:actions>
+            @can('po.create')
+                <a href="{{ route('purchase-orders.create') }}" class="btn btn-primary" wire:navigate>Raise a PO</a>
+            @endcan
+        </x-slot:actions>
+    </x-page-head>
 
     <div class="filters">
         <label class="visually-hidden" for="po-status">Status</label>
@@ -26,10 +32,10 @@
                     @foreach ($pos as $po)
                         @php($net = Money::of($po['subtotal_minor'], $po['currency']))
                         <tr>
-                            <td class="code">{{ $po['code'] }}</td>
+                            <td><a href="{{ route('purchase-orders.show', $po['code']) }}" class="code" wire:navigate>{{ $po['code'] }}</a></td>
                             <td><x-event-code :event="$workspace->event($po['event_id'])" /></td>
                             <td>{{ $workspace->suppliers()->get($po['supplier_id'])['name'] }}</td>
-                            <td>{{ $po['lines'][0]['description'] }}</td>
+                            <td>{{ $po['lines'][0]['description'] ?? '—' }}</td>
                             <td class="num">{{ $net->format() }}</td>
                             <td class="num">{{ $po['currency'] === 'GBP' ? $net->format() : $net->convert((string) $po['fx_rate'], 'GBP')->format() }}</td>
                             <td><x-status :value="PurchaseOrderStatus::from($po['status'])" /></td>

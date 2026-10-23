@@ -8,8 +8,13 @@ use App\Actions\Time\ApproveTimesheetEntry;
 use App\Actions\Time\ReturnTimesheetEntry;
 use App\Livewire\Concerns\UsesWorkspace;
 use App\Models\ApprovalDelegation;
+use App\Models\Expense;
+use App\Models\FreelancerInvoice;
+use App\Models\PurchaseOrder;
+use App\Services\Approvals\ApprovalEngine;
 use App\Support\DateRange;
 use App\Support\Display;
+use App\Support\Money;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
@@ -149,7 +154,31 @@ class Approvals extends Component
             ]);
         }
 
+        // Purchase orders, expenses and freelancer invoices, from the approvals engine.
+        $other = ['po' => collect(), 'expense' => collect(), 'freelancer' => collect()];
+
+        foreach ($personId ? app(ApprovalEngine::class)->inbox($personId) : [] as $approval) {
+            $for = $approval->approver_id !== $personId ? $workspace->personName($approval->approver_id) : null;
+
+            if ($approval->approvable_type === PurchaseOrder::class && ($po = $workspace->purchaseOrders()->get($approval->approvable_id))) {
+                $other['po']->push(['since' => $approval->created_at, 'type' => 'Purchase order', 'tab' => 'purchase-orders', 'href' => route('purchase-orders.show', $po['code']),
+                    'title' => $po['code'].', '.$workspace->supplierName($po['supplier_id']).', '.Money::of($po['subtotal_minor'], $po['currency'])->format(),
+                    'detail' => ($workspace->event($po['event_id'])['code'] ?? '').($approval->step > 1 ? ', second signature' : ''), 'for' => $for]);
+            } elseif ($approval->approvable_type === Expense::class && ($x = $workspace->expenses()->get($approval->approvable_id))) {
+                $other['expense']->push(['since' => $approval->created_at, 'type' => 'Expense', 'tab' => 'expenses', 'href' => route('expenses'),
+                    'title' => $workspace->personName($x['person_id']).', '.Money::of($x['amount_minor'], $x['currency'])->format().', '.$x['description'],
+                    'detail' => ($workspace->event($x['event_id'])['code'] ?? 'No event').($approval->step > 1 ? ', producer approved' : ''), 'for' => $for]);
+            } elseif ($approval->approvable_type === FreelancerInvoice::class && ($fi = FreelancerInvoice::query()->find($approval->approvable_id))) {
+                $other['freelancer']->push(['since' => $approval->created_at, 'type' => 'Freelancer invoice', 'tab' => 'freelancer-invoices', 'href' => route('freelancer-invoices'),
+                    'title' => $fi->invoice_number.', '.$workspace->personName($fi->person_id).', '.Money::of($fi->net_minor)->format(),
+                    'detail' => $fi->difference() === 0 ? 'Matches approved time' : Money::of(abs($fi->difference()))->format().($fi->difference() > 0 ? ' over' : ' under').' approved time', 'for' => $for]);
+            }
+        }
+
+        $everything = $everything->merge($other['po'])->merge($other['expense'])->merge($other['freelancer']);
+
         return view('livewire.time.approvals', [
+            'other' => $other,
             'groups' => $groups,
             'entryCount' => $groups->sum(fn ($g) => count($g['items'])),
             'invoices' => $invoices,

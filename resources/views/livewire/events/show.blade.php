@@ -220,105 +220,15 @@
     @endif
 
     {{-- ============================================================ budget --}}
-    @if ($tab === 'budget' && $financials)
-        <div class="figure-row">
-            <x-figure label="Budget" :value="$financials->budget->format(false)" :caption="'Version '.$budget['version'].', '.ucfirst($budget['status'])" />
-            <x-figure label="Forecast at completion" :value="$financials->forecast()->format(false)" :caption="'Variance '.$financials->variance()->format(false)" />
-            <x-figure label="Margin" :value="$financials->margin()->format(false)" :caption="($financials->marginPercent() ?? '—').'% of '.$financials->revenue->format(false)" />
-            <x-figure label="Health" :value="$financials->health?->label() ?? 'Final'" :caption="$financials->forecastPercentOfBudget().'% of budget forecast'" />
-        </div>
-
-        <section class="card mb-3">
-            <div class="card-header flex-wrap">
-                <h2 class="card-title">Cost lines</h2>
-                <div class="legend ms-auto">
-                    <span><span class="swatch" style="background: var(--hive-data)"></span>Actual</span>
-                    <span><span class="swatch" style="background: color-mix(in srgb, var(--hive-data) 45%, var(--hive-surface))"></span>Committed</span>
-                    <span><span class="swatch" style="background: repeating-linear-gradient(135deg, var(--hive-control) 0 2px, transparent 2px 5px)"></span>Remaining estimate</span>
-                    <span><span class="swatch" style="background: var(--hive-ink); width: 2px"></span>Budget</span>
-                </div>
-            </div>
-            <div class="table-wrap border-0 rounded-0">
-                <table class="table">
-                    <thead>
-                        <tr><th>Category</th><th>Line</th><th class="num">Budget</th><th class="num">Committed</th><th class="num">Actual</th><th class="num">Remaining</th><th class="num">Forecast</th><th style="min-width: 140px"><span class="visually-hidden">Bar</span></th></tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($lines as $line)
-                            @php($over = $line['forecast']->greaterThan($line['budget']))
-                            @php($scale = max($line['budget']->minor, $line['forecast']->minor, 1))
-                            <tr>
-                                <td class="text-nowrap">{{ $workspace->costCategoryName($line['category']) }}</td>
-                                <td>
-                                    {{ $line['description'] }}
-                                    @if ($line['supplier_id'])
-                                        <div class="small text-muted">{{ $workspace->suppliers()->get($line['supplier_id'])['name'] }}</div>
-                                    @endif
-                                    @if ($line['original'])
-                                        <div class="small text-muted">{{ $line['original']->format(false) }} at {{ $line['fx_rate'] }} £/€</div>
-                                    @endif
-                                </td>
-                                <td class="num">{{ $line['budget']->format(false) }}</td>
-                                <td class="num">{{ $line['committed']->format(false) }}</td>
-                                <td class="num">{{ $line['actual']->format(false) }}</td>
-                                <td class="num">{{ $line['remaining']->format(false) }}</td>
-                                <td @class(['num', 'text-negative fw-medium' => $over])>{{ $line['forecast']->format(false) }}</td>
-                                <td>
-                                    <div class="budget-bar" role="img" aria-label="Forecast {{ $line['forecast']->format(false) }} against {{ $line['budget']->format(false) }}">
-                                        <span class="seg-actual" style="width: {{ round($line['actual']->minor * 100 / $scale, 2) }}%"></span>
-                                        <span class="seg-committed" style="width: {{ round($line['committed']->minor * 100 / $scale, 2) }}%"></span>
-                                        <span class="seg-remaining" style="width: {{ round($line['remaining']->minor * 100 / $scale, 2) }}%"></span>
-                                        <span class="budget-line" style="left: calc({{ round($line['budget']->minor * 100 / $scale, 2) }}% - 1px)"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr class="fw-medium">
-                            <td colspan="2">Total</td>
-                            <td class="num">{{ $financials->budget->format(false) }}</td>
-                            <td class="num">{{ $financials->committed->format(false) }}</td>
-                            <td class="num">{{ $financials->actual->format(false) }}</td>
-                            <td class="num">{{ $financials->remaining->format(false) }}</td>
-                            <td @class(['num', 'text-negative' => $financials->forecast()->greaterThan($financials->budget)])>{{ $financials->forecast()->format(false) }}</td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </section>
-
-        <div class="grid-12">
-            <section class="card span-6">
-                <div class="card-header"><h2 class="card-title">Client revenue</h2></div>
-                <ul class="list-rows">
-                    @foreach ($revenueLines as $r)
-                        <li><div class="row-main">{{ $r['description'] }}</div><span class="tnum">{{ Money::of($r['amount_minor'])->format(false) }}</span></li>
-                    @endforeach
-                </ul>
-            </section>
-            <section class="card span-6">
-                <div class="card-header"><h2 class="card-title">Payment milestones</h2></div>
-                @if ($milestones->isNotEmpty())
-                    <ul class="list-rows">
-                        @foreach ($milestones as $m)
-                            <li>
-                                <div class="row-main"><div>{{ $m['description'] }}</div><div class="row-sub tnum">Due {{ Display::date($m['due_date']) }}@if ($m['invoice_reference']), {{ $m['invoice_reference'] }}@endif</div></div>
-                                <span class="tnum">{{ Money::of($m['amount_minor'])->format(false) }}</span>
-                                <x-status :value="BillingStatus::from($m['status'])" />
-                            </li>
-                        @endforeach
-                    </ul>
-                @else
-                    <x-empty title="No milestones yet">Deposit and payment milestones are added when the contract is signed.</x-empty>
-                @endif
-            </section>
-        </div>
+    @if ($tab === 'budget')
+        <livewire:events.budget :event-id="$event['id']" :key="'budget-'.$event['id']" />
     @endif
 
     {{-- ============================================================ purchase orders --}}
     @if ($tab === 'purchase-orders')
+        @can('po.create')
+            <div class="mb-3"><a href="{{ route('purchase-orders.create', ['event' => $event['id']]) }}" class="btn btn-primary" wire:navigate>Raise a PO</a></div>
+        @endcan
         <div class="table-wrap">
             @if ($pos->isEmpty())
                 <x-empty title="No purchase orders yet">POs raised against this event’s budget lines appear here with their approval status.</x-empty>
@@ -328,9 +238,9 @@
                     <tbody>
                         @foreach ($pos as $po)
                             <tr>
-                                <td class="code">{{ $po['code'] }}</td>
-                                <td>{{ $workspace->suppliers()->get($po['supplier_id'])['name'] }}</td>
-                                <td>{{ $po['lines'][0]['description'] }}</td>
+                                <td><a href="{{ route('purchase-orders.show', $po['code']) }}" class="code" wire:navigate>{{ $po['code'] }}</a></td>
+                                <td>{{ $workspace->supplierName($po['supplier_id']) }}</td>
+                                <td>{{ $po['lines'][0]['description'] ?? '—' }}</td>
                                 <td class="num">{{ Money::of($po['subtotal_minor'], $po['currency'])->format() }}</td>
                                 <td class="num">{{ Money::of($po['vat_minor'], $po['currency'])->format() }}</td>
                                 <td class="num">{{ Money::of($po['total_minor'], $po['currency'])->format() }}</td>

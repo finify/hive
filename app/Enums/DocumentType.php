@@ -11,6 +11,7 @@ enum DocumentType: string
     case Qualification = 'qualification';
     case Nda = 'nda';
     case Ir35Determination = 'ir35-determination';
+    case SelfBillingAgreement = 'self-billing-agreement';
     case Brief = 'brief';
     case FloorPlan = 'floor-plan';
     case RunOfShow = 'run-of-show';
@@ -26,6 +27,7 @@ enum DocumentType: string
             self::Qualification => 'Qualification or certificate',
             self::Nda => 'NDA',
             self::Ir35Determination => 'IR35 determination',
+            self::SelfBillingAgreement => 'Self-billing agreement',
             self::Brief => 'Client brief',
             self::FloorPlan => 'Floor plan',
             self::RunOfShow => 'Run of show',

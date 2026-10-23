@@ -11,7 +11,7 @@ it('approves an over-tolerance invoice once a reason is given', function () {
         ->test(SupplierInvoices::class)
         ->call('review', $id)
         ->assertSee('Tolerance (5% or £250, whichever is lower)')
-        ->assertSee('margin moves from 25.1% to 24.9%')
+        ->assertSee('(25.1%) to')->assertSee('(24.9%)')
         ->call('approve')
         ->assertHasErrors('note')
         ->set('note', 'Extra LED processor agreed on site for the hybrid stream.')

@@ -53,6 +53,7 @@ it('blocks reconciliation while open items remain, and lists them (rule 13)', fu
         'PO-26-0051 is still open (Sent)',
         'Invoice NLV-3388 from Northlight Video is not approved yet (Matched)',
         '9 timesheet entries are not approved',
+        '1 expense is waiting for approval',
     ]);
 });
 

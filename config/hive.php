@@ -1,8 +1,16 @@
 <?php
 
+use App\Models\Expense;
+use App\Models\FreelancerInvoice;
 use App\Models\LeaveRequest;
+use App\Models\PurchaseOrder;
+use App\Models\SupplierInvoice;
 use App\Models\TimesheetEntry;
+use App\Services\Approvals\Rules\ExpenseRule;
+use App\Services\Approvals\Rules\FreelancerInvoiceRule;
 use App\Services\Approvals\Rules\LeaveRequestRule;
+use App\Services\Approvals\Rules\PurchaseOrderRule;
+use App\Services\Approvals\Rules\SupplierInvoiceRule;
 use App\Services\Approvals\Rules\TimesheetEntryRule;
 
 return [
@@ -119,9 +127,8 @@ return [
     | Approvals engine
     |--------------------------------------------------------------------------
     |
-    | Who approves each kind of thing (section 5.9). Purchase orders, supplier
-    | invoices and expenses join in phase 5. Approvers with items older than
-    | remind_after_days are reminded on Monday mornings.
+    | Who approves each kind of thing (section 5.9). Approvers with items
+    | older than remind_after_days are reminded on Monday mornings.
     |
     */
 
@@ -129,8 +136,35 @@ return [
         'rules' => [
             TimesheetEntry::class => TimesheetEntryRule::class,
             LeaveRequest::class => LeaveRequestRule::class,
+            PurchaseOrder::class => PurchaseOrderRule::class,
+            SupplierInvoice::class => SupplierInvoiceRule::class,
+            Expense::class => ExpenseRule::class,
+            FreelancerInvoice::class => FreelancerInvoiceRule::class,
         ],
         'remind_after_days' => 3,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Finance
+    |--------------------------------------------------------------------------
+    |
+    | PO approval limits by level, in pence, against the net amount in GBP.
+    | Above the operations director's limit a PO needs the operations director
+    | and then the head of finance. Mileage is paid per mile (HMRC's 45p by
+    | default). Self-billing lets Hive raise a freelancer's invoice from
+    | approved time when they have a self-billing agreement on file.
+    |
+    */
+
+    'finance' => [
+        'po_limits' => [
+            'producer' => (int) env('HIVE_PO_LIMIT_PRODUCER', 500_000),
+            'operations-director' => (int) env('HIVE_PO_LIMIT_OPERATIONS', 5_000_000),
+        ],
+        'mileage_rate_minor' => (int) env('HIVE_MILEAGE_RATE', 45),
+        'self_billing' => (bool) env('HIVE_SELF_BILLING', true),
+        'currencies' => ['GBP', 'EUR', 'USD'],
     ],
 
 ];

@@ -189,3 +189,39 @@ Friday 14:00: anyone confirmed on an event this week whose timesheet is missing 
 ## 46. One inbox
 
 "My approvals" opens on Everything: timesheet entries, leave and supplier invoices waiting for the user, oldest first, with a tab per type to act on them. Cover is set from the same page.
+
+## 47. Phase 5: finance is in the database
+
+Budgets (with versions), budget lines, revenue lines, purchase orders, supplier and freelancer invoices, expenses, billing milestones and exchange rates are Eloquent models, seeded from the JSON with the same ids. The session overlay for invoice approvals is gone: every approval now changes the shared data. Every event's financial summary was checked against the figures before the move and is identical.
+
+## 48. How costs move
+
+`PostCost` is the one place cost entries are written. An approved PO commits its net amount and draws down its line's remaining estimate, so the forecast moves only if the PO is bigger than what was left. An approved supplier invoice releases what it covers of the PO's commitment and posts the actual, so the forecast moves by the difference (rule 12). Approved time and expenses post actuals that draw down the remaining estimate. Cancelling a PO releases its commitment and gives the estimate back. Costs not on any budget line still count in the event's totals. Committed and actual entries are append-only: a release is a negative committed entry, never an edit.
+
+## 49. Budget versions
+
+A budget's lines are live; each version keeps a snapshot of the lines it was approved with. The first change to an approved budget opens the next version as a Draft (shown as a revision with its difference from the baseline); the operations director approves it, and the old baseline is kept as Superseded. A line's remaining estimate moves with its budget and never goes below zero; a line with spend against it can't be removed.
+
+## 50. Purchase order limits
+
+Limits are by level in `config/hive.php` (`finance.po_limits`), against the net amount in sterling: the event's producer up to £5,000, the operations director up to £50,000. Above that the brief asks for two approvers, but the matrix gives PO approval only to producers and the operations director, so the second signature is the head of finance (the Finance department's head). A PO goes to the first level that covers it and has someone other than the person who raised it, so a producer's own PO goes to the operations director (rules 5 and 10).
+
+## 51. Supplier invoices
+
+An invoice is Matched when its PO's goods are received and it is within tolerance of what is left to invoice on the PO; otherwise it stays Received and the reason shows. Tolerance stays two-way (decision 8), so a partial invoice needs a note too. Finance or the operations director approves; the event's producer may approve one against a PO within tolerance. An invoice without a PO needs a reason, a budget line and finance's approval.
+
+## 52. Freelancer invoices
+
+Uploaded by the freelancer, or self-billed by Hive from approved time when the freelancer has a current self-billing agreement document (a new document type). Either way the expected amount is approved event time in the period at the rate in force each day; a difference needs a note to approve. Invoices don't post costs: the crew cost was posted when the time was approved, so paying an invoice can't double-count it.
+
+## 53. Expenses
+
+Claims need a receipt, except mileage, paid at 45p a mile (configurable). They go to the event's producer (or the line manager), then finance. Approved, they post an actual to the budget line for their category, or contingency if the budget has none. Foreign amounts use finance's latest rate on the day of the claim.
+
+## 54. Exports and rates
+
+CSV exports of approved supplier invoices, approved freelancer time (for the payment run), approved expenses and billing, each logged. The freelancer export carries day rates, so it needs `rates.view` (rule 17). Cells that would start a spreadsheet formula are quoted. Exchange rates are entered by finance with a start date; costs keep the rate they were posted at.
+
+## 55. Billing
+
+Milestones can be added by amount or as a share of the event's revenue, marked invoiced with the accounting system's reference, and marked paid. The invoice itself is raised in the accounting system, as the brief says. Overdue is as recorded; flagging it automatically needs the accounting integration (later phase).

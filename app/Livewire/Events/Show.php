@@ -243,13 +243,6 @@ class Show extends Component
             $data['fileTypes'] = DocumentType::eventOptions();
         }
 
-        if ($this->tab === 'budget') {
-            $data['lines'] = $workspace->budgetLines($event['id']);
-            $data['budget'] = $workspace->budget($event['id']);
-            $data['revenueLines'] = collect($workspace->data->raw('revenue_lines'))->where('event_id', $event['id']);
-            $data['milestones'] = $workspace->billingMilestones()->where('event_id', $event['id']);
-        }
-
         if ($this->tab === 'purchase-orders') {
             $data['pos'] = $workspace->purchaseOrders()->where('event_id', $event['id']);
         }

@@ -6,6 +6,7 @@ use App\Data\Booking;
 use App\Data\Clash;
 use App\Data\EventFinancials;
 use App\Enums\AssignmentStatus;
+use App\Enums\BudgetStatus;
 use App\Enums\DocumentStatus;
 use App\Enums\EntryStatus;
 use App\Enums\EventStage;
@@ -14,17 +15,25 @@ use App\Enums\LeaveStatus;
 use App\Enums\PurchaseOrderStatus;
 use App\Enums\SupplierInvoiceStatus;
 use App\Models\Assignment;
+use App\Models\BillingMilestone;
+use App\Models\Budget;
+use App\Models\BudgetLine;
 use App\Models\Client;
 use App\Models\CostEntry;
 use App\Models\CrewCall;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\Event;
+use App\Models\ExchangeRate;
+use App\Models\Expense;
 use App\Models\LeaveRequest;
 use App\Models\PeriodLock;
 use App\Models\Person;
+use App\Models\PurchaseOrder;
+use App\Models\RevenueLine;
 use App\Models\Skill;
 use App\Models\Supplier;
+use App\Models\SupplierInvoice;
 use App\Models\Timesheet;
 use App\Models\Unavailability;
 use App\Models\User;
@@ -203,6 +212,11 @@ class Workspace
         return $this->memo('suppliers', fn () => Rows::keyed(
             Supplier::query()->with(['contacts', 'documents'])->orderBy('id')->get()->map(fn (Supplier $s) => $s->toWorkspaceArray())->all(),
         ));
+    }
+
+    public function supplierName(?int $id): string
+    {
+        return $this->suppliers()->get($id)['name'] ?? 'Unknown supplier';
     }
 
     /**
@@ -657,32 +671,85 @@ class Workspace
      */
     public function budget(int $eventId): ?array
     {
-        return $this->memo('budgets', fn () => $this->data->collect('budgets', 'event_id'))->get($eventId);
+        return $this->memo('budgets', function () {
+            $lines = BudgetLine::query()->orderBy('sort_order')->orderBy('id')->get()->groupBy('event_id');
+            $budgets = [];
+
+            foreach (Budget::query()->orderBy('version')->get() as $version) {
+                $budgets[$version->event_id] = [
+                    'event_id' => $version->event_id, 'budget_id' => $version->id, 'version' => $version->version, 'status' => $version->status->value,
+                    'approved_by' => $version->approved_by, 'approved_at' => $version->approved_at?->utc()->format('Y-m-d\TH:i:s\Z'),
+                    'baseline_gbp_minor' => $version->status === BudgetStatus::Draft ? null : $version->total_gbp_minor,
+                    'lines' => ($lines->get($version->event_id) ?? collect())->map(fn (BudgetLine $l) => $l->toWorkspaceArray())->values()->all(),
+                ];
+            }
+
+            return collect($budgets);
+        })->get($eventId);
     }
 
     /**
-     * Cost entries, with supplier invoice approvals made in this demo session
-     * applied on top (invoices move to the database in phase 5).
+     * Committed and actual costs from POs, invoices, approved time, expenses
+     * and manual journals.
      *
      * @return Collection<int, array<string, mixed>>
      */
     public function costEntries(?int $eventId = null): Collection
     {
         $all = $this->memo('cost_entries', function () {
-            $removed = $this->ledger->section('removed_cost_entries');
-
-            return Rows::keyed(CostEntry::query()->orderBy('id')->get()->map(fn (CostEntry $c) => $c->toWorkspaceArray())->all())
-                ->reject(fn ($c) => isset($removed[$c['id']]))
-                ->union(collect($this->ledger->section('cost_entries'))->keyBy('id'));
+            return Rows::keyed(CostEntry::query()->orderBy('id')->get()->map(fn (CostEntry $c) => $c->toWorkspaceArray())->all());
         });
 
         return $eventId === null ? $all : $all->where('event_id', $eventId);
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
+    public function revenueLines(): Collection
+    {
+        return $this->memo('revenue', fn () => Rows::keyed(
+            RevenueLine::query()->orderBy('id')->get()->map(fn (RevenueLine $r) => $r->toWorkspaceArray())->all(),
+        ));
+    }
+
+    /**
+     * The latest rate finance has entered for a currency, as one unit in GBP.
+     */
+    public function exchangeRate(string $currency): ?string
+    {
+        if ($currency === 'GBP') {
+            return '1';
+        }
+
+        return $this->memo('fx_'.$currency, fn () => ExchangeRate::query()->where('currency', $currency)
+            ->whereDate('effective_on', '<=', $this->today()->toDateString())->orderByDesc('effective_on')->orderByDesc('id')->value('rate_to_gbp'));
+    }
+
+    /**
+     * What a freelancer's approved event time in a period costs, at the rate
+     * in force each day: what their invoice for the period should come to.
+     */
+    public function approvedTimeCost(int $personId, string $from, string $to): Money
+    {
+        $total = Money::zero();
+
+        foreach ($this->timesheets()->where('person_id', $personId) as $sheet) {
+            foreach ($sheet['entries'] as $entry) {
+                if ($entry['status'] === EntryStatus::Approved->value && $entry['date'] >= $from && $entry['date'] <= $to) {
+                    $cost = $this->entryCost($personId, $entry);
+                    $total = $cost ? $total->plus($cost) : $total;
+                }
+            }
+        }
+
+        return $total;
+    }
+
     public function revenue(int $eventId): Money
     {
         return Money::sum(
-            $this->memo('revenue', fn () => $this->data->collect('revenue_lines'))
+            $this->revenueLines()
                 ->where('event_id', $eventId)
                 ->map(fn ($r) => Money::of($r['amount_minor'], $r['currency'])),
         );
@@ -733,8 +800,11 @@ class Workspace
 
         $lines = $this->budgetLines($eventId);
         $budget = Money::sum($lines->pluck('budget'));
-        $committed = Money::sum($lines->pluck('committed'));
-        $actual = Money::sum($lines->pluck('actual'));
+
+        // Costs not on any line (an expense in a category the budget lacks) still count.
+        $unallocated = $this->costEntries($eventId)->reject(fn ($c) => $c['budget_line_id'] !== null && $lines->contains('id', $c['budget_line_id']));
+        $committed = Money::sum($lines->pluck('committed'))->plus(Money::of((int) $unallocated->where('kind', 'committed')->sum('amount_gbp_minor')));
+        $actual = Money::sum($lines->pluck('actual'))->plus(Money::of((int) $unallocated->where('kind', 'actual')->sum('amount_gbp_minor')));
         $remaining = Money::sum($lines->pluck('remaining'));
         $revenue = $this->revenue($eventId);
 
@@ -755,12 +825,9 @@ class Workspace
      */
     public function purchaseOrders(): Collection
     {
-        return $this->memo('purchase_orders', function () {
-            $changes = $this->ledger->section('purchase_orders');
-
-            return $this->data->collect('purchase_orders')
-                ->map(fn (array $po) => isset($changes[$po['id']]) ? array_merge($po, $changes[$po['id']]) : $po);
-        });
+        return $this->memo('purchase_orders', fn () => Rows::keyed(
+            PurchaseOrder::query()->with('lines')->orderBy('id')->get()->map(fn (PurchaseOrder $po) => $po->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -768,12 +835,9 @@ class Workspace
      */
     public function supplierInvoices(): Collection
     {
-        return $this->memo('supplier_invoices', function () {
-            $changes = $this->ledger->section('invoices');
-
-            return $this->data->collect('supplier_invoices')
-                ->map(fn (array $si) => isset($changes[$si['id']]) ? array_merge($si, $changes[$si['id']]) : $si);
-        });
+        return $this->memo('supplier_invoices', fn () => Rows::keyed(
+            SupplierInvoice::query()->orderBy('id')->get()->map(fn (SupplierInvoice $si) => $si->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -787,8 +851,14 @@ class Workspace
             return true;
         }
 
+        // Compared with what is left to invoice on the PO, so a second partial
+        // invoice is checked against the balance, not the whole order.
+        $invoiced = $this->supplierInvoices()
+            ->filter(fn ($si) => $si['purchase_order_id'] === $po['id'] && $si['id'] !== $invoice['id'] && in_array($si['status'], [SupplierInvoiceStatus::Approved->value, SupplierInvoiceStatus::Paid->value], true))
+            ->sum('net_minor');
+
         return InvoiceTolerance::fromConfig()->isOverTolerance(
-            Money::of($po['subtotal_minor'], $po['currency']),
+            Money::of($po['subtotal_minor'] - (int) $invoiced, $po['currency']),
             Money::of($invoice['net_minor'], $invoice['currency']),
         );
     }
@@ -830,6 +900,12 @@ class Workspace
             $blockers[] = $pending === 1 ? '1 timesheet entry is not approved' : "{$pending} timesheet entries are not approved";
         }
 
+        $expenses = $this->expenses()->where('event_id', $eventId)->where('status', 'pending')->count();
+
+        if ($expenses > 0) {
+            $blockers[] = $expenses === 1 ? '1 expense is waiting for approval' : "{$expenses} expenses are waiting for approval";
+        }
+
         return $blockers;
     }
 
@@ -838,7 +914,9 @@ class Workspace
      */
     public function billingMilestones(): Collection
     {
-        return $this->memo('billing', fn () => $this->data->collect('billing_milestones'));
+        return $this->memo('billing', fn () => Rows::keyed(
+            BillingMilestone::query()->orderBy('id')->get()->map(fn (BillingMilestone $m) => $m->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -846,7 +924,9 @@ class Workspace
      */
     public function expenses(): Collection
     {
-        return $this->memo('expenses', fn () => $this->data->collect('expenses'));
+        return $this->memo('expenses', fn () => Rows::keyed(
+            Expense::query()->orderBy('id')->get()->map(fn (Expense $x) => $x->toWorkspaceArray())->all(),
+        ));
     }
 
     // ================================================================== platform

@@ -4,7 +4,8 @@
     use App\Support\Money;
     $workspace = app(\App\Demo\Workspace::class);
     $viewer = app(\App\Demo\Viewer::class);
-    $total = $entryCount + $invoices->count() + $leave->count();
+    $total = $entryCount + $invoices->count() + $leave->count() + $other['po']->count() + $other['expense']->count() + $other['freelancer']->count();
+    $otherTabs = ['purchase-orders' => ['Purchase orders', 'po'], 'expenses' => ['Expenses', 'expense'], 'freelancer-invoices' => ['Freelancer invoices', 'freelancer']];
 @endphp
 <div>
     <x-page-head title="Approvals" :answer="$total ? $total.' '.($total === 1 ? 'item waits' : 'items wait').' for you, oldest first. Nothing here is approved until you approve it.' : 'Nothing is waiting for you.'" />
@@ -24,6 +25,11 @@
         @can('leave.approve')
             <button type="button" @class(['active' => $tab === 'leave']) wire:click="$set('tab', 'leave')">Leave <span class="count">{{ $leave->count() }}</span></button>
         @endcan
+        @foreach ($otherTabs as $key => [$label, $group])
+            @if ($other[$group]->isNotEmpty())
+                <button type="button" @class(['active' => $tab === $key]) wire:click="$set('tab', '{{ $key }}')">{{ $label }} <span class="count">{{ $other[$group]->count() }}</span></button>
+            @endif
+        @endforeach
     </nav>
 
     @if ($tab === 'all')
@@ -40,7 +46,11 @@
                                     <div class="row-title">{{ $row['title'] }}</div>
                                     <div class="row-sub">{{ $row['type'] }}@if ($row['detail']), {{ $row['detail'] }}@endif, waiting since {{ Display::date($row['since']) }}@if ($row['for']), for {{ $row['for'] }}@endif</div>
                                 </div>
-                                <button type="button" class="btn btn-secondary btn-sm" wire:click="$set('tab', '{{ $row['tab'] }}')">Review</button>
+                                @if (isset($row['href']))
+                                    <a href="{{ $row['href'] }}" class="btn btn-secondary btn-sm" wire:navigate>Review</a>
+                                @else
+                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="$set('tab', '{{ $row['tab'] }}')">Review</button>
+                                @endif
                             </li>
                         @endforeach
                     </ul>
@@ -208,6 +218,25 @@
             @endforelse
         </div>
     @endif
+
+    @foreach ($otherTabs as $key => [$label, $group])
+        @if ($tab === $key)
+            <div class="card">
+                @if ($other[$group]->isEmpty())
+                    <x-empty title="Nothing waiting">Items you approve appear here as they’re submitted.</x-empty>
+                @else
+                    <ul class="list-rows">
+                        @foreach ($other[$group] as $row)
+                            <li>
+                                <div class="row-main"><div class="row-title">{{ $row['title'] }}</div><div class="row-sub">{{ $row['detail'] }}, waiting since {{ Display::date($row['since']) }}@if ($row['for']), for {{ $row['for'] }}@endif</div></div>
+                                <a href="{{ $row['href'] }}" class="btn btn-secondary btn-sm" wire:navigate>Review</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
+        @endif
+    @endforeach
 
     <x-modal id="return-modal" title="Return entry with a comment">
         <label for="return-comment" class="form-label">What needs changing?</label>

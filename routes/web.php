@@ -3,7 +3,9 @@
 use App\Http\Controllers\CallSheetController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DocumentDownloadController;
+use App\Http\Controllers\FinanceExportController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\PurchaseOrderPdfController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
 
@@ -44,10 +46,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/time/timesheets', Livewire\Time\Timesheets::class)->name('timesheets')->middleware('can:timesheets.submit');
         Route::get('/time/payroll-locks', Livewire\Time\PeriodLocks::class)->name('period-locks')->middleware('can:timesheets.lock');
         Route::get('/time/approvals', Livewire\Time\Approvals::class)->name('approvals')
-            ->middleware('can_any:timesheets.approve,supplier_invoices.approve,leave.approve');
+            ->middleware('can_any:timesheets.approve,supplier_invoices.approve,leave.approve,po.approve,expenses.approve,freelancer_invoices.approve');
 
         Route::get('/finance/budgets', Livewire\Finance\Budgets::class)->name('budgets')->middleware('can:budgets.view');
         Route::get('/finance/purchase-orders', Livewire\Finance\PurchaseOrders::class)->name('purchase-orders')->middleware('can:po.view');
+        Route::get('/finance/purchase-orders/new', Livewire\Finance\PurchaseOrderForm::class)->name('purchase-orders.create')->middleware('can:po.create');
+        Route::get('/finance/purchase-orders/{code}/edit', Livewire\Finance\PurchaseOrderForm::class)->name('purchase-orders.edit')->middleware('can:po.create');
+        Route::get('/finance/purchase-orders/{code}/pdf', PurchaseOrderPdfController::class)->name('purchase-orders.pdf');
+        Route::get('/finance/purchase-orders/{code}', Livewire\Finance\PurchaseOrderShow::class)->name('purchase-orders.show')->middleware('can:po.view');
+        Route::get('/finance/freelancer-invoices', Livewire\Finance\FreelancerInvoices::class)->name('freelancer-invoices')
+            ->middleware('can_any:freelancer_invoices.view,freelancer_invoices.submit');
+        Route::get('/finance/exports', Livewire\Finance\Exports::class)->name('exports')->middleware('can:billing.view');
+        Route::get('/finance/exports/{type}.csv', FinanceExportController::class)->name('exports.download')->middleware('can:billing.view');
         Route::get('/finance/supplier-invoices', Livewire\Finance\SupplierInvoices::class)->name('supplier-invoices')->middleware('can:supplier_invoices.view');
         Route::get('/finance/expenses', Livewire\Finance\Expenses::class)->name('expenses')
             ->middleware('can_any:expenses.view_all,expenses.submit,expenses.approve');

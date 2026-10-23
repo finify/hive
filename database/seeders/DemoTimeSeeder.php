@@ -8,7 +8,6 @@ use App\Enums\EntryStatus;
 use App\Enums\LeaveStatus;
 use App\Enums\TimesheetStatus;
 use App\Models\Approval;
-use App\Models\CostEntry;
 use App\Models\LeaveRequest;
 use App\Models\PeriodLock;
 use App\Models\Timesheet;
@@ -21,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 /**
- * Loads timesheets, cost entries and the payroll locks, then opens approvals
+ * Loads timesheets and the payroll locks, then opens approvals
  * for everything still waiting (submitted time and pending leave). Runs
  * after the demo users, because HR approves leave.
  */
@@ -58,16 +57,6 @@ class DemoTimeSeeder extends Seeder
                         'locked_by' => 20, 'locked_at' => $month->addMonth()->day(5)->setTime(8, 0), 'reason' => 'Payroll run',
                     ]);
                 }
-            }
-
-            foreach (Rows::of($data->raw('cost_entries')) as $row) {
-                $source = is_array($row['source']) ? $row['source'] : [];
-                CostEntry::query()->forceCreate([
-                    'id' => $row['id'], 'event_id' => $row['event_id'], 'budget_line_id' => $row['budget_line_id'],
-                    'source_type' => $source['type'] ?? 'manual', 'source_id' => $source['id'] ?? null, 'source_ref' => $source['ref'] ?? null,
-                    'kind' => $row['kind'], 'amount_minor' => $row['amount_minor'], 'currency' => $row['currency'], 'fx_rate' => $row['fx_rate'],
-                    'amount_gbp_minor' => $row['amount_gbp_minor'], 'posted_at' => $row['posted_at'],
-                ]);
             }
 
             // Open approvals for what is still waiting, dated when it was submitted.

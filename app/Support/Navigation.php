@@ -54,8 +54,6 @@ final class Navigation
     public static function planned(): array
     {
         return [
-            'freelancer-invoices' => ['title' => 'Freelancer invoices', 'phase' => 5, 'summary' => 'Freelancers upload invoices against approved timesheets, or Hive self-bills them. Totals are checked against approved time at the effective rate.'],
-            'exports' => ['title' => 'Exports', 'phase' => 5, 'summary' => 'CSV exports of approved supplier invoices, freelancer costs for the payment run, expenses and client billing.'],
             'onboarding' => ['title' => 'Onboarding', 'phase' => 6, 'summary' => 'Checklists for new starters and leavers, with an owner and a due date for each item. Joel Mendes starts on 2 Nov.'],
             'skills' => ['title' => 'Skills', 'phase' => 6, 'summary' => 'The skills catalogue, with levels from 1 to 5 and who verified them.'],
             'reports' => ['title' => 'Reports', 'phase' => 6, 'summary' => 'Event profitability, utilisation, freelancer and supplier spend, pipeline and win rate, leave, timesheet compliance and working time flags, each exportable to CSV.'],
@@ -88,17 +86,17 @@ final class Navigation
             ],
             'Time' => [
                 ['label' => 'My timesheets', 'icon' => 'clock', 'route' => 'timesheets', 'can' => ['timesheets.submit']],
-                ['label' => 'Approvals', 'icon' => 'check2-square', 'route' => 'approvals', 'can' => ['timesheets.approve', 'supplier_invoices.approve', 'leave.approve']],
+                ['label' => 'Approvals', 'icon' => 'check2-square', 'route' => 'approvals', 'can' => ['timesheets.approve', 'supplier_invoices.approve', 'leave.approve', 'po.approve', 'expenses.approve', 'freelancer_invoices.approve']],
                 ['label' => 'Payroll locks', 'icon' => 'lock', 'route' => 'period-locks', 'can' => ['timesheets.lock']],
             ],
             'Finance' => [
                 ['label' => 'Budgets', 'icon' => 'pie-chart', 'route' => 'budgets', 'can' => ['budgets.view']],
                 ['label' => 'Purchase orders', 'icon' => 'receipt', 'route' => 'purchase-orders', 'can' => ['po.view']],
                 ['label' => 'Supplier invoices', 'icon' => 'file-earmark-text', 'route' => 'supplier-invoices', 'can' => ['supplier_invoices.view']],
-                ['label' => 'Freelancer invoices', 'icon' => 'file-earmark-person', 'planned' => 'freelancer-invoices', 'can' => ['freelancer_invoices.view', 'freelancer_invoices.submit']],
+                ['label' => 'Freelancer invoices', 'icon' => 'file-earmark-person', 'route' => 'freelancer-invoices', 'can' => ['freelancer_invoices.view', 'freelancer_invoices.submit']],
                 ['label' => 'Expenses', 'icon' => 'wallet2', 'route' => 'expenses', 'can' => ['expenses.view_all', 'expenses.submit', 'expenses.approve']],
                 ['label' => 'Client billing', 'icon' => 'cash-stack', 'route' => 'billing', 'can' => ['billing.view']],
-                ['label' => 'Exports', 'icon' => 'download', 'planned' => 'exports', 'can' => ['billing.view']],
+                ['label' => 'Exports', 'icon' => 'download', 'route' => 'exports', 'can' => ['billing.view']],
             ],
             'People' => [
                 ['label' => 'Directory', 'icon' => 'people', 'route' => 'people.index', 'active' => 'people.*', 'can' => ['people.view', 'people.view_basic']],

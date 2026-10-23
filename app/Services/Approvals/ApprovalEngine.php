@@ -168,6 +168,16 @@ class ApprovalEngine
     }
 
     /**
+     * Who the item is waiting with now.
+     *
+     * @return list<int>
+     */
+    public function inboxApproverIds(Model $approvable): array
+    {
+        return $this->pendingRows($approvable)->pluck('approver_id')->map(fn ($id) => (int) $id)->unique()->values()->all();
+    }
+
+    /**
      * Everything waiting for a person, directly or by delegation, oldest
      * first.
      *
