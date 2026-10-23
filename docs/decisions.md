@@ -153,3 +153,7 @@ People ask for leave from the leave page; days count weekdays that aren't bank h
 ## 37. The weekly rota digest
 
 Monday at 08:00, producers hear about clashes and unfilled crew calls on their events over the next four weeks; heads of department about clashes for their department's people and every unfilled call. Nothing is sent to someone with nothing to act on.
+
+## 38. S3 for documents
+
+`league/flysystem-aws-s3-v3` is added (approved by the project owner) so `DOCUMENTS_DISK=s3` can store documents in an S3-compatible bucket in production. Local and test environments keep the private local disk.
