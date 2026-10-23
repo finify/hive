@@ -62,7 +62,7 @@
             <x-empty title="Nobody free with that role and skill">Try a lower skill level, a different date range or anywhere in the world. People booked, on leave or marked unavailable on any of these days are left out.</x-empty>
         @else
             <table class="table">
-                <thead><tr><th>Person</th><th>Based in</th><th>Skill level</th><th class="num">Rating</th>@if ($showRates)<th class="num">Day rate</th>@endif<th>Type</th></tr></thead>
+                <thead><tr><th>Person</th><th>Based in</th><th>Skill level</th><th class="num">Rating</th>@if ($showRates)<th class="num">Day rate</th>@endif<th>Type</th>@if ($bookingFor)<th><span class="visually-hidden">Book</span></th>@endif</tr></thead>
                 <tbody>
                     @foreach ($results as $row)
                         @php($p = $row['person'])
@@ -80,6 +80,9 @@
                                 <td class="num">{{ $row['rate']?->format(false) ?? '—' }}</td>
                             @endif
                             <td>{{ $p['employment_type'] === 'freelancer' ? 'Freelance' : 'Staff' }}</td>
+                            @if ($bookingFor)
+                                <td class="text-end"><a href="{{ route('events.show', ['code' => $bookingFor['code'], 'tab' => 'crew', 'call' => $call, 'person' => $p['id']]) }}" class="btn btn-secondary btn-sm" wire:navigate>Book on {{ $bookingFor['code'] }}</a></td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

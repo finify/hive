@@ -93,6 +93,7 @@ return [
         'break_after_hours' => 6,
         'break_minutes' => 20,
         'weekly_average_hours' => 48,
+        'reference_weeks' => 17,
     ],
 
     /*

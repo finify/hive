@@ -5,8 +5,10 @@ namespace App\Actions\Resourcing;
 use App\Data\Clash;
 use App\Demo\Workspace;
 use App\Enums\AssignmentStatus;
+use App\Models\Assignment;
 use App\Models\User;
 use App\Support\DateRange;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
@@ -58,17 +60,21 @@ class ResolveClash
             $kept[] = DateRange::of($clash->dates->end->addDay()->toDateString(), $original->end->toDateString());
         }
 
-        if ($kept === []) {
-            $this->workspace->ledger->put('assignments', $assignmentId, ['status' => AssignmentStatus::Released->value]);
-        } else {
-            $this->workspace->ledger->put('assignments', $assignmentId, ['start_date' => $kept[0]->start->toDateString(), 'end_date' => $kept[0]->end->toDateString()]);
+        $newId = DB::transaction(function () use ($kept, $assignmentId, $assignment, $replacementId, $clash) {
+            $model = Assignment::query()->lockForUpdate()->findOrFail($assignmentId);
 
-            if (isset($kept[1])) {
-                $this->book($assignment, $assignment['person_id'], $kept[1], AssignmentStatus::from($assignment['status']));
+            if ($kept === []) {
+                $model->update(['status' => AssignmentStatus::Released]);
+            } else {
+                $model->update(['start_date' => $kept[0]->start->toDateString(), 'end_date' => $kept[0]->end->toDateString()]);
+
+                if (isset($kept[1])) {
+                    $this->book($assignment, $assignment['person_id'], $kept[1], AssignmentStatus::from($assignment['status']));
+                }
             }
-        }
 
-        $newId = $this->book($assignment, $replacementId, $clash->dates, AssignmentStatus::Confirmed);
+            return $this->book($assignment, $replacementId, $clash->dates, AssignmentStatus::Confirmed);
+        });
         $this->workspace->forget();
 
         $dates = $clash->dates->format();
@@ -107,23 +113,17 @@ class ResolveClash
      */
     private function book(array $template, int $personId, DateRange $dates, AssignmentStatus $status): int
     {
-        $id = $this->workspace->ledger->nextId('assignments', 10_000);
-
-        $this->workspace->ledger->push('new_assignments', [
-            'id' => $id,
+        return Assignment::query()->create([
             'crew_call_id' => $template['crew_call_id'],
             'event_id' => $template['event_id'],
             'person_id' => $personId,
             'start_date' => $dates->start->toDateString(),
             'end_date' => $dates->end->toDateString(),
-            'status' => $status->value,
+            'status' => $status,
             'agreed_rate_minor' => $this->workspace->rateBook($personId)->rateOn($dates->start)?->minor,
             'currency' => 'GBP',
-            'clash_override_reason' => null,
-            'requested_at' => now()->utc()->format('Y-m-d\TH:i:s\Z'),
-            'responded_at' => now()->utc()->format('Y-m-d\TH:i:s\Z'),
-        ]);
-
-        return $id;
+            'requested_at' => now(),
+            'responded_at' => now(),
+        ])->id;
     }
 }

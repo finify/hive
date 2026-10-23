@@ -5,6 +5,7 @@ namespace App\Actions\Resourcing;
 use App\Demo\Workspace;
 use App\Enums\AssignmentStatus;
 use App\Enums\EventStage;
+use App\Models\Assignment;
 use App\Support\Display;
 use Illuminate\Validation\ValidationException;
 
@@ -29,6 +30,18 @@ class ConfirmAssignment
             return ['That booking no longer exists.'];
         }
 
+        return $this->blockersFor($event, $assignment['person_id'], $assignment['start_date'], $assignment['end_date']);
+    }
+
+    /**
+     * Why a person could not be confirmed on an event for some dates, for a
+     * booking that may not exist yet.
+     *
+     * @param  array<string, mixed>  $event
+     * @return list<string>
+     */
+    public function blockersFor(array $event, int $personId, string $start, string $end): array
+    {
         $reasons = [];
 
         if (! EventStage::from($event['stage'])->isConfirmedOrLater() || in_array($event['stage'], [EventStage::Cancelled->value, EventStage::Lost->value], true)) {
@@ -36,14 +49,14 @@ class ConfirmAssignment
         }
 
         foreach ($this->workspace->leaveRequests() as $leave) {
-            if ($leave['person_id'] === $assignment['person_id'] && $leave['status'] === 'approved'
-                && $leave['start_date'] <= $assignment['end_date'] && $assignment['start_date'] <= $leave['end_date']) {
+            if ($leave['person_id'] === $personId && $leave['status'] === 'approved'
+                && $leave['start_date'] <= $end && $start <= $leave['end_date']) {
                 $reasons[] = 'Approved leave from '.Display::date($leave['start_date']).' to '.Display::date($leave['end_date']).'.';
             }
         }
 
         if (config('hive.documents.expired_mandatory', 'block') === 'block') {
-            foreach ($this->workspace->expiredMandatoryDocuments($assignment['person_id']) as $doc) {
+            foreach ($this->workspace->expiredMandatoryDocuments($personId) as $doc) {
                 $reasons[] = "{$doc['title']} expired on ".Display::date($doc['expires_at']).'.';
             }
         }
@@ -64,10 +77,7 @@ class ConfirmAssignment
             throw ValidationException::withMessages(['assignment' => $blockers]);
         }
 
-        $this->workspace->ledger->put('assignments', $assignmentId, array_merge(
-            $this->workspace->ledger->section('assignments')[$assignmentId] ?? [],
-            ['status' => AssignmentStatus::Confirmed->value],
-        ));
+        Assignment::query()->whereKey($assignmentId)->update(['status' => AssignmentStatus::Confirmed]);
         $this->workspace->forget();
 
         return AssignmentStatus::Confirmed;

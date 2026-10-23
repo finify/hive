@@ -5,6 +5,7 @@ namespace App\Actions\Events;
 use App\Demo\Workspace;
 use App\Enums\AssignmentStatus;
 use App\Enums\EventStage;
+use App\Models\Assignment;
 use App\Models\Event;
 use App\Models\EventStageChange;
 use App\Models\User;
@@ -132,7 +133,7 @@ class ChangeEventStage
                 continue;
             }
 
-            $this->workspace->ledger->put('assignments', $assignment['id'], ['status' => AssignmentStatus::Released->value]);
+            Assignment::query()->whereKey($assignment['id'])->update(['status' => AssignmentStatus::Released]);
             $this->workspace->notify($assignment['person_id'], 'booking', "Released from {$event['code']}", "{$event['name']} has been cancelled. Your booking is released.", 'my-work');
             $count++;
         }

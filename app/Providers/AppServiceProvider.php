@@ -54,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('event.change-stage', [EventPolicy::class, 'changeStage']);
         Gate::define('event.edit', [EventPolicy::class, 'edit']);
         Gate::define('event.update-task', [EventPolicy::class, 'updateTask']);
+        Gate::define('event.manage-crew', [EventPolicy::class, 'manageCrew']);
         Gate::define('leave.approve-request', [LeaveRequestPolicy::class, 'approve']);
 
         $this->logSignIns();

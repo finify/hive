@@ -47,4 +47,15 @@ class EventPolicy
     {
         return $this->edit($user, $event) || ($assigneeId !== null && $assigneeId === $user->person_id);
     }
+
+    /**
+     * Crew calls and bookings: the producer on their own events, or anyone
+     * who manages all crew.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    public function manageCrew(User $user, array $event): bool
+    {
+        return $user->can('crew.manage_all') || ($user->can('crew.manage') && $event['producer_id'] !== null && $event['producer_id'] === $user->person_id);
+    }
 }

@@ -216,77 +216,7 @@
 
     {{-- ============================================================ crew --}}
     @if ($tab === 'crew')
-        @if ($clashKeys)
-            <div class="callout is-negative mb-3">
-                <i class="bi bi-exclamation-octagon" aria-hidden="true"></i>
-                <div class="flex-grow-1">Someone on this event is also booked elsewhere on the same day. <a href="{{ route('clashes') }}" class="link" wire:navigate>Resolve the clash</a></div>
-            </div>
-        @endif
-        @if ($crewCalls->isEmpty())
-            <div class="card"><x-empty title="No crew calls yet">Add a crew call for each role you need, for example “2 x AV Technician, 4–6 Nov”. Booked people then appear here and on the rota.</x-empty></div>
-        @endif
-        <div class="d-grid gap-3">
-            @foreach ($crewCalls as $call)
-                @php($filled = $call['assignments']->filter(fn ($a) => in_array($a['status'], ['confirmed', 'first-hold'], true))->count())
-                <section class="card" wire:key="call-{{ $call['id'] }}">
-                    <div class="card-header flex-wrap">
-                        <h2 class="card-title">{{ $call['quantity'] }} × {{ $call['role_name'] }}</h2>
-                        <span class="small text-muted tnum">{{ DateRange::of($call['start_date'], $call['end_date'])->format() }}, {{ ucfirst($call['phase']) }}, call {{ $call['call_time'] }} to {{ $call['wrap_time'] }}</span>
-                        @if ($call['skill_id'])
-                            <span class="small text-muted">{{ $workspace->skills()->get($call['skill_id'])['name'] }} level {{ $call['min_skill_level'] }}+</span>
-                        @endif
-                        <span class="ms-auto"><x-pill :tone="$filled >= $call['quantity'] ? 'positive' : 'warning'">{{ $filled >= $call['quantity'] ? 'Filled' : ($filled ? 'Partially filled' : 'Open') }}, {{ $filled }} of {{ $call['quantity'] }}</x-pill></span>
-                    </div>
-                    @if ($call['assignments']->isNotEmpty())
-                        <div class="table-wrap border-0 rounded-0">
-                            <table class="table">
-                                <thead><tr><th>Person</th><th>Dates</th><th>Status</th>@if ($canSeeRates)<th class="num">Agreed day rate</th>@endif<th></th></tr></thead>
-                                <tbody>
-                                    @foreach ($call['assignments'] as $a)
-                                        @php($isClash = in_array('assignment:'.$a['id'], $clashKeys, true))
-                                        @php($expired = $workspace->expiredMandatoryDocuments($a['person_id']))
-                                        <tr wire:key="as-{{ $a['id'] }}">
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <x-avatar :name="$workspace->personName($a['person_id'])" :id="$a['person_id']" size="sm" />
-                                                    <a href="{{ route('people.show', $a['person_id']) }}" wire:navigate>{{ $workspace->personName($a['person_id']) }}</a>
-                                                    @if ($expired->isNotEmpty())
-                                                        <span class="flag is-negative" title="{{ $expired->pluck('title')->implode(', ') }} expired"><i class="bi bi-file-earmark-x" aria-hidden="true"></i>Document expired</span>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                            <td class="tnum">{{ DateRange::of($a['start_date'], $a['end_date'])->format() }}</td>
-                                            <td>
-                                                <x-status :value="AssignmentStatus::from($a['status'])" />
-                                                @if ($isClash)
-                                                    <x-pill tone="negative" icon="exclamation-octagon">Clash</x-pill>
-                                                @endif
-                                                @if ($a['clash_override_reason'] ?? null)
-                                                    <span class="small text-muted d-block">Overlap accepted: {{ $a['clash_override_reason'] }}</span>
-                                                @endif
-                                            </td>
-                                            @if ($canSeeRates)
-                                                <td class="num">{{ isset($a['agreed_rate_minor']) && $a['agreed_rate_minor'] ? Money::of($a['agreed_rate_minor'])->format() : '—' }}</td>
-                                            @endif
-                                            <td class="text-end">
-                                                @if ($isClash && $canManageCrew)
-                                                    <a href="{{ route('clashes') }}" class="btn btn-secondary btn-sm" wire:navigate>Resolve</a>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <div class="card-body text-muted">Nobody booked yet. @if ($canManageCrew)<a class="link" href="{{ route('availability', ['role' => $call['role_name'], 'from' => $call['start_date'], 'to' => $call['end_date']]) }}" wire:navigate>Find someone free</a>@endif</div>
-                    @endif
-                    @if ($call['notes'])
-                        <div class="card-body pt-0"><p class="note small mb-0">{{ $call['notes'] }}</p></div>
-                    @endif
-                </section>
-            @endforeach
-        </div>
+        <livewire:events.crew :event-id="$event['id']" :book-call="$bookCall" :book-person="$bookPerson" :key="'crew-'.$event['id']" />
     @endif
 
     {{-- ============================================================ budget --}}

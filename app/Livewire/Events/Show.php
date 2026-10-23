@@ -46,6 +46,13 @@ class Show extends Component
 
     public string $fileType = 'brief';
 
+    /** From "Book" on the availability search: open the booking form for this call and person. */
+    #[Url(as: 'call', except: null)]
+    public ?int $bookCall = null;
+
+    #[Url(as: 'person', except: null)]
+    public ?int $bookPerson = null;
+
     /** @var TemporaryUploadedFile|null */
     public $upload = null;
 
@@ -204,7 +211,6 @@ class Show extends Component
         $user = auth()->user();
         $nextStages = collect($stage->allowedTransitions())->filter(fn ($to) => $user->can('event.change-stage', [$event, $to]))->values();
 
-        $assignments = $workspace->assignments()->where('event_id', $event['id']);
         $clashKeys = collect($workspace->clashes())
             ->filter(fn ($c) => in_array($event['id'], $c->eventIds(), true))
             ->flatMap(fn ($c) => [$c->first->key(), $c->second->key()])
@@ -218,12 +224,9 @@ class Show extends Component
             'client' => $workspace->clients()->get($event['client_id']),
             'venue' => $workspace->venues()->get($event['venue_id']),
             'financials' => $viewer->canSeeBudget($event) ? $workspace->financials($event['id']) : null,
-            'crewCalls' => $workspace->crewCalls()->where('event_id', $event['id'])->sortBy('start_date')->map(fn ($c) => $c + [
-                'assignments' => $assignments->where('crew_call_id', $c['id'])->map(fn ($a) => $viewer->presentAssignment($a))->values(),
-            ]),
             'clashKeys' => $clashKeys,
-            'canManageCrew' => $viewer->canManageCrew($event),
-            'canSeeRates' => $user->can('rates.view'),
+            'bookCall' => $this->bookCall,
+            'bookPerson' => $this->bookPerson,
             'canEdit' => $user->can('event.edit', [$event]),
         ];
 

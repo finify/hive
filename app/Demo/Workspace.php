@@ -14,21 +14,27 @@ use App\Enums\LeaveStatus;
 use App\Enums\PurchaseOrderStatus;
 use App\Enums\SupplierInvoiceStatus;
 use App\Enums\TimesheetStatus;
+use App\Models\Assignment;
 use App\Models\Client;
+use App\Models\CrewCall;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\Event;
+use App\Models\LeaveRequest;
 use App\Models\Person;
 use App\Models\Skill;
 use App\Models\Supplier;
+use App\Models\Unavailability;
 use App\Models\User;
 use App\Models\Venue;
+use App\Notifications\HiveNotice;
 use App\Support\DateRange;
 use App\Support\Finance\HealthCalculator;
 use App\Support\Finance\InvoiceTolerance;
 use App\Support\Finance\RateBook;
 use App\Support\Money;
 use App\Support\Resourcing\ClashDetector;
+use App\Support\Resourcing\ShiftPattern;
 use App\Support\Time\WorkingTimeRules;
 use Carbon\CarbonImmutable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -341,26 +347,19 @@ class Workspace
      */
     public function crewCalls(): Collection
     {
-        return $this->memo('crew_calls', fn () => $this->data->collect('crew_calls'));
+        return $this->memo('crew_calls', fn () => Rows::keyed(
+            CrewCall::query()->orderBy('id')->get()->map(fn (CrewCall $c) => $c->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
-     * Assignments with demo changes applied, including any created during the demo.
-     *
      * @return Collection<int, array<string, mixed>>
      */
     public function assignments(): Collection
     {
-        return $this->memo('assignments', function () {
-            $changes = $this->ledger->section('assignments');
-            $base = $this->data->collect('assignments');
-
-            foreach ($this->ledger->section('new_assignments') as $created) {
-                $base->put($created['id'], $created);
-            }
-
-            return $base->map(fn (array $a) => isset($changes[$a['id']]) ? array_merge($a, $changes[$a['id']]) : $a);
-        });
+        return $this->memo('assignments', fn () => Rows::keyed(
+            Assignment::query()->orderBy('id')->get()->map(fn (Assignment $a) => $a->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -376,12 +375,9 @@ class Workspace
      */
     public function leaveRequests(): Collection
     {
-        return $this->memo('leave', function () {
-            $changes = $this->ledger->section('leave');
-
-            return $this->data->collect('leave_requests')
-                ->map(fn (array $l) => isset($changes[$l['id']]) ? array_merge($l, $changes[$l['id']]) : $l);
-        });
+        return $this->memo('leave', fn () => Rows::keyed(
+            LeaveRequest::query()->orderBy('id')->get()->map(fn (LeaveRequest $l) => $l->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -389,7 +385,9 @@ class Workspace
      */
     public function unavailability(): Collection
     {
-        return $this->memo('unavailability', fn () => $this->data->collect('unavailability'));
+        return $this->memo('unavailability', fn () => Rows::keyed(
+            Unavailability::query()->orderBy('id')->get()->map(fn (Unavailability $u) => $u->toWorkspaceArray())->all(),
+        ));
     }
 
     /**
@@ -498,6 +496,32 @@ class Workspace
                     <=> [$local($a), $a['skill_level'], $a['rating'] ?? 0, $b['rate'] === null ? PHP_INT_MAX : $b['rate']->minor];
             })
             ->values();
+    }
+
+    /**
+     * Working time warnings for a person's live bookings, keyed by assignment
+     * id. $proposed adds a booking that doesn't exist yet (key "new").
+     *
+     * @param  array{dates: DateRange, call_time: string, wrap_time: string}|null  $proposed
+     * @return array<int|string, list<string>>
+     */
+    public function shiftWarnings(int $personId, ?array $proposed = null, ?int $ignoreAssignmentId = null): array
+    {
+        $bookings = $this->assignments()
+            ->filter(fn ($a) => $a['person_id'] === $personId && $a['id'] !== $ignoreAssignmentId && AssignmentStatus::from($a['status'])->holdsPerson())
+            ->map(function ($a) {
+                $call = $this->crewCalls()->get($a['crew_call_id']);
+
+                return ['id' => $a['id'], 'dates' => DateRange::of($a['start_date'], $a['end_date']), 'call_time' => $call['call_time'] ?? '09:00', 'wrap_time' => $call['wrap_time'] ?? '18:00'];
+            })
+            ->values()
+            ->all();
+
+        if ($proposed !== null) {
+            $bookings[] = ['id' => 'new'] + $proposed;
+        }
+
+        return ShiftPattern::fromConfig()->warnings($bookings);
     }
 
     /**
@@ -873,6 +897,9 @@ class Workspace
     // ================================================================== platform
 
     /**
+     * A person's notices: the seeded ones from the demo data and those stored
+     * for their sign-in.
+     *
      * @return Collection<int, array<string, mixed>>
      */
     public function notificationsFor(?int $personId): Collection
@@ -883,30 +910,43 @@ class Workspace
 
         $read = $this->ledger->section('notifications_read');
 
-        return collect($this->data->raw('notifications'))
-            ->merge($this->ledger->section('notifications'))
+        $seeded = collect($this->data->raw('notifications'))
             ->where('person_id', $personId)
             ->map(function ($n) use ($read) {
                 $n['key'] = md5($n['person_id'].$n['title'].$n['at']);
                 $n['read'] = $n['read'] || isset($read[$n['key']]);
 
                 return $n;
-            })
-            ->sortByDesc('at')
-            ->values();
+            });
+
+        $user = User::query()->where('person_id', $personId)->first();
+        $person = Person::query()->withTrashed()->find($personId);
+
+        return $this->stored($person)->merge($user ? $this->stored($user) : collect())->merge($seeded)->sortByDesc('at')->values();
     }
 
     /**
-     * Everything in a user's bell: their stored notifications (document
-     * reminders, from phase 1) and the demo notifications for their person.
+     * Everything in a user's bell.
      *
      * @return Collection<int, array<string, mixed>>
      */
     public function inboxFor(User $user): Collection
     {
-        $stored = $user->notifications()->latest()->limit(50)->get()->toBase()->map(fn (DatabaseNotification $n) => [
+        return $user->person_id ? $this->notificationsFor($user->person_id) : $this->stored($user)->values();
+    }
+
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
+    private function stored(User|Person|null $owner): Collection
+    {
+        if ($owner === null) {
+            return collect();
+        }
+
+        return Rows::of($owner->notifications()->latest()->limit(50)->get()->toBase()->map(fn (DatabaseNotification $n) => [
             'key' => $n->id,
-            'person_id' => $user->person_id,
+            'person_id' => $owner instanceof Person ? $owner->id : $owner->person_id,
             'type' => $n->data['type'] ?? 'notice',
             'title' => $n->data['title'] ?? 'Notice',
             'body' => $n->data['body'] ?? '',
@@ -914,17 +954,22 @@ class Workspace
             'at' => $n->created_at?->utc()->format('Y-m-d\TH:i:s\Z'),
             'read' => $n->read_at !== null,
             'stored' => true,
-        ]);
-
-        return $stored->merge($this->notificationsFor($user->person_id))->sortByDesc('at')->values();
+        ])->all());
     }
 
-    public function notify(int $personId, string $type, string $title, string $body, string $link): void
+    /**
+     * Sends a notice to a person's bell and email. Stored against the person,
+     * so freelancers without a sign-in keep the history.
+     */
+    public function notify(?int $personId, string $type, string $title, string $body, string $link): void
     {
-        $this->ledger->push('notifications', [
-            'person_id' => $personId, 'type' => $type, 'title' => $title, 'body' => $body, 'link' => $link,
-            'at' => now()->utc()->format('Y-m-d\TH:i:s\Z'), 'read' => false,
-        ]);
+        $person = $personId ? Person::query()->find($personId) : null;
+
+        if ($person === null) {
+            return;
+        }
+
+        $person->notify(new HiveNotice($person->id, $type, $title, $body, $link));
     }
 
     /**

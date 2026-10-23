@@ -21,6 +21,7 @@ class Notifications extends Component
         }
 
         auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+        auth()->user()->person?->unreadNotifications()->update(['read_at' => now()]);
 
         $this->workspace()->forget();
         $this->redirectRoute('notifications', navigate: true);

@@ -33,7 +33,7 @@ It is **Friday 23 October 2026** in the demo. Northwind's partner summit is live
 
 Super admin, operations director, finance and HR must use two-factor authentication. In demo mode the challenge screen shows the current code from the persona's authenticator, with a button to use it.
 
-The band at the top of every page switches persona without signing out, so changes carry across. **Reset demo** puts back everything kept in your session. Events, their tasks and files are in the database, so changes to them are shared by every visitor until `hive:demo-refresh` restores them each night.
+The band at the top of every page switches persona without signing out, so changes carry across. **Reset demo** puts back everything kept in your session. Events and bookings are in the database, so changes to them are shared by every visitor until `hive:demo-refresh` restores them, every hour.
 
 ### The walkthrough
 
@@ -45,13 +45,13 @@ The band at the top of every page switches persona without signing out, so chang
 6. **Ask Hive**: "Which events are at risk this month and why?" As Priya you get a cited answer; as Kofi, a refusal.
 7. **Sam**: the audit log shows everything just done, with values before and after.
 
-Also worth a look: as Hannah, **Add enquiry** on the events list, then take it to Confirmed: the stage rules ask for a client, dates and a budget, then the signed contract, and confirming adds the standard task list for its type. Drag an enquiry across the pipeline board (the stage rules still apply), the event budget tab with euro costs for Lisbon, Leah's view of Ola Brennan's expired insurance, and the access matrix in action as Kofi.
+Also worth a look: as Hannah on the Lisbon event's crew tab, add a crew call for 5 Nov and book Mei Lin, who is already confirmed elsewhere that day; Hive asks why, the clash goes red on the rota, and resolving it moves the day to someone free and tells both. The call sheet PDF is on the same tab. As Hannah, **Add enquiry** on the events list, then take it to Confirmed: the stage rules ask for a client, dates and a budget, then the signed contract, and confirming adds the standard task list for its type. Drag an enquiry across the pipeline board (the stage rules still apply), the event budget tab with euro costs for Lisbon, Leah's view of Ola Brennan's expired insurance, and the access matrix in action as Kofi.
 
 ## Where the demo data comes from
 
 Everything you see starts from JSON in [`database/demo`](database/demo): people, events, crew calls, assignments, leave, timesheets, budgets, purchase orders, invoices, milestones, notifications and seeded history. The figures reconcile: budgets are the sum of their lines, crew actuals are approved time multiplied by the effective day rate, and foreign costs carry their original amount, rate and sterling equivalent.
 
-Sign-in, roles, permissions, invitations, two-factor, the audit log, people, the directory and events are in the database, seeded from that JSON. The modules still on JSON are read through one layer (`app/Demo`), scoped by the same permissions. In the later build phases each module moves to Eloquent models behind the same Actions.
+Sign-in, roles, permissions, invitations, two-factor, the audit log, people, the directory, events and resourcing are in the database, seeded from that JSON. The modules still on JSON are read through one layer (`app/Demo`), scoped by the same permissions. In the later build phases each module moves to Eloquent models behind the same Actions.
 
 ## What works
 
@@ -61,11 +61,11 @@ Sign-in, roles, permissions, invitations, two-factor, the audit log, people, the
 | Layout, light and dark themes, toasts, modals, empty states, status pills, global search | Built |
 | Dashboards for every role, with "Needs attention" ranked by urgency | Built on demo data |
 | Events: add and edit with phases and team, stage rules with history, task lists from templates per event type, private event files with signed links; list, pipeline board, calendar | Built on the database and tested (phase 2) |
-| Rota (2 weeks or a month), clashes, resolve flow with suggestions, availability search, crew calls | Built on demo data |
+| Resourcing: crew calls, booking with clash and working time checks, booking requests freelancers accept or decline, holds and bulk confirm, unavailability, basic leave requests, rota (week or month), clashes and the resolve flow, availability search, call sheet PDFs, weekly rota digest | Built on the database and tested (phase 3) |
 | Timesheets, approvals inbox with working time flags, return with comment, period lock | Built on demo data |
 | Budgets, cost lines, purchase orders, supplier invoices with tolerance, expenses, client billing | Built on demo data |
 | People and directory: add and edit staff and freelancers, skills, effective-dated day rates, encrypted restricted fields, document uploads with signed links, expiry reminders; clients, suppliers and venues with contacts | Built on the database and tested (phase 1) |
-| Leave | Built on demo data |
+| Leave | Requests and approval built (phase 3); balances and the full module are phase 5 |
 | Ask Hive with policy-scoped read-only tools, citations, logging and rate limits | Built with a local engine; the Anthropic engine is phase 7 |
 | Freelancer invoices, exports, onboarding, skills admin, reports, settings, integrations | Later phases (each has a page saying which) |
 

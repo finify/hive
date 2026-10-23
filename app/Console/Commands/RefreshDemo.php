@@ -4,23 +4,29 @@ namespace App\Console\Commands;
 
 use App\Models\Document;
 use App\Models\Event;
+use App\Models\LeaveRequest;
 use App\Models\Task;
 use App\Models\TaskTemplate;
+use App\Models\Unavailability;
+use App\Notifications\CallSheetIssued;
+use App\Notifications\HiveNotice;
 use Database\Seeders\DemoEventsSeeder;
+use Database\Seeders\DemoResourcingSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Events live in the database from phase 2, so changes made on the demo are
- * shared by every visitor until this puts the seeded events back. Scheduled
- * nightly while demo mode is on; never runs in production.
+ * Events (phase 2) and resourcing (phase 3) live in the database, so changes
+ * made on the demo are shared by every visitor until this puts the seeded
+ * data back. Scheduled hourly while demo mode is on; never runs in
+ * production.
  */
-class RefreshDemoEvents extends Command
+class RefreshDemo extends Command
 {
     protected $signature = 'hive:demo-refresh';
 
-    protected $description = 'Put the demo events, tasks and event files back to the seeded state';
+    protected $description = 'Put the demo events, resourcing and notices back to the seeded state';
 
     public function handle(): int
     {
@@ -37,12 +43,17 @@ class RefreshDemoEvents extends Command
             Document::query()->where('documentable_type', Event::class)->delete();
             Task::query()->delete();
             TaskTemplate::query()->delete();
+            // Crew calls and assignments go with their events.
             Event::withTrashed()->forceDelete();
+            LeaveRequest::query()->delete();
+            Unavailability::query()->delete();
+            DB::table('notifications')->whereIn('type', [HiveNotice::class, CallSheetIssued::class])->delete();
         });
 
         $disk->delete($files->all());
         $this->callSilently('db:seed', ['--class' => DemoEventsSeeder::class, '--force' => true]);
-        $this->info('Demo events refreshed.');
+        $this->callSilently('db:seed', ['--class' => DemoResourcingSeeder::class, '--force' => true]);
+        $this->info('Demo data refreshed.');
 
         return self::SUCCESS;
     }

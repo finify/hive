@@ -3,8 +3,10 @@
 namespace App\Livewire;
 
 use App\Actions\Resourcing\RespondToBookingRequest;
+use App\Actions\Resourcing\SetUnavailability;
 use App\Livewire\Concerns\UsesWorkspace;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -14,6 +16,30 @@ use Livewire\Component;
 class MyWork extends Component
 {
     use UsesWorkspace;
+
+    /** @var array{start_date: string, end_date: string, note: string} */
+    public array $unavailableForm = ['start_date' => '', 'end_date' => '', 'note' => ''];
+
+    public function addUnavailable(SetUnavailability $set): void
+    {
+        $this->resetValidation();
+
+        try {
+            $set->add(auth()->user(), $this->unavailableForm);
+        } catch (ValidationException $e) {
+            $this->setErrorBag(collect($e->errors())->mapWithKeys(fn ($m, $k) => ['unavailableForm.'.$k => $m])->all());
+
+            return;
+        }
+
+        $this->unavailableForm = ['start_date' => '', 'end_date' => '', 'note' => ''];
+        $this->toast('Marked unavailable.');
+    }
+
+    public function removeUnavailable(int $id, SetUnavailability $set): void
+    {
+        $this->attempt(fn () => $set->remove(auth()->user(), $id), 'Removed.');
+    }
 
     public function respond(int $assignmentId, bool $accept, RespondToBookingRequest $respond): void
     {
@@ -43,6 +69,7 @@ class MyWork extends Component
             'released' => $mine->filter(fn ($r) => in_array($r['assignment']['status'], ['released', 'declined'], true) && $r['assignment']['end_date'] >= $today),
             'documents' => $workspace->documents()->where('person_id', $personId),
             'unavailable' => $workspace->unavailability()->where('person_id', $personId)->filter(fn ($u) => $u['end_date'] >= $today),
+            'isFreelancer' => $workspace->isFreelancer($personId),
             'clashes' => collect($this->insights()->clashes())->filter(fn ($c) => $c->personId === $personId),
         ]);
     }

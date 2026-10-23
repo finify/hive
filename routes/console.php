@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\SendDocumentExpiryReminders;
+use App\Jobs\SendWeeklyRotaDigest;
 use Illuminate\Support\Facades\Schedule;
 
 /*
@@ -8,9 +9,10 @@ use Illuminate\Support\Facades\Schedule;
 | phases are added as their modules move to the database.
 */
 
+Schedule::job(new SendWeeklyRotaDigest)->weeklyOn(1, '08:00')->timezone('Europe/London')->name('weekly-rota-digest');
 Schedule::job(new SendDocumentExpiryReminders)->dailyAt('07:00')->timezone('Europe/London')->name('document-expiry-reminders');
 
-// The demo's events are shared by every visitor; put them back each night.
-Schedule::command('hive:demo-refresh')->dailyAt('03:00')->timezone('Europe/London')
+// The demo's events and bookings are shared by every visitor; put them back each hour.
+Schedule::command('hive:demo-refresh')->hourly()
     ->when(fn () => (bool) config('hive.demo.enabled') && ! app()->isProduction())
     ->name('demo-refresh');

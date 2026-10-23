@@ -38,12 +38,27 @@ class Availability extends Component
     #[Url(except: '')]
     public string $country = '';
 
+    /** Set when the search was opened from a crew call, to book from the results. */
+    #[Url(except: null)]
+    public ?int $call = null;
+
     public function mount(): void
     {
         $today = $this->workspace()->today();
         $this->role = $this->role ?: 'AV Technician';
         $this->from = $this->from ?: $today->addWeeks(2)->startOfWeek()->toDateString();
         $this->to = $this->to ?: $today->addWeeks(2)->startOfWeek()->addDays(2)->toDateString();
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function bookingEvent(): ?array
+    {
+        $call = $this->call ? $this->workspace()->crewCalls()->get($this->call) : null;
+        $event = $call ? $this->workspace()->event($call['event_id']) : null;
+
+        return $event && auth()->user()->can('event.manage-crew', [$event]) ? $event : null;
     }
 
     public function render(): View
@@ -70,6 +85,7 @@ class Availability extends Component
             'results' => $results,
             'valid' => $valid,
             'showRates' => auth()->user()->can('rates.view'),
+            'bookingFor' => $this->bookingEvent(),
         ]);
     }
 }

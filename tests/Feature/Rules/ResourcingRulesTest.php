@@ -6,7 +6,9 @@ use App\Actions\Resourcing\ConfirmAssignment;
 use App\Actions\Resourcing\ResolveClash;
 use App\Actions\Resourcing\RespondToBookingRequest;
 use App\Enums\EventStage;
+use App\Models\Assignment;
 use App\Models\Event;
+use App\Models\LeaveRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\ValidationException;
 
@@ -78,8 +80,9 @@ it('refuses a replacement who is not free', function () {
 it('blocks confirmation over approved leave (rule 2)', function () {
     // Jamie is booked on EV-26118 from 2 Nov; give them approved leave that week.
     $assignment = $this->workspace()->assignments()->first(fn ($a) => $a['person_id'] === 10 && $a['event_id'] === 10);
-    $this->workspace()->ledger->put('assignments', $assignment['id'], ['status' => 'first-hold']);
-    $this->workspace()->ledger->put('leave', 1, ['start_date' => '2026-11-02', 'end_date' => '2026-11-06']);
+    Assignment::query()->whereKey($assignment['id'])->update(['status' => 'first-hold']);
+    LeaveRequest::query()->whereKey(1)->update(['start_date' => '2026-11-02', 'end_date' => '2026-11-06']);
+    $this->workspace()->forget();
 
     expect(app(ConfirmAssignment::class)->blockers($assignment['id']))->toContain('Approved leave from 2 Nov 2026 to 6 Nov 2026.');
 });

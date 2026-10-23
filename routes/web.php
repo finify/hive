@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CallSheetController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DocumentDownloadController;
 use App\Http\Controllers\InvitationController;
@@ -32,6 +33,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/events/calendar', Livewire\Events\Calendar::class)->name('events.calendar')->middleware('can:events.view');
         Route::get('/events/new', Livewire\Events\Form::class)->name('events.create')->middleware('can:events.create');
         Route::get('/events/{code}/edit', Livewire\Events\Form::class)->name('events.edit')->middleware('can:events.edit');
+        Route::get('/events/{code}/call-sheets/{date}', CallSheetController::class)->name('call-sheets.show');
         Route::get('/events/{code}', Livewire\Events\Show::class)->name('events.show')->middleware('can:events.view');
 
         Route::get('/resourcing/rota', Livewire\Resourcing\Rota::class)->name('rota')->middleware('can:rota.view');

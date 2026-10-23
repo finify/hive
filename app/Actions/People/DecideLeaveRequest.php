@@ -4,6 +4,7 @@ namespace App\Actions\People;
 
 use App\Demo\Workspace;
 use App\Enums\LeaveStatus;
+use App\Models\LeaveRequest;
 use App\Models\User;
 use App\Support\DateRange;
 use Illuminate\Support\Facades\Gate;
@@ -47,7 +48,7 @@ class DecideLeaveRequest
         Gate::forUser($user)->authorize('leave.approve-request', [$leave]);
 
         $status = $approve ? LeaveStatus::Approved : LeaveStatus::Declined;
-        $this->workspace->ledger->put('leave', $leaveId, ['status' => $status->value, 'approved_by' => $user->person_id]);
+        LeaveRequest::query()->whereKey($leaveId)->update(['status' => $status, 'approved_by' => $user->person_id, 'approved_at' => now()]);
         $this->workspace->forget();
 
         activity('people')

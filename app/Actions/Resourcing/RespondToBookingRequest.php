@@ -4,6 +4,7 @@ namespace App\Actions\Resourcing;
 
 use App\Demo\Workspace;
 use App\Enums\AssignmentStatus;
+use App\Models\Assignment;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -30,13 +31,13 @@ class RespondToBookingRequest
         Gate::forUser($user)->authorize('assignment.respond', [$assignment]);
 
         $event = $this->workspace->event($assignment['event_id']);
-        $now = now()->utc()->format('Y-m-d\TH:i:s\Z');
+        $model = Assignment::query()->findOrFail($assignmentId);
 
         if (! $accept) {
-            $this->workspace->ledger->put('assignments', $assignmentId, ['status' => AssignmentStatus::Declined->value, 'responded_at' => $now]);
+            $model->update(['status' => AssignmentStatus::Declined, 'responded_at' => now()]);
             $status = AssignmentStatus::Declined;
         } else {
-            $this->workspace->ledger->put('assignments', $assignmentId, ['responded_at' => $now]);
+            $model->update(['responded_at' => now()]);
             $this->workspace->forget();
             $status = $this->confirm->canConfirm($assignmentId)
                 ? $this->confirm->handle($assignmentId)

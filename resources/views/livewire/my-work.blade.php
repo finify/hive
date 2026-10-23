@@ -88,7 +88,28 @@
                     </ul>
                 @endif
             </section>
-            @if ($unavailable->isNotEmpty())
+            @if ($isFreelancer)
+                <section class="card">
+                    <div class="card-header"><h2 class="card-title">When you can’t work</h2></div>
+                    @if ($unavailable->isNotEmpty())
+                        <ul class="list-rows">
+                            @foreach ($unavailable as $u)
+                                <li wire:key="un-{{ $u['id'] }}">
+                                    <div class="row-main"><div class="tnum">{{ DateRange::of($u['start_date'], $u['end_date'])->format() }}</div>@if ($u['note'])<div class="row-sub">{{ $u['note'] }}</div>@endif</div>
+                                    <button type="button" class="btn btn-quiet btn-sm" wire:click="removeUnavailable({{ $u['id'] }})" aria-label="Remove {{ DateRange::of($u['start_date'], $u['end_date'])->format() }}">Remove</button>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    <form class="card-body row g-2" wire:submit="addUnavailable" novalidate>
+                        <x-form-field name="start_date" model="unavailableForm.start_date" label="From" type="date" col="col-6" />
+                        <x-form-field name="end_date" model="unavailableForm.end_date" label="To" type="date" col="col-6" />
+                        <x-form-field name="note" model="unavailableForm.note" label="Note (optional)" col="col-12" placeholder="For example Booked elsewhere" />
+                        <div class="col-12"><button type="submit" class="btn btn-secondary" wire:loading.attr="disabled">Mark unavailable</button></div>
+                        <div class="col-12 small text-muted">Producers won’t be offered you on these dates.</div>
+                    </form>
+                </section>
+            @elseif ($unavailable->isNotEmpty())
                 <section class="card">
                     <div class="card-header"><h2 class="card-title">Marked unavailable</h2></div>
                     <ul class="list-rows">

@@ -3,6 +3,7 @@
 namespace App\Actions\Resourcing;
 
 use App\Demo\Workspace;
+use App\Models\Assignment;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
@@ -32,7 +33,7 @@ class AcceptClash
 
         Gate::forUser($user)->authorize('assignment.reassign', [$assignment]);
 
-        $this->workspace->ledger->put('assignments', $assignmentId, ['clash_override_reason' => $reason]);
+        Assignment::query()->whereKey($assignmentId)->update(['clash_override_reason' => $reason]);
         $this->workspace->forget();
 
         activity('resourcing')

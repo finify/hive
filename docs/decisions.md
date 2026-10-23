@@ -106,6 +106,50 @@ One standard list per event type, with due dates as offsets from the event's sta
 
 Rule 1's "signed contract" is a `documents` row of type contract on the event, uploaded on the Files tab. Event files can be opened by anyone who can see the event; seeded files are records without a file.
 
-## 26. Shared demo data is refreshed nightly
+## 26. Shared demo data is refreshed (superseded by 35)
 
 Moving events into the database means changes made on the public demo are seen by every visitor, not kept in one session. `hive:demo-refresh` puts the seeded events, tasks and event files back, and is scheduled at 03:00 UK time while demo mode is on. It refuses to run in production. The rest of the walkthrough still lives in the session.
+
+## 27. Phase 3: resourcing is in the database
+
+Crew calls, assignments, unavailability and leave requests are Eloquent models, seeded from the JSON with the same ids, so timesheets and budgets (still JSON) keep pointing at the right bookings. `Workspace` returns the same shapes, so the rota, clashes list, availability search, dashboards and Ask Hive did not change.
+
+## 28. Crew calls: derived status, phase by type
+
+A crew call's status (open, partially filled, filled) is worked out from its confirmed and first-hold bookings rather than stored, so it can't disagree with them. Its phase is a phase type (build, live...) rather than a link to a phase row, because a call often spans phases and phases are edited freely. A call can't be cut below the number already booked, or removed while anyone is booked on it.
+
+## 29. No assignment_days table yet
+
+The data model suggests one row per person per day for fast clash checks. With a few hundred bookings, clash detection over each person's date ranges (indexed on person and dates) is quick, so the table is left until volumes need it; `ClashDetector` is the only place that would change.
+
+## 30. Booking over a clash
+
+Section 5.5 asks for a reason before a clashing booking is made, and phase 3's acceptance test expects that booking to show as a clash until it is resolved. Both hold: the reason is always required, and where it goes depends on the booking. A confirmed booking over confirmed bookings only stores it as `clash_override_reason`, the recorded override of rule 1, and the overlap stands as accepted. Anything else (a hold, or an overlap with leave or unavailability) stores it as `clash_note`; the clash stays red on the rota until it is resolved or someone chooses "Keep both". The producer of the other event is told by the `DetectClashes` job.
+
+## 31. Freelancers are asked; employees are booked
+
+Booking a freelancer sends a request with the event, dates, location, role and day rate; it is a hold until they accept, and accepting confirms it once the event is confirmed. Employees are booked directly and told. "Confirm first holds" on a confirmed event confirms every first hold it can, and lists the ones it can't (leave, an expired document, an unanswered request).
+
+## 32. Notifications belong to the person
+
+Notices (booking requests, releases, clashes, approvals) are stored notifications on the `Person` and emailed to them, so freelancers without a Hive sign-in still get the email and keep the history if they get one. The bell shows the person's notices, the sign-in's own (document reminders) and the seeded demo notices.
+
+## 33. Working time warnings on bookings
+
+Each booked day counts as a shift from the crew call's call time to its wrap time, with a scheduled 20-minute break. Warnings: less than 11 hours' rest between shifts, a shift over 12 hours, and an average above 48 hours a week over a 17-week reference period (counting booked weeks only; a single long week does not trigger it). Thresholds are in `config/hive.php`. Nobody in the demo has opted out of the 48-hour limit, so there is no opt-out field yet; it arrives with settings in phase 6. The "no break on a shift over 6 hours" check needs recorded breaks, so it applies to timesheets, not bookings. These are warnings, not legal advice, and never block.
+
+## 34. Call sheets
+
+One PDF per event per day with anyone booked: venue address with access and power notes, first call and last wrap, crew by call time with role and where to report, and the event team as contacts with their work phones. Crew phone numbers are left off. Producers and crew managers can open and email them; people booked that day can open them. Emailing attaches the PDF and leaves a notice in the person's history. The PDF uses DejaVu Sans because dompdf can't read the self-hosted woff2 fonts.
+
+## 35. The shared demo resets every hour
+
+Events and bookings are shared by everyone using the public demo, and the walkthrough depends on Kofi's clash being there. `hive:demo-refresh` now restores events, resourcing and the notices they sent every hour while demo mode is on; the demo band says so. It still refuses to run in production.
+
+## 36. Leave in phase 3 is basic
+
+People ask for leave from the leave page; days count weekdays that aren't bank holidays, and their line manager or HR decides (the existing approval flow). Overlapping requests and dates with no working days are refused, and leave that hasn't started can be cancelled. Half days, balances that move and the full module are phase 5.
+
+## 37. The weekly rota digest
+
+Monday at 08:00, producers hear about clashes and unfilled crew calls on their events over the next four weeks; heads of department about clashes for their department's people and every unfilled call. Nothing is sent to someone with nothing to act on.
