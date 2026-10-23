@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "name": "Northwind Systems",
+    "sector": "Technology",
+    "billing_address": "87 Victoria Street, London",
+    "vat_number": "GB754708455",
+    "payment_terms_days": 30,
+    "account_lead_id": 25,
+    "contacts": [
+      {
+        "name": "Rachel Hale",
+        "role": "Head of Events",
+        "email": "rachel.hale@northwind.example",
+        "phone": "020 7946 0880",
+        "is_primary": true
+      },
+      {
+        "name": "David Byrne",
+        "role": "Procurement Manager",
+        "email": "david.byrne@northwind.example",
+        "phone": "020 7946 0396",
+        "is_primary": false
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Halcyon Health",
+    "sector": "Healthcare",
+    "billing_address": "90 King Street, Cambridge",
+    "vat_number": "GB585765663",
+    "payment_terms_days": 30,
+    "account_lead_id": 4,
+    "contacts": [
+      {
+        "name": "Amira Wallace",
+        "role": "Head of Events",
+        "email": "amira.wallace@halcyon.example",
+        "phone": "020 7946 0246",
+        "is_primary": true
+      },
+      {
+        "name": "Henrik Edwards",
+        "role": "Procurement Manager",
+        "email": "henrik.edwards@halcyon.example",
+        "phone": "020 7946 0370",
+        "is_primary": false
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Arclight Audio",
+    "sector": "Consumer electronics",
+    "billing_address": "60 Station Approach, Manchester",
+    "vat_number": "GB691827214",
+    "payment_terms_days": 30,
+    "account_lead_id": 5,
+    "contacts": [
+      {
+        "name": "Lucy Yilmaz",
+        "role": "Head of Events",
+        "email": "lucy.yilmaz@arclight.example",
+        "phone": "020 7946 0993",
+        "is_primary": true
+      },
+      {
+        "name": "Mateo Mackie",
+        "role": "Procurement Manager",
+        "email": "mateo.mackie@arclight.example",
+        "phone": "020 7946 0334",
+        "is_primary": false
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Meridian Bank",
+    "sector": "Financial services",
+    "billing_address": "101 King Street, London",
+    "vat_number": "GB983366804",
+    "payment_terms_days": 30,
+    "account_lead_id": 4,
+    "contacts": [
+      {
+        "name": "Joanna Lindgren",
+        "role": "Head of Events",
+        "email": "joanna.lindgren@meridian.example",
+        "phone": "020 7946 0405",
+        "is_primary": true
+      },
+      {
+        "name": "Kieran Fernandes",
+        "role": "Procurement Manager",
+        "email": "kieran.fernandes@meridian.example",
+        "phone": "020 7946 0697",
+        "is_primary": false
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Corvid Security",
+    "sector": "Cyber security",
+    "billing_address": "62 Bridge Road, Reading",
+    "vat_number": "GB630608233",
+    "payment_terms_days": 30,
+    "account_lead_id": 25,
+    "contacts": [
+      {
+        "name": "Fatima Nair",
+        "role": "Head of Events",
+        "email": "fatima.nair@corvid.example",
+        "phone": "020 7946 0117",
+        "is_primary": true
+      },
+      {
+        "name": "George Quinn",
+        "role": "Procurement Manager",
+        "email": "george.quinn@corvid.example",
+        "phone": "020 7946 0660",
+        "is_primary": false
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Pelican Travel Group",
+    "sector": "Travel",
+    "billing_address": "105 Station Approach, London",
+    "vat_number": "GB202202192",
+    "payment_terms_days": 30,
+    "account_lead_id": 25,
+    "contacts": [
+      {
+        "name": "Ingrid Kova",
+        "role": "Head of Events",
+        "email": "ingrid.kova@pelican.example",
+        "phone": "020 7946 0348",
+        "is_primary": true
+      },
+      {
+        "name": "Patrick Okoro",
+        "role": "Procurement Manager",
+        "email": "patrick.okoro@pelican.example",
+        "phone": "020 7946 0695",
+        "is_primary": false
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Solstice Pharma",
+    "sector": "Pharmaceuticals",
+    "billing_address": "30 Market Square, Slough",
+    "vat_number": "GB530848986",
+    "payment_terms_days": 30,
+    "account_lead_id": 6,
+    "contacts": [
+      {
+        "name": "Selin Sato",
+        "role": "Head of Events",
+        "email": "selin.sato@solstice.example",
+        "phone": "020 7946 0728",
+        "is_primary": true
+      },
+      {
+        "name": "Victor Brooks",
+        "role": "Procurement Manager",
+        "email": "victor.brooks@solstice.example",
+        "phone": "020 7946 0687",
+        "is_primary": false
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Ironbark Energy",
+    "sector": "Energy",
+    "billing_address": "57 Station Approach, Aberdeen",
+    "vat_number": "GB943322532",
+    "payment_terms_days": 30,
+    "account_lead_id": 5,
+    "contacts": [
+      {
+        "name": "Anya Holm",
+        "role": "Head of Events",
+        "email": "anya.holm@ironbark.example",
+        "phone": "020 7946 0165",
+        "is_primary": true
+      },
+      {
+        "name": "Ross Laurent",
+        "role": "Procurement Manager",
+        "email": "ross.laurent@ironbark.example",
+        "phone": "020 7946 0694",
+        "is_primary": false
+      }
+    ]
+  }
+]

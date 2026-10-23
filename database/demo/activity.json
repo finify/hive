@@ -1,0 +1,122 @@
+[
+  {
+    "at": "2026-10-22T16:06:00Z",
+    "causer_id": 5,
+    "subject": "Assignment",
+    "ref": "EV-26116",
+    "description": "Confirmed Kofi Mensah on Arclight “Pulse” Launch for 23 Oct",
+    "changes": {
+      "status": [
+        "first-hold",
+        "confirmed"
+      ]
+    }
+  },
+  {
+    "at": "2026-10-22T07:12:00Z",
+    "causer_id": 5,
+    "subject": "Event",
+    "ref": "EV-26116",
+    "description": "Moved Arclight “Pulse” Launch to Live",
+    "changes": {
+      "stage": [
+        "pre-production",
+        "live"
+      ]
+    }
+  },
+  {
+    "at": "2026-10-21T13:10:00Z",
+    "causer_id": 4,
+    "subject": "Assignment",
+    "ref": "EV-26117",
+    "description": "Sent a booking request to Kofi Mensah for Lisbon",
+    "changes": {
+      "status": [
+        null,
+        "first-hold"
+      ]
+    }
+  },
+  {
+    "at": "2026-10-21T11:04:00Z",
+    "causer_id": 21,
+    "subject": "Supplier invoice",
+    "ref": "BL-20931",
+    "description": "Recorded Brightline AV Hire invoice against PO-26-0033",
+    "changes": {
+      "status": [
+        null,
+        "received"
+      ]
+    }
+  },
+  {
+    "at": "2026-10-20T06:02:00Z",
+    "causer_id": 4,
+    "subject": "Event",
+    "ref": "EV-26114",
+    "description": "Moved Northwind Partner Summit to Live",
+    "changes": {
+      "stage": [
+        "pre-production",
+        "live"
+      ]
+    }
+  },
+  {
+    "at": "2026-10-19T15:45:00Z",
+    "causer_id": 4,
+    "subject": "Supplier invoice",
+    "ref": "CUBE-9921",
+    "description": "Disputed Cube Scenic invoice: second build crew not ordered",
+    "changes": {
+      "status": [
+        "received",
+        "disputed"
+      ]
+    }
+  },
+  {
+    "at": "2026-10-19T09:30:00Z",
+    "causer_id": 4,
+    "subject": "Timesheet",
+    "ref": "Week of 12 Oct",
+    "description": "Approved 14 entries on Halcyon Clinical Showcase",
+    "changes": {}
+  },
+  {
+    "at": "2026-10-12T08:00:00Z",
+    "causer_id": 20,
+    "subject": "Period lock",
+    "ref": "September 2026",
+    "description": "Locked timesheets for September after payroll",
+    "changes": {}
+  },
+  {
+    "at": "2026-10-09T10:20:00Z",
+    "causer_id": 4,
+    "subject": "Event",
+    "ref": "EV-26104",
+    "description": "Moved Meridian Bank Leadership Forum to Wrap",
+    "changes": {
+      "stage": [
+        "live",
+        "wrap"
+      ]
+    }
+  },
+  {
+    "at": "2026-10-02T11:00:00Z",
+    "causer_id": 25,
+    "subject": "Event",
+    "ref": "EV-26111",
+    "description": "Cancelled Pelican Travel Group Incentive and released 4 bookings",
+    "changes": {
+      "stage": [
+        "confirmed",
+        "cancelled"
+      ]
+    }
+  }
+]

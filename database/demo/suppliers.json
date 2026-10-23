@@ -1,0 +1,572 @@
+[
+  {
+    "id": 1,
+    "name": "Brightline AV Hire",
+    "category": "av-hire",
+    "vat_number": "GB929563407",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.4,
+    "insurance_expires_at": "2027-07-28",
+    "contacts": [
+      {
+        "name": "Mateo Hale",
+        "role": "Account Manager",
+        "email": "bookings@brightline.example",
+        "phone": "0161 496 0943",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Northlight Video",
+    "category": "av-hire",
+    "vat_number": "GB499887239",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.6,
+    "insurance_expires_at": "2027-09-28",
+    "contacts": [
+      {
+        "name": "Joanna Brooks",
+        "role": "Account Manager",
+        "email": "bookings@northlight.example",
+        "phone": "0161 496 0145",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Sonic Rentals",
+    "category": "av-hire",
+    "vat_number": "GB917839696",
+    "payment_terms_days": 45,
+    "is_approved": true,
+    "rating": 3.9,
+    "insurance_expires_at": "2027-07-28",
+    "contacts": [
+      {
+        "name": "Kieran Kova",
+        "role": "Account Manager",
+        "email": "bookings@sonic.example",
+        "phone": "0161 496 0456",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Pixelwall LED",
+    "category": "av-hire",
+    "vat_number": "GB964785913",
+    "payment_terms_days": 45,
+    "is_approved": true,
+    "rating": 4.1,
+    "insurance_expires_at": "2027-02-28",
+    "contacts": [
+      {
+        "name": "Fatima Fernandes",
+        "role": "Account Manager",
+        "email": "bookings@pixelwall.example",
+        "phone": "0161 496 0707",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Framework Staging",
+    "category": "staging",
+    "vat_number": "GB769949082",
+    "payment_terms_days": 14,
+    "is_approved": true,
+    "rating": 4.5,
+    "insurance_expires_at": "2027-07-28",
+    "contacts": [
+      {
+        "name": "George Yilmaz",
+        "role": "Account Manager",
+        "email": "bookings@framework.example",
+        "phone": "0161 496 0382",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Cube Scenic",
+    "category": "staging",
+    "vat_number": "GB922749663",
+    "payment_terms_days": 14,
+    "is_approved": true,
+    "rating": 3.7,
+    "insurance_expires_at": "2026-11-09",
+    "contacts": [
+      {
+        "name": "Ingrid Byrne",
+        "role": "Account Manager",
+        "email": "bookings@cube.example",
+        "phone": "0161 496 0824",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Truss & Deck",
+    "category": "staging",
+    "vat_number": "GB400336038",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.2,
+    "insurance_expires_at": "2027-07-28",
+    "contacts": [
+      {
+        "name": "Patrick Holm",
+        "role": "Account Manager",
+        "email": "bookings@truss.example",
+        "phone": "0161 496 0458",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Harvest Table Catering",
+    "category": "catering",
+    "vat_number": "GB368128857",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.8,
+    "insurance_expires_at": "2027-08-28",
+    "contacts": [
+      {
+        "name": "Selin Okoro",
+        "role": "Account Manager",
+        "email": "bookings@harvest.example",
+        "phone": "0161 496 0988",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Saltmarsh Kitchen",
+    "category": "catering",
+    "vat_number": "GB124021549",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.0,
+    "insurance_expires_at": "2027-02-28",
+    "contacts": [
+      {
+        "name": "Victor Nair",
+        "role": "Account Manager",
+        "email": "bookings@saltmarsh.example",
+        "phone": "0161 496 0724",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Bocado Lisboa Catering",
+    "category": "catering",
+    "vat_number": "GB167097355",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.3,
+    "insurance_expires_at": "2027-01-28",
+    "contacts": [
+      {
+        "name": "Anya Mackie",
+        "role": "Account Manager",
+        "email": "bookings@bocado.example",
+        "phone": "0161 496 0186",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Riverside Convention Centre",
+    "category": "venue",
+    "vat_number": "GB607294049",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.5,
+    "insurance_expires_at": "2027-09-28",
+    "contacts": [
+      {
+        "name": "Ross Wallace",
+        "role": "Account Manager",
+        "email": "bookings@riverside.example",
+        "phone": "0161 496 0729",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Harbour Congress Centre",
+    "category": "venue",
+    "vat_number": "GB814165351",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.4,
+    "insurance_expires_at": "2027-09-28",
+    "contacts": [
+      {
+        "name": "Rachel Laurent",
+        "role": "Account Manager",
+        "email": "bookings@harbour.example",
+        "phone": "0161 496 0409",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Mill Street Studios",
+    "category": "venue",
+    "vat_number": "GB334825369",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.6,
+    "insurance_expires_at": "2027-03-28",
+    "contacts": [
+      {
+        "name": "David Sato",
+        "role": "Account Manager",
+        "email": "bookings@mill.example",
+        "phone": "0161 496 0385",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Inkwell Print",
+    "category": "print",
+    "vat_number": "GB555902809",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.2,
+    "insurance_expires_at": "2027-08-28",
+    "contacts": [
+      {
+        "name": "Amira Quinn",
+        "role": "Account Manager",
+        "email": "bookings@inkwell.example",
+        "phone": "0161 496 0798",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Big Sign Co",
+    "category": "print",
+    "vat_number": "GB593732780",
+    "payment_terms_days": 30,
+    "is_approved": false,
+    "rating": 3.6,
+    "insurance_expires_at": "2026-09-30",
+    "contacts": [
+      {
+        "name": "Henrik Lindgren",
+        "role": "Account Manager",
+        "email": "bookings@big.example",
+        "phone": "0161 496 0668",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Drukkerij Gracht",
+    "category": "print",
+    "vat_number": "GB892652691",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.1,
+    "insurance_expires_at": "2027-04-28",
+    "contacts": [
+      {
+        "name": "Lucy Edwards",
+        "role": "Account Manager",
+        "email": "bookings@drukkerij.example",
+        "phone": "0161 496 0498",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Coachline Travel",
+    "category": "transport",
+    "vat_number": "GB236201288",
+    "payment_terms_days": 14,
+    "is_approved": true,
+    "rating": 4.0,
+    "insurance_expires_at": "2027-05-28",
+    "contacts": [
+      {
+        "name": "Mateo Hale",
+        "role": "Account Manager",
+        "email": "bookings@coachline.example",
+        "phone": "0161 496 0973",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Swift Couriers",
+    "category": "transport",
+    "vat_number": "GB209108734",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 3.8,
+    "insurance_expires_at": "2027-03-28",
+    "contacts": [
+      {
+        "name": "Joanna Brooks",
+        "role": "Account Manager",
+        "email": "bookings@swift.example",
+        "phone": "0161 496 0132",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Stayfine Hotels",
+    "category": "accommodation",
+    "vat_number": "GB971530139",
+    "payment_terms_days": 45,
+    "is_approved": true,
+    "rating": 4.1,
+    "insurance_expires_at": "2027-09-28",
+    "contacts": [
+      {
+        "name": "Kieran Kova",
+        "role": "Account Manager",
+        "email": "bookings@stayfine.example",
+        "phone": "0161 496 0824",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Hotel Alfama Bay",
+    "category": "accommodation",
+    "vat_number": "GB931551832",
+    "payment_terms_days": 14,
+    "is_approved": true,
+    "rating": 4.4,
+    "insurance_expires_at": "2027-01-28",
+    "contacts": [
+      {
+        "name": "Fatima Fernandes",
+        "role": "Account Manager",
+        "email": "bookings@hotel.example",
+        "phone": "0161 496 0138",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Canal House Hotels",
+    "category": "accommodation",
+    "vat_number": "GB743482171",
+    "payment_terms_days": 45,
+    "is_approved": true,
+    "rating": 4.2,
+    "insurance_expires_at": "2027-02-28",
+    "contacts": [
+      {
+        "name": "George Yilmaz",
+        "role": "Account Manager",
+        "email": "bookings@canal.example",
+        "phone": "0161 496 0157",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Meridian Freight",
+    "category": "freight",
+    "vat_number": "GB415028533",
+    "payment_terms_days": 14,
+    "is_approved": true,
+    "rating": 4.3,
+    "insurance_expires_at": "2027-02-28",
+    "contacts": [
+      {
+        "name": "Ingrid Byrne",
+        "role": "Account Manager",
+        "email": "bookings@meridian.example",
+        "phone": "0161 496 0474",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Eurobox Logistics",
+    "category": "freight",
+    "vat_number": "GB879628031",
+    "payment_terms_days": 45,
+    "is_approved": true,
+    "rating": 3.9,
+    "insurance_expires_at": "2027-08-28",
+    "contacts": [
+      {
+        "name": "Patrick Holm",
+        "role": "Account Manager",
+        "email": "bookings@eurobox.example",
+        "phone": "0161 496 0846",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Crewline Staffing",
+    "category": "staffing-agency",
+    "vat_number": "GB687657513",
+    "payment_terms_days": 45,
+    "is_approved": true,
+    "rating": 4.0,
+    "insurance_expires_at": "2027-05-28",
+    "contacts": [
+      {
+        "name": "Selin Okoro",
+        "role": "Account Manager",
+        "email": "bookings@crewline.example",
+        "phone": "0161 496 0743",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Gather Hosts",
+    "category": "staffing-agency",
+    "vat_number": "GB907907947",
+    "payment_terms_days": 14,
+    "is_approved": true,
+    "rating": 4.5,
+    "insurance_expires_at": "2027-06-28",
+    "contacts": [
+      {
+        "name": "Victor Nair",
+        "role": "Account Manager",
+        "email": "bookings@gather.example",
+        "phone": "0161 496 0342",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Badgeworks",
+    "category": "other",
+    "vat_number": "GB886093779",
+    "payment_terms_days": 14,
+    "is_approved": true,
+    "rating": 4.3,
+    "insurance_expires_at": "2027-05-28",
+    "contacts": [
+      {
+        "name": "Anya Mackie",
+        "role": "Account Manager",
+        "email": "bookings@badgeworks.example",
+        "phone": "0161 496 0451",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Tickit Registration",
+    "category": "other",
+    "vat_number": "GB247081534",
+    "payment_terms_days": 30,
+    "is_approved": true,
+    "rating": 4.6,
+    "insurance_expires_at": "2027-04-28",
+    "contacts": [
+      {
+        "name": "Ross Wallace",
+        "role": "Account Manager",
+        "email": "bookings@tickit.example",
+        "phone": "0161 496 0439",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Green Room Furniture",
+    "category": "other",
+    "vat_number": "GB231053711",
+    "payment_terms_days": 14,
+    "is_approved": true,
+    "rating": 4.1,
+    "insurance_expires_at": "2027-01-28",
+    "contacts": [
+      {
+        "name": "Rachel Laurent",
+        "role": "Account Manager",
+        "email": "bookings@green.example",
+        "phone": "0161 496 0962",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Lumière Florals",
+    "category": "other",
+    "vat_number": "GB903614493",
+    "payment_terms_days": 45,
+    "is_approved": true,
+    "rating": 4.7,
+    "insurance_expires_at": "2027-06-28",
+    "contacts": [
+      {
+        "name": "David Sato",
+        "role": "Account Manager",
+        "email": "bookings@lumière.example",
+        "phone": "0161 496 0778",
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Castlegate Assembly Rooms",
+    "category": "venue",
+    "vat_number": "GB106939232",
+    "payment_terms_days": 45,
+    "is_approved": true,
+    "rating": 4.0,
+    "insurance_expires_at": "2027-01-28",
+    "contacts": [
+      {
+        "name": "Amira Quinn",
+        "role": "Account Manager",
+        "email": "bookings@castlegate.example",
+        "phone": "0161 496 0243",
+        "is_primary": true
+      }
+    ]
+  }
+]

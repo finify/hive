@@ -1,0 +1,184 @@
+[
+  {
+    "person_id": 1,
+    "leave_year": 2026,
+    "days_allowed": 27,
+    "days_carried_over": 1,
+    "days_taken": 16
+  },
+  {
+    "person_id": 2,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 16
+  },
+  {
+    "person_id": 3,
+    "leave_year": 2026,
+    "days_allowed": 27,
+    "days_carried_over": 0,
+    "days_taken": 7
+  },
+  {
+    "person_id": 4,
+    "leave_year": 2026,
+    "days_allowed": 27,
+    "days_carried_over": 2,
+    "days_taken": 7
+  },
+  {
+    "person_id": 5,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 2,
+    "days_taken": 13
+  },
+  {
+    "person_id": 6,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 3,
+    "days_taken": 9
+  },
+  {
+    "person_id": 7,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 14
+  },
+  {
+    "person_id": 8,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 2,
+    "days_taken": 9
+  },
+  {
+    "person_id": 9,
+    "leave_year": 2026,
+    "days_allowed": 27,
+    "days_carried_over": 3,
+    "days_taken": 18
+  },
+  {
+    "person_id": 10,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 6
+  },
+  {
+    "person_id": 11,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 1,
+    "days_taken": 12
+  },
+  {
+    "person_id": 12,
+    "leave_year": 2026,
+    "days_allowed": 27,
+    "days_carried_over": 1,
+    "days_taken": 18
+  },
+  {
+    "person_id": 13,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 6
+  },
+  {
+    "person_id": 14,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 16
+  },
+  {
+    "person_id": 15,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 1,
+    "days_taken": 7
+  },
+  {
+    "person_id": 16,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 9
+  },
+  {
+    "person_id": 17,
+    "leave_year": 2026,
+    "days_allowed": 27,
+    "days_carried_over": 2,
+    "days_taken": 13
+  },
+  {
+    "person_id": 18,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 1,
+    "days_taken": 18
+  },
+  {
+    "person_id": 19,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 15
+  },
+  {
+    "person_id": 20,
+    "leave_year": 2026,
+    "days_allowed": 27,
+    "days_carried_over": 0,
+    "days_taken": 16
+  },
+  {
+    "person_id": 21,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 2,
+    "days_taken": 6
+  },
+  {
+    "person_id": 22,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 17
+  },
+  {
+    "person_id": 23,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 1,
+    "days_taken": 15
+  },
+  {
+    "person_id": 24,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 0,
+    "days_taken": 12
+  },
+  {
+    "person_id": 25,
+    "leave_year": 2026,
+    "days_allowed": 27,
+    "days_carried_over": 3,
+    "days_taken": 7
+  },
+  {
+    "person_id": 61,
+    "leave_year": 2026,
+    "days_allowed": 25,
+    "days_carried_over": 2,
+    "days_taken": 8
+  }
+]

@@ -1,0 +1,166 @@
+{
+  "name": "Lumen & Co Live",
+  "tagline": "Brand experience and live events",
+  "demo_today": "2026-10-23",
+  "timesheets_locked_until": "2026-09-30",
+  "offices": [
+    {
+      "name": "London",
+      "address": "14 Tanner Yard, London SE1 3LD",
+      "region": "england-and-wales"
+    },
+    {
+      "name": "Manchester",
+      "address": "Unit 6, Ancoats Works, Manchester M4 6DE",
+      "region": "england-and-wales"
+    }
+  ],
+  "departments": [
+    {
+      "id": 1,
+      "name": "Production",
+      "head_person_id": 3
+    },
+    {
+      "id": 2,
+      "name": "Creative",
+      "head_person_id": 9
+    },
+    {
+      "id": 3,
+      "name": "Technical",
+      "head_person_id": 12
+    },
+    {
+      "id": 4,
+      "name": "Registration and Logistics",
+      "head_person_id": 17
+    },
+    {
+      "id": 5,
+      "name": "Finance",
+      "head_person_id": 20
+    },
+    {
+      "id": 6,
+      "name": "People",
+      "head_person_id": 23
+    }
+  ],
+  "cost_categories": [
+    {
+      "key": "venue",
+      "name": "Venue",
+      "nominal_code": "5000"
+    },
+    {
+      "key": "production",
+      "name": "Production and staging",
+      "nominal_code": "5010"
+    },
+    {
+      "key": "av",
+      "name": "AV and technical",
+      "nominal_code": "5020"
+    },
+    {
+      "key": "creative",
+      "name": "Creative and design",
+      "nominal_code": "5030"
+    },
+    {
+      "key": "print",
+      "name": "Print and signage",
+      "nominal_code": "5040"
+    },
+    {
+      "key": "catering",
+      "name": "Catering",
+      "nominal_code": "5050"
+    },
+    {
+      "key": "crew",
+      "name": "Crew and staffing",
+      "nominal_code": "5060"
+    },
+    {
+      "key": "travel",
+      "name": "Travel",
+      "nominal_code": "5070"
+    },
+    {
+      "key": "accommodation",
+      "name": "Accommodation",
+      "nominal_code": "5080"
+    },
+    {
+      "key": "freight",
+      "name": "Freight and logistics",
+      "nominal_code": "5090"
+    },
+    {
+      "key": "registration",
+      "name": "Registration and technology",
+      "nominal_code": "5100"
+    },
+    {
+      "key": "contingency",
+      "name": "Contingency",
+      "nominal_code": "5900"
+    },
+    {
+      "key": "agency-fee",
+      "name": "Agency fee",
+      "nominal_code": "4000"
+    }
+  ],
+  "leave_types": [
+    {
+      "key": "annual",
+      "name": "Annual leave",
+      "is_sensitive": false
+    },
+    {
+      "key": "sick",
+      "name": "Sick",
+      "is_sensitive": true
+    },
+    {
+      "key": "compassionate",
+      "name": "Compassionate",
+      "is_sensitive": true
+    },
+    {
+      "key": "parental",
+      "name": "Parental",
+      "is_sensitive": true
+    },
+    {
+      "key": "unpaid",
+      "name": "Unpaid",
+      "is_sensitive": false
+    },
+    {
+      "key": "toil",
+      "name": "Time off in lieu",
+      "is_sensitive": false
+    },
+    {
+      "key": "training",
+      "name": "Training",
+      "is_sensitive": false
+    }
+  ],
+  "exchange_rates": [
+    {
+      "currency": "EUR",
+      "rate_to_gbp": "0.8650",
+      "date": "2026-10-01"
+    },
+    {
+      "currency": "USD",
+      "rate_to_gbp": "0.7480",
+      "date": "2026-10-01"
+    }
+  ]
+}

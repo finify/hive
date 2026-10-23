@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Disguise media server",
+    "category": "Video"
+  },
+  {
+    "id": 2,
+    "name": "Watchout",
+    "category": "Video"
+  },
+  {
+    "id": 3,
+    "name": "Vision mixing",
+    "category": "Video"
+  },
+  {
+    "id": 4,
+    "name": "Camera operation",
+    "category": "Video"
+  },
+  {
+    "id": 5,
+    "name": "LED wall build",
+    "category": "Video"
+  },
+  {
+    "id": 6,
+    "name": "Sound mixing (DiGiCo)",
+    "category": "Audio"
+  },
+  {
+    "id": 7,
+    "name": "RF management",
+    "category": "Audio"
+  },
+  {
+    "id": 8,
+    "name": "grandMA3 programming",
+    "category": "Lighting"
+  },
+  {
+    "id": 9,
+    "name": "Lighting design",
+    "category": "Lighting"
+  },
+  {
+    "id": 10,
+    "name": "Rigging",
+    "category": "Staging"
+  },
+  {
+    "id": 11,
+    "name": "IPAF",
+    "category": "Certification"
+  },
+  {
+    "id": 12,
+    "name": "PASMA",
+    "category": "Certification"
+  },
+  {
+    "id": 13,
+    "name": "First aid at work",
+    "category": "Certification"
+  },
+  {
+    "id": 14,
+    "name": "Stage management",
+    "category": "Show"
+  },
+  {
+    "id": 15,
+    "name": "Show calling",
+    "category": "Show"
+  },
+  {
+    "id": 16,
+    "name": "Adobe After Effects",
+    "category": "Creative"
+  },
+  {
+    "id": 17,
+    "name": "Figma",
+    "category": "Creative"
+  },
+  {
+    "id": 18,
+    "name": "Print production",
+    "category": "Creative"
+  },
+  {
+    "id": 19,
+    "name": "Cvent",
+    "category": "Registration"
+  },
+  {
+    "id": 20,
+    "name": "Badge printing",
+    "category": "Registration"
+  },
+  {
+    "id": 21,
+    "name": "Freight forwarding",
+    "category": "Logistics"
+  },
+  {
+    "id": 22,
+    "name": "Portuguese",
+    "category": "Language"
+  },
+  {
+    "id": 23,
+    "name": "French",
+    "category": "Language"
+  },
+  {
+    "id": 24,
+    "name": "Dutch",
+    "category": "Language"
+  }
+]

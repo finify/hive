@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "event_id": 1,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 9800000,
+    "currency": "GBP"
+  },
+  {
+    "id": 2,
+    "event_id": 2,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 16400000,
+    "currency": "GBP"
+  },
+  {
+    "id": 3,
+    "event_id": 3,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 7200000,
+    "currency": "GBP"
+  },
+  {
+    "id": 4,
+    "event_id": 4,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 21200000,
+    "currency": "GBP"
+  },
+  {
+    "id": 5,
+    "event_id": 4,
+    "type": "change-request",
+    "description": "Hybrid stream (change request, unsigned)",
+    "amount_minor": 0,
+    "currency": "GBP"
+  },
+  {
+    "id": 6,
+    "event_id": 5,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 14600000,
+    "currency": "GBP"
+  },
+  {
+    "id": 7,
+    "event_id": 6,
+    "type": "fee",
+    "description": "Cancellation fee (25% of agreed fee)",
+    "amount_minor": 6700000,
+    "currency": "GBP"
+  },
+  {
+    "id": 8,
+    "event_id": 7,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 48600000,
+    "currency": "GBP"
+  },
+  {
+    "id": 9,
+    "event_id": 8,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 13800000,
+    "currency": "GBP"
+  },
+  {
+    "id": 10,
+    "event_id": 9,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 31200000,
+    "currency": "GBP"
+  },
+  {
+    "id": 11,
+    "event_id": 10,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 5400000,
+    "currency": "GBP"
+  },
+  {
+    "id": 12,
+    "event_id": 11,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 22800000,
+    "currency": "GBP"
+  },
+  {
+    "id": 13,
+    "event_id": 12,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 19600000,
+    "currency": "GBP"
+  },
+  {
+    "id": 14,
+    "event_id": 13,
+    "type": "fee",
+    "description": "Agreed client fee",
+    "amount_minor": 11800000,
+    "currency": "GBP"
+  }
+]

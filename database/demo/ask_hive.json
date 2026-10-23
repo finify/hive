@@ -1,0 +1,29 @@
+{
+  "suggestions": {
+    "default": [
+      "Which events are at risk this month and why?",
+      "Who is double-booked this week?",
+      "What is waiting for my approval?"
+    ],
+    "producer": [
+      "Who’s free for the Lisbon build?",
+      "Which events are trending over budget?",
+      "What is waiting for my approval?"
+    ],
+    "freelancer": [
+      "What am I booked on next?",
+      "Which events are at risk this month and why?",
+      "When is my next day off?"
+    ],
+    "employee": [
+      "What am I booked on next?",
+      "Who is off next week?",
+      "Who’s free for the Lisbon build?"
+    ],
+    "hr": [
+      "Who is off next week?",
+      "Whose documents expire this month?",
+      "Who is double-booked this week?"
+    ]
+  }
+}

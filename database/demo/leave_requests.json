@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "person_id": 10,
+    "leave_type": "annual",
+    "start_date": "2026-10-26",
+    "end_date": "2026-10-30",
+    "days": 5,
+    "status": "approved",
+    "approved_by": 9,
+    "reason": "Half-term week"
+  },
+  {
+    "id": 2,
+    "person_id": 16,
+    "leave_type": "annual",
+    "start_date": "2026-11-04",
+    "end_date": "2026-11-06",
+    "days": 3,
+    "status": "pending",
+    "approved_by": null,
+    "reason": "Family wedding",
+    "requested_at": "2026-10-21T08:40:00Z"
+  },
+  {
+    "id": 3,
+    "person_id": 14,
+    "leave_type": "sick",
+    "start_date": "2026-10-12",
+    "end_date": "2026-10-13",
+    "days": 2,
+    "status": "approved",
+    "approved_by": 12,
+    "reason": "Unwell"
+  },
+  {
+    "id": 4,
+    "person_id": 11,
+    "leave_type": "annual",
+    "start_date": "2026-10-19",
+    "end_date": "2026-10-23",
+    "days": 5,
+    "status": "approved",
+    "approved_by": 9,
+    "reason": null
+  },
+  {
+    "id": 5,
+    "person_id": 7,
+    "leave_type": "toil",
+    "start_date": "2026-10-27",
+    "end_date": "2026-10-27",
+    "days": 1,
+    "status": "pending",
+    "approved_by": null,
+    "reason": "TOIL for Northwind weekend build",
+    "requested_at": "2026-10-22T17:05:00Z"
+  },
+  {
+    "id": 6,
+    "person_id": 19,
+    "leave_type": "training",
+    "start_date": "2026-11-02",
+    "end_date": "2026-11-03",
+    "days": 2,
+    "status": "approved",
+    "approved_by": 17,
+    "reason": "Dangerous goods awareness course"
+  },
+  {
+    "id": 7,
+    "person_id": 22,
+    "leave_type": "parental",
+    "start_date": "2026-09-07",
+    "end_date": "2027-01-29",
+    "days": 105,
+    "status": "approved",
+    "approved_by": 23,
+    "reason": null
+  },
+  {
+    "id": 8,
+    "person_id": 5,
+    "leave_type": "annual",
+    "start_date": "2026-11-23",
+    "end_date": "2026-11-27",
+    "days": 5,
+    "status": "pending",
+    "approved_by": null,
+    "reason": null,
+    "requested_at": "2026-10-15T12:30:00Z"
+  }
+]

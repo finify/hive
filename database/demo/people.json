@@ -1,0 +1,3059 @@
+[
+  {
+    "id": 1,
+    "first_name": "Priya",
+    "last_name": "Raman",
+    "preferred_name": null,
+    "pronouns": "she/her",
+    "email": "priya.raman@lumenco.test",
+    "phone": "07700 915739",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Operations Director",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2017-03-06",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Sam Raman (family), 07700 980145",
+      "passport_number": "553018274",
+      "passport_expiry": "2031-05-11",
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 2,
+    "first_name": "Sam",
+    "last_name": "Okafor",
+    "preferred_name": null,
+    "pronouns": "they/them",
+    "email": "sam.okafor@lumenco.test",
+    "phone": "07700 911083",
+    "employment_type": "employee",
+    "department_id": 3,
+    "job_title": "Systems Lead",
+    "line_manager_id": 12,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2022-02-14",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Jordan Okafor (family), 07700 910562",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 3,
+    "first_name": "Olivia",
+    "last_name": "Grant",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "olivia.grant@lumenco.test",
+    "phone": "07700 961125",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Head of Production",
+    "line_manager_id": 1,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2018-09-03",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Robin Grant (family), 07700 975529",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 4,
+    "first_name": "Hannah",
+    "last_name": "Clarke",
+    "preferred_name": null,
+    "pronouns": "she/her",
+    "email": "hannah.clarke@lumenco.test",
+    "phone": "07700 917206",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Senior Producer",
+    "line_manager_id": 3,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2019-04-23",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 15,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 23,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Alex Clarke (family), 07700 974265",
+      "passport_number": "548812093",
+      "passport_expiry": "2029-08-02",
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 5,
+    "first_name": "Marcus",
+    "last_name": "Bell",
+    "preferred_name": null,
+    "pronouns": "he/him",
+    "email": "marcus.bell@lumenco.test",
+    "phone": "07700 945699",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Producer",
+    "line_manager_id": 3,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2021-06-07",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 15,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Jordan Bell (family), 07700 946669",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 6,
+    "first_name": "Chloe",
+    "last_name": "Dubois",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "chloe.dubois@lumenco.test",
+    "phone": "07700 968947",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Producer",
+    "line_manager_id": 3,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2022-01-10",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 23,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Alex Dubois (family), 07700 910283",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "French",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 7,
+    "first_name": "Rhys",
+    "last_name": "Morgan",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "rhys.morgan@lumenco.test",
+    "phone": "07700 934498",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Production Manager",
+    "line_manager_id": 3,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2020-11-02",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 14,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 11,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 13,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Robin Morgan (family), 07700 936207",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 8,
+    "first_name": "Ella",
+    "last_name": "Thompson",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "ella.thompson@lumenco.test",
+    "phone": "07700 912067",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Production Coordinator",
+    "line_manager_id": 5,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2024-02-12",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Alex Thompson (family), 07700 926802",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 9,
+    "first_name": "Ben",
+    "last_name": "Hargreaves",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "ben.hargreaves@lumenco.test",
+    "phone": "07700 946435",
+    "employment_type": "employee",
+    "department_id": 2,
+    "job_title": "Creative Director",
+    "line_manager_id": 1,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2018-01-15",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 17,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Robin Hargreaves (family), 07700 945916",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 10,
+    "first_name": "Jamie",
+    "last_name": "Ross",
+    "preferred_name": null,
+    "pronouns": "he/him",
+    "email": "jamie.ross@lumenco.test",
+    "phone": "07700 971159",
+    "employment_type": "employee",
+    "department_id": 2,
+    "job_title": "Graphic Designer",
+    "line_manager_id": 9,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-05-02",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 17,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 18,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Robin Ross (family), 07700 962559",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": "Vegetarian",
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 11,
+    "first_name": "Nadia",
+    "last_name": "Hussain",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "nadia.hussain@lumenco.test",
+    "phone": "07700 985134",
+    "employment_type": "employee",
+    "department_id": 2,
+    "job_title": "Motion Designer",
+    "line_manager_id": 9,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2022-09-05",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 16,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Chris Hussain (family), 07700 984904",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 12,
+    "first_name": "Tomasz",
+    "last_name": "Nowak",
+    "preferred_name": null,
+    "pronouns": "he/him",
+    "email": "tomasz.nowak@lumenco.test",
+    "phone": "07700 931853",
+    "employment_type": "employee",
+    "department_id": 3,
+    "job_title": "Head of Technical",
+    "line_manager_id": 1,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2019-02-04",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 1,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 5,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Jordan Nowak (family), 07700 932835",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "Polish",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 13,
+    "first_name": "Callum",
+    "last_name": "Reid",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "callum.reid@lumenco.test",
+    "phone": "07700 958994",
+    "employment_type": "employee",
+    "department_id": 3,
+    "job_title": "Technical Production Manager",
+    "line_manager_id": 12,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2021-03-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 10,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 11,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Robin Reid (family), 07700 918132",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 14,
+    "first_name": "Mei Lin",
+    "last_name": "Chow",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "meilin.chow@lumenco.test",
+    "phone": "07700 942206",
+    "employment_type": "employee",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": 12,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-01-09",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 3,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 2,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Sam Chow (family), 07700 955603",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 15,
+    "first_name": "Owen",
+    "last_name": "Price",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "owen.price@lumenco.test",
+    "phone": "07700 984609",
+    "employment_type": "employee",
+    "department_id": 3,
+    "job_title": "Lighting Technician",
+    "line_manager_id": 12,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2022-07-18",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 8,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Sam Price (family), 07700 950954",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 16,
+    "first_name": "Freya",
+    "last_name": "Collins",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "freya.collins@lumenco.test",
+    "phone": "07700 985000",
+    "employment_type": "employee",
+    "department_id": 3,
+    "job_title": "Stage Manager",
+    "line_manager_id": 12,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2020-08-24",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 14,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 15,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Chris Collins (family), 07700 945320",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 17,
+    "first_name": "Aisha",
+    "last_name": "Bello",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "aisha.bello@lumenco.test",
+    "phone": "07700 927663",
+    "employment_type": "employee",
+    "department_id": 4,
+    "job_title": "Head of Registration and Logistics",
+    "line_manager_id": 1,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2019-10-07",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 19,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Chris Bello (family), 07700 912258",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 18,
+    "first_name": "Daniel",
+    "last_name": "Kim",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "daniel.kim@lumenco.test",
+    "phone": "07700 920901",
+    "employment_type": "employee",
+    "department_id": 4,
+    "job_title": "Registration Lead",
+    "line_manager_id": 17,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2022-04-04",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 19,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 20,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Robin Kim (family), 07700 988989",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 19,
+    "first_name": "Sofia",
+    "last_name": "Rossi",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "sofia.rossi@lumenco.test",
+    "phone": "07700 922452",
+    "employment_type": "employee",
+    "department_id": 4,
+    "job_title": "Logistics Coordinator",
+    "line_manager_id": 17,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-08-14",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 21,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English",
+      "Italian"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Alex Rossi (family), 07700 988842",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 20,
+    "first_name": "Grace",
+    "last_name": "Adeyemi",
+    "preferred_name": null,
+    "pronouns": "she/her",
+    "email": "grace.adeyemi@lumenco.test",
+    "phone": "07700 992722",
+    "employment_type": "employee",
+    "department_id": 5,
+    "job_title": "Finance Manager",
+    "line_manager_id": 1,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2018-06-11",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Robin Adeyemi (family), 07700 917603",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 21,
+    "first_name": "Liam",
+    "last_name": "Walsh",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "liam.walsh@lumenco.test",
+    "phone": "07700 965490",
+    "employment_type": "employee",
+    "department_id": 5,
+    "job_title": "Finance Assistant",
+    "line_manager_id": 20,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2024-09-02",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Sam Walsh (family), 07700 926453",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 22,
+    "first_name": "Zara",
+    "last_name": "Ahmed",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "zara.ahmed@lumenco.test",
+    "phone": "07700 918641",
+    "employment_type": "employee",
+    "department_id": 5,
+    "job_title": "Management Accountant",
+    "line_manager_id": 20,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2021-12-06",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Sam Ahmed (family), 07700 921851",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 23,
+    "first_name": "Leah",
+    "last_name": "Fitzgerald",
+    "preferred_name": null,
+    "pronouns": "she/her",
+    "email": "leah.fitzgerald@lumenco.test",
+    "phone": "07700 971035",
+    "employment_type": "employee",
+    "department_id": 6,
+    "job_title": "Head of People",
+    "line_manager_id": 1,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2020-01-13",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Chris Fitzgerald (family), 07700 989996",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 24,
+    "first_name": "Tom",
+    "last_name": "Baker",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "tom.baker@lumenco.test",
+    "phone": "07700 966330",
+    "employment_type": "employee",
+    "department_id": 6,
+    "job_title": "People Coordinator",
+    "line_manager_id": 23,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2025-11-03",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Jordan Baker (family), 07700 915915",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 25,
+    "first_name": "Ruby",
+    "last_name": "Evans",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "ruby.evans@lumenco.test",
+    "phone": "07700 972665",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Account Director",
+    "line_manager_id": 3,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2019-07-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 15,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Alex Evans (family), 07700 948850",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 26,
+    "first_name": "Kofi",
+    "last_name": "Mensah",
+    "preferred_name": null,
+    "pronouns": "he/him",
+    "email": "kofi.mensah@freelance.test",
+    "phone": "07700 988494",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-08-01",
+    "end_date": null,
+    "company_name": "Mensah Media Ltd",
+    "vat_registered": true,
+    "vat_number": "GB850500464",
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 1,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 2,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 5,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 11,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 38000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": "2026-09-30"
+      },
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 40000,
+        "currency": "GBP",
+        "effective_from": "2026-10-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.7,
+    "restricted": {
+      "emergency_contact": "Robin Mensah (family), 07700 957761",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 27,
+    "first_name": "Ola",
+    "last_name": "Brennan",
+    "preferred_name": null,
+    "pronouns": "she/her",
+    "email": "ola.brennan@freelance.test",
+    "phone": "07700 944472",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Lighting Designer",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-04-01",
+    "end_date": null,
+    "company_name": "Brennan Light Ltd",
+    "vat_registered": true,
+    "vat_number": "GB566208825",
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 9,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 8,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Lighting Designer",
+        "amount_minor": 52000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.8,
+    "restricted": {
+      "emergency_contact": "Robin Brennan (family), 07700 921242",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 28,
+    "first_name": "Inês",
+    "last_name": "Duarte",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "inês.duarte@freelance.test",
+    "phone": "07700 980209",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": null,
+    "location_city": "Lisbon",
+    "location_country": "Portugal",
+    "start_date": "2023-07-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 1,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 22,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 3,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English",
+      "Portuguese"
+    ],
+    "day_rates": [
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 34000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.5,
+    "restricted": {
+      "emergency_contact": "Chris Duarte (family), 07700 930161",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "Portuguese",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 29,
+    "first_name": "Marek",
+    "last_name": "Zielinski",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "marek.zielinski@freelance.test",
+    "phone": "07700 994816",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": null,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2023-02-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 1,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 5,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 35000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.2,
+    "restricted": {
+      "emergency_contact": "Sam Zielinski (family), 07700 984465",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 30,
+    "first_name": "Hollie",
+    "last_name": "Sutton",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "hollie.sutton@freelance.test",
+    "phone": "07700 966619",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": null,
+    "location_city": "Bristol",
+    "location_country": "United Kingdom",
+    "start_date": "2023-04-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 2,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 1,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 3,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 34000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.4,
+    "restricted": {
+      "emergency_contact": "Jordan Sutton (family), 07700 945582",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 31,
+    "first_name": "Arjun",
+    "last_name": "Mehta",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "arjun.mehta@freelance.test",
+    "phone": "07700 966966",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-03-01",
+    "end_date": null,
+    "company_name": "Mehta Visual Ltd",
+    "vat_registered": true,
+    "vat_number": "GB462969390",
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 1,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 2,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 42000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.9,
+    "restricted": {
+      "emergency_contact": "Sam Mehta (family), 07700 933433",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 32,
+    "first_name": "Gemma",
+    "last_name": "Doyle",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "gemma.doyle@freelance.test",
+    "phone": "07700 982368",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": null,
+    "location_city": "Leeds",
+    "location_country": "United Kingdom",
+    "start_date": "2023-05-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 3,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 32000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.0,
+    "restricted": {
+      "emergency_contact": "Chris Doyle (family), 07700 960463",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 33,
+    "first_name": "Tunde",
+    "last_name": "Bakare",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "tunde.bakare@freelance.test",
+    "phone": "07700 949048",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-07-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 5,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 10,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 11,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 33000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.3,
+    "restricted": {
+      "emergency_contact": "Jordan Bakare (family), 07700 995582",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 34,
+    "first_name": "Saoirse",
+    "last_name": "Kelly",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "saoirse.kelly@freelance.test",
+    "phone": "07700 991357",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "AV Technician",
+    "line_manager_id": null,
+    "location_city": "Dublin",
+    "location_country": "Ireland",
+    "start_date": "2023-07-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 1,
+        "level": 2,
+        "verified": false
+      },
+      {
+        "skill_id": 3,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "AV Technician",
+        "amount_minor": 31000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 3.9,
+    "restricted": {
+      "emergency_contact": "Sam Kelly (family), 07700 966897",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "Irish",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 35,
+    "first_name": "Luca",
+    "last_name": "Bianchi",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "luca.bianchi@freelance.test",
+    "phone": "07700 969119",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Lighting Designer",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-02-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 9,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 8,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Lighting Designer",
+        "amount_minor": 48000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.6,
+    "restricted": {
+      "emergency_contact": "Jordan Bianchi (family), 07700 998251",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 36,
+    "first_name": "Megan",
+    "last_name": "Hughes",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "megan.hughes@freelance.test",
+    "phone": "07700 974973",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Lighting Designer",
+    "line_manager_id": null,
+    "location_city": "Cardiff",
+    "location_country": "United Kingdom",
+    "start_date": "2023-05-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 9,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Lighting Designer",
+        "amount_minor": 45000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.1,
+    "restricted": {
+      "emergency_contact": "Robin Hughes (family), 07700 923143",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 37,
+    "first_name": "Pieter",
+    "last_name": "de Vries",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "pieter.devries@freelance.test",
+    "phone": "07700 920215",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Lighting Designer",
+    "line_manager_id": null,
+    "location_city": "Amsterdam",
+    "location_country": "Netherlands",
+    "start_date": "2023-09-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 9,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 24,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English",
+      "Dutch"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Lighting Designer",
+        "amount_minor": 47000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.5,
+    "restricted": {
+      "emergency_contact": "Chris de Vries (family), 07700 974062",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "Dutch",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 38,
+    "first_name": "Yasmin",
+    "last_name": "Farah",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "yasmin.farah@freelance.test",
+    "phone": "07700 967603",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Stage Manager",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-08-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 14,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 15,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 13,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Stage Manager",
+        "amount_minor": 36000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.8,
+    "restricted": {
+      "emergency_contact": "Alex Farah (family), 07700 978851",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 39,
+    "first_name": "Connor",
+    "last_name": "Walsh",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "connor.walsh@freelance.test",
+    "phone": "07700 964224",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Stage Manager",
+    "line_manager_id": null,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2023-04-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 14,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 15,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Stage Manager",
+        "amount_minor": 33000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.2,
+    "restricted": {
+      "emergency_contact": "Jordan Walsh (family), 07700 926978",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 40,
+    "first_name": "Elif",
+    "last_name": "Kaya",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "elif.kaya@freelance.test",
+    "phone": "07700 973790",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Stage Manager",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-08-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 14,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Stage Manager",
+        "amount_minor": 30000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 3.8,
+    "restricted": {
+      "emergency_contact": "Robin Kaya (family), 07700 920108",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 41,
+    "first_name": "Hamish",
+    "last_name": "Ross",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "hamish.ross@freelance.test",
+    "phone": "07700 933689",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Stage Manager",
+    "line_manager_id": null,
+    "location_city": "Glasgow",
+    "location_country": "United Kingdom",
+    "start_date": "2023-02-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 14,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 15,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Stage Manager",
+        "amount_minor": 34000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.4,
+    "restricted": {
+      "emergency_contact": "Jordan Ross (family), 07700 981606",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 42,
+    "first_name": "Nina",
+    "last_name": "Petrova",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "nina.petrova@freelance.test",
+    "phone": "07700 967522",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Camera Operator",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-06-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 4,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Camera Operator",
+        "amount_minor": 39000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.6,
+    "restricted": {
+      "emergency_contact": "Robin Petrova (family), 07700 936865",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 43,
+    "first_name": "Sean",
+    "last_name": "McCarthy",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "sean.mccarthy@freelance.test",
+    "phone": "07700 947485",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Camera Operator",
+    "line_manager_id": null,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2023-03-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 4,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Camera Operator",
+        "amount_minor": 36000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.1,
+    "restricted": {
+      "emergency_contact": "Robin McCarthy (family), 07700 916640",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 44,
+    "first_name": "Ade",
+    "last_name": "Ogunleye",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "ade.ogunleye@freelance.test",
+    "phone": "07700 958535",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Camera Operator",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-05-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 4,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 3,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Camera Operator",
+        "amount_minor": 37000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.3,
+    "restricted": {
+      "emergency_contact": "Chris Ogunleye (family), 07700 994836",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 45,
+    "first_name": "Fraser",
+    "last_name": "Lindqvist",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "fraser.lindqvist@freelance.test",
+    "phone": "07700 955244",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Sound Engineer",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-07-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 6,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 7,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Sound Engineer",
+        "amount_minor": 43000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.7,
+    "restricted": {
+      "emergency_contact": "Alex Lindqvist (family), 07700 973171",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 46,
+    "first_name": "Bea",
+    "last_name": "Navarro",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "bea.navarro@freelance.test",
+    "phone": "07700 971863",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Sound Engineer",
+    "line_manager_id": null,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2023-07-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 6,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Sound Engineer",
+        "amount_minor": 38000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.2,
+    "restricted": {
+      "emergency_contact": "Jordan Navarro (family), 07700 955127",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 47,
+    "first_name": "Kwame",
+    "last_name": "Asante",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "kwame.asante@freelance.test",
+    "phone": "07700 944493",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Sound Engineer",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-06-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 7,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 6,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Sound Engineer",
+        "amount_minor": 39000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.5,
+    "restricted": {
+      "emergency_contact": "Alex Asante (family), 07700 973810",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 48,
+    "first_name": "Lotte",
+    "last_name": "Jansen",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "lotte.jansen@freelance.test",
+    "phone": "07700 959225",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Sound Engineer",
+    "line_manager_id": null,
+    "location_city": "Amsterdam",
+    "location_country": "Netherlands",
+    "start_date": "2023-05-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 6,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 24,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English",
+      "Dutch"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Sound Engineer",
+        "amount_minor": 41000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.4,
+    "restricted": {
+      "emergency_contact": "Jordan Jansen (family), 07700 947722",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "Dutch",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 49,
+    "first_name": "Rosa",
+    "last_name": "Martins",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "rosa.martins@freelance.test",
+    "phone": "07700 924723",
+    "employment_type": "freelancer",
+    "department_id": 2,
+    "job_title": "Graphic Designer",
+    "line_manager_id": null,
+    "location_city": "Lisbon",
+    "location_country": "Portugal",
+    "start_date": "2023-06-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 17,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 22,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English",
+      "Portuguese"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Graphic Designer",
+        "amount_minor": 30000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.3,
+    "restricted": {
+      "emergency_contact": "Sam Martins (family), 07700 929609",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "Portuguese",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 50,
+    "first_name": "Felix",
+    "last_name": "Chambers",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "felix.chambers@freelance.test",
+    "phone": "07700 939325",
+    "employment_type": "freelancer",
+    "department_id": 2,
+    "job_title": "Graphic Designer",
+    "line_manager_id": null,
+    "location_city": "Brighton",
+    "location_country": "United Kingdom",
+    "start_date": "2023-04-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 17,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 18,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Graphic Designer",
+        "amount_minor": 32000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.4,
+    "restricted": {
+      "emergency_contact": "Alex Chambers (family), 07700 918772",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 51,
+    "first_name": "Imogen",
+    "last_name": "Wright",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "imogen.wright@freelance.test",
+    "phone": "07700 989839",
+    "employment_type": "freelancer",
+    "department_id": 2,
+    "job_title": "Motion Designer",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-02-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 16,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Motion Designer",
+        "amount_minor": 40000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.8,
+    "restricted": {
+      "emergency_contact": "Sam Wright (family), 07700 935589",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 52,
+    "first_name": "Rafael",
+    "last_name": "Costa",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "rafael.costa@freelance.test",
+    "phone": "07700 999783",
+    "employment_type": "freelancer",
+    "department_id": 2,
+    "job_title": "Motion Designer",
+    "line_manager_id": null,
+    "location_city": "Lisbon",
+    "location_country": "Portugal",
+    "start_date": "2023-09-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 16,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 22,
+        "level": 5,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English",
+      "Portuguese"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Motion Designer",
+        "amount_minor": 35000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.2,
+    "restricted": {
+      "emergency_contact": "Jordan Costa (family), 07700 914709",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "Portuguese",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 53,
+    "first_name": "Holly",
+    "last_name": "Grant",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "holly.grant@freelance.test",
+    "phone": "07700 955183",
+    "employment_type": "freelancer",
+    "department_id": 4,
+    "job_title": "Registration Staff",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-06-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 19,
+        "level": 3,
+        "verified": true
+      },
+      {
+        "skill_id": 20,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Registration Staff",
+        "amount_minor": 18000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.5,
+    "restricted": {
+      "emergency_contact": "Chris Grant (family), 07700 970099",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 54,
+    "first_name": "Mohammed",
+    "last_name": "Iqbal",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "mohammed.iqbal@freelance.test",
+    "phone": "07700 935356",
+    "employment_type": "freelancer",
+    "department_id": 4,
+    "job_title": "Registration Staff",
+    "line_manager_id": null,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2023-04-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 20,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Registration Staff",
+        "amount_minor": 17000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.1,
+    "restricted": {
+      "emergency_contact": "Sam Iqbal (family), 07700 969229",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 55,
+    "first_name": "Clara",
+    "last_name": "Fischer",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "clara.fischer@freelance.test",
+    "phone": "07700 972687",
+    "employment_type": "freelancer",
+    "department_id": 4,
+    "job_title": "Registration Staff",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-08-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 19,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 23,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English",
+      "French"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Registration Staff",
+        "amount_minor": 19000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.6,
+    "restricted": {
+      "emergency_contact": "Sam Fischer (family), 07700 952442",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 56,
+    "first_name": "Jade",
+    "last_name": "Thompson",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "jade.thompson@freelance.test",
+    "phone": "07700 940169",
+    "employment_type": "freelancer",
+    "department_id": 4,
+    "job_title": "Registration Staff",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-05-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 20,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Registration Staff",
+        "amount_minor": 17000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 3.9,
+    "restricted": {
+      "emergency_contact": "Robin Thompson (family), 07700 939737",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 57,
+    "first_name": "Oscar",
+    "last_name": "Lund",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "oscar.lund@freelance.test",
+    "phone": "07700 936364",
+    "employment_type": "freelancer",
+    "department_id": 4,
+    "job_title": "Logistics Coordinator",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-05-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 21,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Logistics Coordinator",
+        "amount_minor": 26000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.3,
+    "restricted": {
+      "emergency_contact": "Sam Lund (family), 07700 942757",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 58,
+    "first_name": "Priyanka",
+    "last_name": "Shah",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "priyanka.shah@freelance.test",
+    "phone": "07700 962902",
+    "employment_type": "freelancer",
+    "department_id": 4,
+    "job_title": "Logistics Coordinator",
+    "line_manager_id": null,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2023-02-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 21,
+        "level": 3,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Logistics Coordinator",
+        "amount_minor": 24000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.0,
+    "restricted": {
+      "emergency_contact": "Jordan Shah (family), 07700 921469",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 59,
+    "first_name": "Dylan",
+    "last_name": "Cole",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "dylan.cole@freelance.test",
+    "phone": "07700 963967",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Rigger",
+    "line_manager_id": null,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2023-02-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 10,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 11,
+        "level": 5,
+        "verified": true
+      },
+      {
+        "skill_id": 12,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Rigger",
+        "amount_minor": 31000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.6,
+    "restricted": {
+      "emergency_contact": "Alex Cole (family), 07700 956744",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 60,
+    "first_name": "Kasia",
+    "last_name": "Nowicka",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "kasia.nowicka@freelance.test",
+    "phone": "07700 925485",
+    "employment_type": "freelancer",
+    "department_id": 3,
+    "job_title": "Rigger",
+    "line_manager_id": null,
+    "location_city": "Manchester",
+    "location_country": "United Kingdom",
+    "start_date": "2023-02-01",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": 30,
+    "is_active": true,
+    "skills": [
+      {
+        "skill_id": 10,
+        "level": 4,
+        "verified": true
+      },
+      {
+        "skill_id": 11,
+        "level": 4,
+        "verified": true
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [
+      {
+        "role_name": "Rigger",
+        "amount_minor": 29000,
+        "currency": "GBP",
+        "effective_from": "2025-04-01",
+        "effective_to": null
+      }
+    ],
+    "rating": 4.2,
+    "restricted": {
+      "emergency_contact": "Jordan Nowicka (family), 07700 988974",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": null
+  },
+  {
+    "id": 61,
+    "first_name": "Joel",
+    "last_name": "Mendes",
+    "preferred_name": null,
+    "pronouns": null,
+    "email": "joel.mendes@lumenco.test",
+    "phone": "07700 956469",
+    "employment_type": "employee",
+    "department_id": 1,
+    "job_title": "Producer",
+    "line_manager_id": 3,
+    "location_city": "London",
+    "location_country": "United Kingdom",
+    "start_date": "2026-11-02",
+    "end_date": null,
+    "company_name": null,
+    "vat_registered": false,
+    "vat_number": null,
+    "payment_terms_days": null,
+    "is_active": true,
+    "skills": [],
+    "languages": [
+      "English"
+    ],
+    "day_rates": [],
+    "rating": null,
+    "restricted": {
+      "emergency_contact": "Alex Mendes (family), 07700 927777",
+      "passport_number": null,
+      "passport_expiry": null,
+      "nationality": "British",
+      "dietary_requirements": null,
+      "access_needs": null
+    },
+    "notes": "New starter, onboarding in progress."
+  }
+]

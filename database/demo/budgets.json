@@ -1,0 +1,936 @@
+[
+  {
+    "event_id": 7,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 1,
+        "category": "venue",
+        "description": "Riverside Convention Centre hire, halls 1–3",
+        "supplier_id": 11,
+        "budget_minor": 10000000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 10000000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 2,
+        "category": "production",
+        "description": "Main stage set and breakout scenic",
+        "supplier_id": 5,
+        "budget_minor": 6400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 6400000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 3,
+        "category": "av",
+        "description": "AV hire: projection, LED, audio",
+        "supplier_id": 1,
+        "budget_minor": 1840000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1840000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 4,
+        "category": "av",
+        "description": "LED wall and processing",
+        "supplier_id": 4,
+        "budget_minor": 4600000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 4600000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 5,
+        "category": "creative",
+        "description": "Stage content and motion",
+        "supplier_id": null,
+        "budget_minor": 2800000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 2800000,
+        "remaining_gbp_minor": 400000
+      },
+      {
+        "id": 6,
+        "category": "print",
+        "description": "Signage and wayfinding",
+        "supplier_id": 14,
+        "budget_minor": 980000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 980000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 7,
+        "category": "catering",
+        "description": "Catering, 2 days for 1,400",
+        "supplier_id": 8,
+        "budget_minor": 7500000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 7500000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 8,
+        "category": "crew",
+        "description": "Freelance crew",
+        "supplier_id": null,
+        "budget_minor": 3800000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3800000,
+        "remaining_gbp_minor": 3020000
+      },
+      {
+        "id": 9,
+        "category": "registration",
+        "description": "Badging and check-in kiosks",
+        "supplier_id": 26,
+        "budget_minor": 760000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 760000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 10,
+        "category": "accommodation",
+        "description": "Crew hotel, 4 nights",
+        "supplier_id": 19,
+        "budget_minor": 620000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 620000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 11,
+        "category": "contingency",
+        "description": "Contingency",
+        "supplier_id": null,
+        "budget_minor": 1200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1200000,
+        "remaining_gbp_minor": 250000
+      }
+    ]
+  },
+  {
+    "event_id": 8,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 12,
+        "category": "venue",
+        "description": "Mill Street Studios, 2 days",
+        "supplier_id": 13,
+        "budget_minor": 1400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1400000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 13,
+        "category": "av",
+        "description": "360° LED reveal",
+        "supplier_id": 4,
+        "budget_minor": 4000000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 4000000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 14,
+        "category": "production",
+        "description": "Reveal set and drape",
+        "supplier_id": 7,
+        "budget_minor": 1700000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1700000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 15,
+        "category": "catering",
+        "description": "Bowl food and bar for 400",
+        "supplier_id": 9,
+        "budget_minor": 1550000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1550000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 16,
+        "category": "crew",
+        "description": "Freelance crew",
+        "supplier_id": null,
+        "budget_minor": 1450000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1450000,
+        "remaining_gbp_minor": 1100000
+      },
+      {
+        "id": 17,
+        "category": "creative",
+        "description": "Reveal film",
+        "supplier_id": null,
+        "budget_minor": 700000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 700000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 18,
+        "category": "contingency",
+        "description": "Contingency",
+        "supplier_id": null,
+        "budget_minor": 600000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 600000,
+        "remaining_gbp_minor": 0
+      }
+    ]
+  },
+  {
+    "event_id": 4,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 19,
+        "category": "venue",
+        "description": "Castlegate Assembly Rooms, 4 days",
+        "supplier_id": 30,
+        "budget_minor": 2600000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 2600000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 20,
+        "category": "av",
+        "description": "AV and hybrid stream",
+        "supplier_id": 2,
+        "budget_minor": 3100000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3100000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 21,
+        "category": "production",
+        "description": "Staging and scenic",
+        "supplier_id": 6,
+        "budget_minor": 2400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 2400000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 22,
+        "category": "catering",
+        "description": "Catering for 180 x 3 days",
+        "supplier_id": 8,
+        "budget_minor": 3400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3400000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 23,
+        "category": "crew",
+        "description": "Freelance crew",
+        "supplier_id": null,
+        "budget_minor": 2200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 2200000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 24,
+        "category": "accommodation",
+        "description": "Hotels, Edinburgh",
+        "supplier_id": 19,
+        "budget_minor": 1600000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1600000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 25,
+        "category": "travel",
+        "description": "Rail and flights",
+        "supplier_id": 17,
+        "budget_minor": 900000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 900000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 26,
+        "category": "contingency",
+        "description": "Contingency",
+        "supplier_id": null,
+        "budget_minor": 600000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 600000,
+        "remaining_gbp_minor": 0
+      }
+    ]
+  },
+  {
+    "event_id": 5,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 27,
+        "category": "venue",
+        "description": "Riverside Convention Centre, Hall 4",
+        "supplier_id": 11,
+        "budget_minor": 3200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3200000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 28,
+        "category": "production",
+        "description": "24 demo pods and main stage",
+        "supplier_id": 5,
+        "budget_minor": 4100000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 4100000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 29,
+        "category": "av",
+        "description": "Pod screens and stage AV",
+        "supplier_id": 2,
+        "budget_minor": 2200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 2200000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 30,
+        "category": "catering",
+        "description": "Delegate catering",
+        "supplier_id": 8,
+        "budget_minor": 1800000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1800000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 31,
+        "category": "crew",
+        "description": "Freelance crew",
+        "supplier_id": null,
+        "budget_minor": 1400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1400000,
+        "remaining_gbp_minor": 460000
+      },
+      {
+        "id": 32,
+        "category": "print",
+        "description": "Pod graphics",
+        "supplier_id": 14,
+        "budget_minor": 600000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 600000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 33,
+        "category": "contingency",
+        "description": "Contingency",
+        "supplier_id": null,
+        "budget_minor": 300000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 300000,
+        "remaining_gbp_minor": 0
+      }
+    ]
+  },
+  {
+    "event_id": 9,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 34,
+        "category": "venue",
+        "description": "Harbour Congress Centre, 5 days",
+        "supplier_id": 12,
+        "budget_minor": 9000000,
+        "currency": "EUR",
+        "fx_rate": "0.8650",
+        "budget_gbp_minor": 7785000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 35,
+        "category": "catering",
+        "description": "Delegate catering, 4 days",
+        "supplier_id": 10,
+        "budget_minor": 6400000,
+        "currency": "EUR",
+        "fx_rate": "0.8650",
+        "budget_gbp_minor": 5536000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 36,
+        "category": "accommodation",
+        "description": "Faculty and crew hotel",
+        "supplier_id": 20,
+        "budget_minor": 3800000,
+        "currency": "EUR",
+        "fx_rate": "0.8650",
+        "budget_gbp_minor": 3287000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 37,
+        "category": "av",
+        "description": "AV hire",
+        "supplier_id": 1,
+        "budget_minor": 3600000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3600000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 38,
+        "category": "freight",
+        "description": "Freight to Lisbon",
+        "supplier_id": 23,
+        "budget_minor": 950000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 950000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 39,
+        "category": "crew",
+        "description": "Freelance crew",
+        "supplier_id": null,
+        "budget_minor": 3200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3200000,
+        "remaining_gbp_minor": 2750000
+      },
+      {
+        "id": 40,
+        "category": "travel",
+        "description": "Flights",
+        "supplier_id": null,
+        "budget_minor": 1200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1200000,
+        "remaining_gbp_minor": 1160000
+      },
+      {
+        "id": 41,
+        "category": "contingency",
+        "description": "Contingency",
+        "supplier_id": null,
+        "budget_minor": 1200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1200000,
+        "remaining_gbp_minor": 800000
+      }
+    ]
+  },
+  {
+    "event_id": 12,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 42,
+        "category": "venue",
+        "description": "Space rental, 180 m²",
+        "supplier_id": null,
+        "budget_minor": 5200000,
+        "currency": "EUR",
+        "fx_rate": "0.8650",
+        "budget_gbp_minor": 4498000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 43,
+        "category": "production",
+        "description": "Double-deck stand build",
+        "supplier_id": 5,
+        "budget_minor": 6400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 6400000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 44,
+        "category": "print",
+        "description": "Stand graphics, printed locally",
+        "supplier_id": 16,
+        "budget_minor": 820000,
+        "currency": "EUR",
+        "fx_rate": "0.8650",
+        "budget_gbp_minor": 709300,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 45,
+        "category": "accommodation",
+        "description": "Hotel, 6 nights",
+        "supplier_id": 21,
+        "budget_minor": 1100000,
+        "currency": "EUR",
+        "fx_rate": "0.8650",
+        "budget_gbp_minor": 951500,
+        "remaining_gbp_minor": 1080000
+      },
+      {
+        "id": 46,
+        "category": "crew",
+        "description": "Freelance crew",
+        "supplier_id": null,
+        "budget_minor": 1200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1200000,
+        "remaining_gbp_minor": 900000
+      },
+      {
+        "id": 47,
+        "category": "contingency",
+        "description": "Contingency",
+        "supplier_id": null,
+        "budget_minor": 1200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1200000,
+        "remaining_gbp_minor": 500000
+      }
+    ]
+  },
+  {
+    "event_id": 10,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 48,
+        "category": "venue",
+        "description": "The Glasshouse",
+        "supplier_id": null,
+        "budget_minor": 900000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 900000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 49,
+        "category": "catering",
+        "description": "Drinks and canapés for 250",
+        "supplier_id": 9,
+        "budget_minor": 1100000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1100000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 50,
+        "category": "av",
+        "description": "AV",
+        "supplier_id": 3,
+        "budget_minor": 650000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 650000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 51,
+        "category": "crew",
+        "description": "Crew",
+        "supplier_id": null,
+        "budget_minor": 450000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 450000,
+        "remaining_gbp_minor": 320000
+      },
+      {
+        "id": 52,
+        "category": "creative",
+        "description": "Welcome film",
+        "supplier_id": null,
+        "budget_minor": 800000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 800000,
+        "remaining_gbp_minor": 600000
+      },
+      {
+        "id": 53,
+        "category": "contingency",
+        "description": "Contingency",
+        "supplier_id": null,
+        "budget_minor": 250000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 250000,
+        "remaining_gbp_minor": 0
+      }
+    ]
+  },
+  {
+    "event_id": 11,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 54,
+        "category": "venue",
+        "description": "Aberdeen Energy Hall",
+        "supplier_id": null,
+        "budget_minor": 3800000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3800000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 55,
+        "category": "av",
+        "description": "AV hire",
+        "supplier_id": 2,
+        "budget_minor": 4100000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 4100000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 56,
+        "category": "production",
+        "description": "Staging",
+        "supplier_id": 6,
+        "budget_minor": 2900000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 2900000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 57,
+        "category": "catering",
+        "description": "Catering",
+        "supplier_id": null,
+        "budget_minor": 2600000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 2600000,
+        "remaining_gbp_minor": 2600000
+      },
+      {
+        "id": 58,
+        "category": "crew",
+        "description": "Crew",
+        "supplier_id": null,
+        "budget_minor": 1500000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1500000,
+        "remaining_gbp_minor": 1500000
+      },
+      {
+        "id": 59,
+        "category": "travel",
+        "description": "Crew travel to Aberdeen",
+        "supplier_id": null,
+        "budget_minor": 700000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 700000,
+        "remaining_gbp_minor": 700000
+      }
+    ]
+  },
+  {
+    "event_id": 3,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 60,
+        "category": "venue",
+        "description": "The Glasshouse, private dining",
+        "supplier_id": null,
+        "budget_minor": 1200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1200000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 61,
+        "category": "catering",
+        "description": "Dinner for 60",
+        "supplier_id": 8,
+        "budget_minor": 950000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 950000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 62,
+        "category": "av",
+        "description": "AV",
+        "supplier_id": 3,
+        "budget_minor": 700000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 700000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 63,
+        "category": "crew",
+        "description": "Crew",
+        "supplier_id": null,
+        "budget_minor": 300000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 300000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 64,
+        "category": "creative",
+        "description": "Invitations and print",
+        "supplier_id": null,
+        "budget_minor": 400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 400000,
+        "remaining_gbp_minor": 0
+      }
+    ]
+  },
+  {
+    "event_id": 1,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 65,
+        "category": "venue",
+        "description": "Venue and catering",
+        "supplier_id": null,
+        "budget_minor": 3800000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3800000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 66,
+        "category": "av",
+        "description": "AV",
+        "supplier_id": null,
+        "budget_minor": 2100000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 2100000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 67,
+        "category": "crew",
+        "description": "Crew",
+        "supplier_id": null,
+        "budget_minor": 800000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 800000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 68,
+        "category": "creative",
+        "description": "Creative",
+        "supplier_id": null,
+        "budget_minor": 900000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 900000,
+        "remaining_gbp_minor": 0
+      }
+    ]
+  },
+  {
+    "event_id": 2,
+    "version": 1,
+    "status": "approved",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 69,
+        "category": "venue",
+        "description": "Venue and catering",
+        "supplier_id": null,
+        "budget_minor": 6200000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 6200000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 70,
+        "category": "av",
+        "description": "AV",
+        "supplier_id": null,
+        "budget_minor": 3400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 3400000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 71,
+        "category": "crew",
+        "description": "Crew",
+        "supplier_id": null,
+        "budget_minor": 1500000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1500000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 72,
+        "category": "creative",
+        "description": "Creative and awards",
+        "supplier_id": null,
+        "budget_minor": 1400000,
+        "currency": "GBP",
+        "fx_rate": null,
+        "budget_gbp_minor": 1400000,
+        "remaining_gbp_minor": 0
+      }
+    ]
+  },
+  {
+    "event_id": 6,
+    "version": 2,
+    "status": "revised",
+    "approved_by": 1,
+    "approved_at": "2026-05-01T08:00:00Z",
+    "revised_from_minor": null,
+    "lines": [
+      {
+        "id": 73,
+        "category": "venue",
+        "description": "Venue cancellation fee (25%)",
+        "supplier_id": 12,
+        "budget_minor": 1400000,
+        "currency": "EUR",
+        "fx_rate": "0.8650",
+        "budget_gbp_minor": 1211000,
+        "remaining_gbp_minor": 0
+      },
+      {
+        "id": 74,
+        "category": "accommodation",
+        "description": "Hotel attrition",
+        "supplier_id": 20,
+        "budget_minor": 600000,
+        "currency": "EUR",
+        "fx_rate": "0.8650",
+        "budget_gbp_minor": 519000,
+        "remaining_gbp_minor": 0
+      }
+    ]
+  }
+]

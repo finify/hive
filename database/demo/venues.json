@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "Riverside Convention Centre",
+    "address": "Riverside Quay, London E16 1XL",
+    "city": "London",
+    "country": "United Kingdom",
+    "capacity": 2400,
+    "access_notes": "Dock 3 via Gate B. 16.5 m artic access, booking slots 30 min.",
+    "power_notes": "3 x 125A 3-phase in Hall 2. Ceiling points rated 1 t at 9 m."
+  },
+  {
+    "id": 2,
+    "name": "Harbour Congress Centre",
+    "address": "Avenida da Doca 12, 1200 Lisboa",
+    "city": "Lisbon",
+    "country": "Portugal",
+    "capacity": 1800,
+    "access_notes": "Ramp access from Rua do Cais. Forklift on site, book 48 h ahead.",
+    "power_notes": "2 x 63A 3-phase per hall. Rigging by house riggers only."
+  },
+  {
+    "id": 3,
+    "name": "Mill Street Studios",
+    "address": "4 Mill Street, Manchester M4 6AA",
+    "city": "Manchester",
+    "country": "United Kingdom",
+    "capacity": 650,
+    "access_notes": "Ground-level dock, 7.5 t max. Load in from 06:00.",
+    "power_notes": "1 x 125A 3-phase. Fixed lighting grid at 7 m."
+  },
+  {
+    "id": 4,
+    "name": "Castlegate Assembly Rooms",
+    "address": "54 George Street, Edinburgh EH2 2LR",
+    "city": "Edinburgh",
+    "country": "United Kingdom",
+    "capacity": 450,
+    "access_notes": "Rear lane access, no vehicles over 7.5 t, 08:00–10:00 only.",
+    "power_notes": "Listed building: no fixings to walls. 63A single phase."
+  },
+  {
+    "id": 5,
+    "name": "Canal Exhibition Halls",
+    "address": "Kattenburgerstraat 5, 1018 JA Amsterdam",
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "capacity": 5000,
+    "access_notes": "Shared docks with other stands. Freight via official forwarder only.",
+    "power_notes": "Stand power ordered through the organiser by 1 Nov."
+  },
+  {
+    "id": 6,
+    "name": "The Glasshouse",
+    "address": "2 Granary Square, London N1C 4AA",
+    "city": "London",
+    "country": "United Kingdom",
+    "capacity": 320,
+    "access_notes": "Goods lift 2.4 m x 1.5 m, 1,000 kg.",
+    "power_notes": "32A 3-phase in the main room."
+  },
+  {
+    "id": 7,
+    "name": "Canal Side Exhibition Centre",
+    "address": "Gas Street Basin, Birmingham B1 2JU",
+    "city": "Birmingham",
+    "country": "United Kingdom",
+    "capacity": 3000,
+    "access_notes": "Six docks, marshalling yard on site.",
+    "power_notes": "Unlimited power on request, rigging grid at 12 m."
+  },
+  {
+    "id": 8,
+    "name": "Old Customs House",
+    "address": "Custom House Quay, Dublin D01 W6X0",
+    "city": "Dublin",
+    "country": "Ireland",
+    "capacity": 280,
+    "access_notes": "Quay-side drop off only.",
+    "power_notes": "32A 3-phase."
+  },
+  {
+    "id": 9,
+    "name": "Aberdeen Energy Hall",
+    "address": "Exhibition Avenue, Aberdeen AB23 8BL",
+    "city": "Aberdeen",
+    "country": "United Kingdom",
+    "capacity": 1500,
+    "access_notes": "Two docks, forklift on site.",
+    "power_notes": "400A available across halls."
+  },
+  {
+    "id": 10,
+    "name": "Northern Works",
+    "address": "Cotton Lane, Manchester M1 2RG",
+    "city": "Manchester",
+    "country": "United Kingdom",
+    "capacity": 900,
+    "access_notes": "Load in via Cotton Lane, residents parking restrictions after 22:00.",
+    "power_notes": "125A 3-phase."
+  }
+]

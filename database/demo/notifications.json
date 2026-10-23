@@ -1,0 +1,137 @@
+[
+  {
+    "person_id": 4,
+    "type": "clash",
+    "title": "Clash on Northwind Partner Summit",
+    "body": "Kofi Mensah is confirmed on EV-26114 and EV-26116 on Fri 23 Oct.",
+    "link": "rota",
+    "at": "2026-10-22T16:06:00Z",
+    "read": false
+  },
+  {
+    "person_id": 4,
+    "type": "approval",
+    "title": "5 timesheet entries waiting",
+    "body": "Halcyon Clinical Showcase, week of 12 Oct.",
+    "link": "approvals",
+    "at": "2026-10-19T07:00:00Z",
+    "read": false
+  },
+  {
+    "person_id": 4,
+    "type": "invoice",
+    "title": "Invoice over tolerance",
+    "body": "Brightline AV Hire BL-20931 is £1,250.00 above PO-26-0033.",
+    "link": "supplier-invoices",
+    "at": "2026-10-21T11:04:00Z",
+    "read": false
+  },
+  {
+    "person_id": 4,
+    "type": "leave",
+    "title": "Leave request clashes with a booking",
+    "body": "Freya Collins asked for 4–6 Nov; she is booked on EV-26118 on 5 Nov.",
+    "link": "people",
+    "at": "2026-10-21T08:41:00Z",
+    "read": true
+  },
+  {
+    "person_id": 5,
+    "type": "clash",
+    "title": "Clash on Arclight “Pulse” Launch",
+    "body": "Kofi Mensah is also confirmed on EV-26114 today.",
+    "link": "rota",
+    "at": "2026-10-22T16:06:00Z",
+    "read": false
+  },
+  {
+    "person_id": 5,
+    "type": "approval",
+    "title": "2 timesheet entries waiting",
+    "body": "Arclight pre-light on 16 Oct.",
+    "link": "approvals",
+    "at": "2026-10-19T07:00:00Z",
+    "read": false
+  },
+  {
+    "person_id": 20,
+    "type": "invoice",
+    "title": "Invoice needs approval",
+    "body": "Brightline AV Hire BL-20931 is over the variance tolerance.",
+    "link": "supplier-invoices",
+    "at": "2026-10-21T11:04:00Z",
+    "read": false
+  },
+  {
+    "person_id": 20,
+    "type": "billing",
+    "title": "Client payment overdue",
+    "body": "Meridian Bank INV-3141, pre-event payment, was due 6 Sep.",
+    "link": "events",
+    "at": "2026-10-07T06:00:00Z",
+    "read": false
+  },
+  {
+    "person_id": 23,
+    "type": "document",
+    "title": "Insurance expired",
+    "body": "Ola Brennan’s public liability insurance expired on 11 Oct.",
+    "link": "people",
+    "at": "2026-10-11T06:00:00Z",
+    "read": false
+  },
+  {
+    "person_id": 23,
+    "type": "document",
+    "title": "4 documents expire within 30 days",
+    "body": "Insurance and certificates for Kwame, Rafael, Tunde and Freya.",
+    "link": "people",
+    "at": "2026-10-23T06:00:00Z",
+    "read": false
+  },
+  {
+    "person_id": 26,
+    "type": "booking",
+    "title": "New booking request",
+    "body": "Halcyon Health European Congress, Lisbon, 9–13 Nov, AV Technician at £400 a day.",
+    "link": "my-work",
+    "at": "2026-10-21T13:10:00Z",
+    "read": false
+  },
+  {
+    "person_id": 26,
+    "type": "booking",
+    "title": "Booking confirmed",
+    "body": "Arclight “Pulse” Launch, Fri 23 Oct, Mill Street Studios.",
+    "link": "my-work",
+    "at": "2026-10-12T16:05:00Z",
+    "read": true
+  },
+  {
+    "person_id": 10,
+    "type": "leave",
+    "title": "Leave approved",
+    "body": "Annual leave 26–30 Oct approved by Ben Hargreaves.",
+    "link": "my-work",
+    "at": "2026-10-02T10:20:00Z",
+    "read": true
+  },
+  {
+    "person_id": 1,
+    "type": "risk",
+    "title": "Meridian Bank Leadership Forum at risk",
+    "body": "Forecast is over budget after the hybrid stream change.",
+    "link": "events",
+    "at": "2026-10-13T06:30:00Z",
+    "read": false
+  },
+  {
+    "person_id": 1,
+    "type": "po",
+    "title": "PO above your producer’s limit",
+    "body": "Ironbark Net Zero staging, Cube Scenic, £28,800.",
+    "link": "events",
+    "at": "2026-10-20T09:05:00Z",
+    "read": false
+  }
+]

@@ -1,0 +1,510 @@
+@php
+    use App\Enums\AssignmentStatus;
+    use App\Enums\EntryStatus;
+    use App\Enums\EventStage;
+    use App\Enums\EventType;
+    use App\Enums\PurchaseOrderStatus;
+    use App\Enums\SupplierInvoiceStatus;
+    use App\Enums\BillingStatus;
+    use App\Support\DateRange;
+    use App\Support\Display;
+    use App\Support\Money;
+    $workspace = app(\App\Demo\Workspace::class);
+    $tabLabels = ['overview' => 'Overview', 'crew' => 'Crew and resourcing', 'budget' => 'Budget', 'purchase-orders' => 'Purchase orders', 'invoices' => 'Invoices', 'timesheets' => 'Timesheets', 'files' => 'Files', 'activity' => 'Activity'];
+    $span = $workspace->eventSpan($event);
+@endphp
+<div>
+    <x-page-head :title="$event['name']">
+        <x-slot:crumbs>
+            <a href="{{ route('events.index') }}" wire:navigate>Events</a> <span aria-hidden="true">/</span> <span class="code">{{ $event['code'] }}</span>
+        </x-slot:crumbs>
+        <x-slot:actions>
+            @foreach ($nextStages as $to)
+                @if ($to === EventStage::Cancelled || $to === EventStage::Lost)
+                    <button type="button" class="btn btn-quiet text-negative" wire:click="prepareStage('{{ $to->value }}')" wire:loading.attr="disabled">{{ $to === EventStage::Cancelled ? 'Cancel event' : 'Mark as lost' }}</button>
+                @else
+                    <button type="button" class="btn btn-primary" wire:click="prepareStage('{{ $to->value }}')" wire:loading.attr="disabled">Move to {{ $to->label() }}</button>
+                @endif
+            @endforeach
+        </x-slot:actions>
+    </x-page-head>
+
+    <div class="gap-row mb-3">
+        <x-status :value="$stage" />
+        @if ($financials && $financials->health)
+            <x-status :value="$financials->health" />
+        @endif
+        <span class="text-muted">{{ EventType::from($event['event_type'])->label() }}</span>
+        <span class="text-muted">{{ $client['name'] ?? '—' }}</span>
+        <span class="text-muted">{{ $venue['name'] ?? '' }}, {{ $event['city'] }}</span>
+        <span class="text-muted tnum">{{ DateRange::of($event['start_date'], $event['end_date'])->format() }}</span>
+    </div>
+
+    <nav class="tabs" aria-label="Event sections">
+        @foreach ($tabs as $t)
+            <button type="button" @class(['active' => $tab === $t]) wire:click="$set('tab', '{{ $t }}')" @if ($tab === $t) aria-current="page" @endif>
+                {{ $tabLabels[$t] }}
+                @if ($t === 'crew' && $clashKeys)
+                    <span class="pill is-negative ms-1">Clash</span>
+                @endif
+            </button>
+        @endforeach
+    </nav>
+
+    <div wire:loading.class="opacity-50" wire:target="tab">
+    {{-- ============================================================ overview --}}
+    @if ($tab === 'overview')
+        @if ($financials)
+            <div class="figure-row">
+                <x-figure label="Client fee" :value="$financials->revenue->formatShort()" caption="Revenue lines total" />
+                <x-figure label="Forecast at completion" :value="$financials->forecast()->formatShort()" :caption="$financials->forecastPercentOfBudget().'% of '.$financials->budget->formatShort().' budget'" />
+                <x-figure label="Margin" :value="($financials->marginPercent() ?? '—').'%'" :caption="$financials->margin()->formatShort().' forecast'" />
+                <x-figure label="Actual so far" :value="$financials->actual->formatShort()" :caption="$financials->committed->formatShort().' committed'" />
+            </div>
+        @endif
+
+        <div class="grid-12">
+            <section class="card span-7">
+                <div class="card-header"><h2 class="card-title">About this event</h2></div>
+                <div class="card-body">
+                    <p>{{ $event['description'] }}</p>
+                    <dl class="kv">
+                        <dt>Client</dt><dd>{{ $client['name'] ?? '—' }}</dd>
+                        <dt>Producer</dt><dd>{{ $workspace->personName($event['producer_id']) }}</dd>
+                        <dt>Venue</dt><dd>{{ $venue['name'] ?? '—' }}<div class="small text-muted">{{ $venue['address'] ?? '' }}</div></dd>
+                        <dt>Attendance</dt><dd class="tnum">{{ number_format($event['expected_attendance']) }} expected</dd>
+                        <dt>Timezone</dt><dd>{{ $event['timezone'] }}</dd>
+                        <dt>Contract</dt>
+                        <dd>
+                            @if ($event['contract_signed'] ?? false)
+                                Signed
+                            @else
+                                <span class="text-warning-ink">Not signed yet</span>
+                                @if ($canEdit)
+                                    <button type="button" class="btn btn-secondary btn-sm ms-2" wire:click="recordContract" wire:loading.attr="disabled">Upload signed contract</button>
+                                @endif
+                            @endif
+                        </dd>
+                    </dl>
+                </div>
+            </section>
+
+            <section class="card span-5">
+                <div class="card-header"><h2 class="card-title">Phases</h2><span class="small text-muted ms-auto tnum">{{ $span->format() }}</span></div>
+                @if ($event['phases'])
+                    <ul class="list-rows">
+                        @foreach ($event['phases'] as $phase)
+                            <li>
+                                <span class="fw-medium" style="width: 6rem">{{ \App\Enums\PhaseType::from($phase['type'])->label() }}</span>
+                                <span class="tnum text-muted">{{ DateRange::of($phase['start_date'], $phase['end_date'])->format() }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <x-empty title="No phases yet">Build, rehearsal, live and breakdown dates appear here once the dates are firm.</x-empty>
+                @endif
+            </section>
+
+            <section class="card span-7">
+                <div class="card-header"><h2 class="card-title">Tasks</h2><span class="small text-muted ms-auto">{{ collect($event['tasks'])->where('status', 'done')->count() }} of {{ count($event['tasks']) }} done</span></div>
+                @if ($event['tasks'])
+                    <ul class="list-rows">
+                        @foreach ($event['tasks'] as $task)
+                            <li>
+                                <i @class(['bi', 'bi-check-circle-fill text-positive' => $task['status'] === 'done', 'bi-circle-half text-warning-ink' => $task['status'] === 'in-progress', 'bi-circle text-muted' => $task['status'] === 'to-do']) aria-hidden="true"></i>
+                                <div class="row-main">
+                                    <div @class(['row-title', 'text-muted text-decoration-line-through' => $task['status'] === 'done'])>{{ $task['title'] }}</div>
+                                    <div class="row-sub">{{ $workspace->personName($task['assignee_id']) }}</div>
+                                </div>
+                                <span class="small text-muted tnum">Due {{ Display::date($task['due_date']) }}</span>
+                                <span class="visually-hidden">{{ str_replace('-', ' ', $task['status']) }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <x-empty title="No tasks yet">A task list from the template for this event type is added when the event is confirmed.</x-empty>
+                @endif
+            </section>
+
+            <section class="card span-5">
+                <div class="card-header"><h2 class="card-title">Team</h2></div>
+                <ul class="list-rows">
+                    @foreach ($event['team'] as $member)
+                        <li>
+                            <x-avatar :name="$workspace->personName($member['person_id'])" :id="$member['person_id']" size="sm" />
+                            <div class="row-main"><a href="{{ route('people.show', $member['person_id']) }}" wire:navigate>{{ $workspace->personName($member['person_id']) }}</a></div>
+                            <span class="small text-muted">{{ $member['role'] }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            </section>
+        </div>
+    @endif
+
+    {{-- ============================================================ crew --}}
+    @if ($tab === 'crew')
+        @if ($clashKeys)
+            <div class="callout is-negative mb-3">
+                <i class="bi bi-exclamation-octagon" aria-hidden="true"></i>
+                <div class="flex-grow-1">Someone on this event is also booked elsewhere on the same day. <a href="{{ route('clashes') }}" class="link" wire:navigate>Resolve the clash</a></div>
+            </div>
+        @endif
+        @if ($crewCalls->isEmpty())
+            <div class="card"><x-empty title="No crew calls yet">Add a crew call for each role you need, for example “2 x AV Technician, 4–6 Nov”. Booked people then appear here and on the rota.</x-empty></div>
+        @endif
+        <div class="d-grid gap-3">
+            @foreach ($crewCalls as $call)
+                @php($filled = $call['assignments']->filter(fn ($a) => in_array($a['status'], ['confirmed', 'first-hold'], true))->count())
+                <section class="card" wire:key="call-{{ $call['id'] }}">
+                    <div class="card-header flex-wrap">
+                        <h2 class="card-title">{{ $call['quantity'] }} × {{ $call['role_name'] }}</h2>
+                        <span class="small text-muted tnum">{{ DateRange::of($call['start_date'], $call['end_date'])->format() }}, {{ ucfirst($call['phase']) }}, call {{ $call['call_time'] }} to {{ $call['wrap_time'] }}</span>
+                        @if ($call['skill_id'])
+                            <span class="small text-muted">{{ $workspace->skills()->get($call['skill_id'])['name'] }} level {{ $call['min_skill_level'] }}+</span>
+                        @endif
+                        <span class="ms-auto"><x-pill :tone="$filled >= $call['quantity'] ? 'positive' : 'warning'">{{ $filled >= $call['quantity'] ? 'Filled' : ($filled ? 'Partially filled' : 'Open') }}, {{ $filled }} of {{ $call['quantity'] }}</x-pill></span>
+                    </div>
+                    @if ($call['assignments']->isNotEmpty())
+                        <div class="table-wrap border-0 rounded-0">
+                            <table class="table">
+                                <thead><tr><th>Person</th><th>Dates</th><th>Status</th>@if ($canSeeRates)<th class="num">Agreed day rate</th>@endif<th></th></tr></thead>
+                                <tbody>
+                                    @foreach ($call['assignments'] as $a)
+                                        @php($isClash = in_array('assignment:'.$a['id'], $clashKeys, true))
+                                        @php($expired = $workspace->expiredMandatoryDocuments($a['person_id']))
+                                        <tr wire:key="as-{{ $a['id'] }}">
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <x-avatar :name="$workspace->personName($a['person_id'])" :id="$a['person_id']" size="sm" />
+                                                    <a href="{{ route('people.show', $a['person_id']) }}" wire:navigate>{{ $workspace->personName($a['person_id']) }}</a>
+                                                    @if ($expired->isNotEmpty())
+                                                        <span class="flag is-negative" title="{{ $expired->pluck('title')->implode(', ') }} expired"><i class="bi bi-file-earmark-x" aria-hidden="true"></i>Document expired</span>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <td class="tnum">{{ DateRange::of($a['start_date'], $a['end_date'])->format() }}</td>
+                                            <td>
+                                                <x-status :value="AssignmentStatus::from($a['status'])" />
+                                                @if ($isClash)
+                                                    <x-pill tone="negative" icon="exclamation-octagon">Clash</x-pill>
+                                                @endif
+                                                @if ($a['clash_override_reason'] ?? null)
+                                                    <span class="small text-muted d-block">Overlap accepted: {{ $a['clash_override_reason'] }}</span>
+                                                @endif
+                                            </td>
+                                            @if ($canSeeRates)
+                                                <td class="num">{{ isset($a['agreed_rate_minor']) && $a['agreed_rate_minor'] ? Money::of($a['agreed_rate_minor'])->format() : '—' }}</td>
+                                            @endif
+                                            <td class="text-end">
+                                                @if ($isClash && $canManageCrew)
+                                                    <a href="{{ route('clashes') }}" class="btn btn-secondary btn-sm" wire:navigate>Resolve</a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="card-body text-muted">Nobody booked yet. @if ($canManageCrew)<a class="link" href="{{ route('availability', ['role' => $call['role_name'], 'from' => $call['start_date'], 'to' => $call['end_date']]) }}" wire:navigate>Find someone free</a>@endif</div>
+                    @endif
+                    @if ($call['notes'])
+                        <div class="card-body pt-0"><p class="note small mb-0">{{ $call['notes'] }}</p></div>
+                    @endif
+                </section>
+            @endforeach
+        </div>
+    @endif
+
+    {{-- ============================================================ budget --}}
+    @if ($tab === 'budget' && $financials)
+        <div class="figure-row">
+            <x-figure label="Budget" :value="$financials->budget->format(false)" :caption="'Version '.$budget['version'].', '.ucfirst($budget['status'])" />
+            <x-figure label="Forecast at completion" :value="$financials->forecast()->format(false)" :caption="'Variance '.$financials->variance()->format(false)" />
+            <x-figure label="Margin" :value="$financials->margin()->format(false)" :caption="($financials->marginPercent() ?? '—').'% of '.$financials->revenue->format(false)" />
+            <x-figure label="Health" :value="$financials->health?->label() ?? 'Final'" :caption="$financials->forecastPercentOfBudget().'% of budget forecast'" />
+        </div>
+
+        <section class="card mb-3">
+            <div class="card-header flex-wrap">
+                <h2 class="card-title">Cost lines</h2>
+                <div class="legend ms-auto">
+                    <span><span class="swatch" style="background: var(--hive-data)"></span>Actual</span>
+                    <span><span class="swatch" style="background: color-mix(in srgb, var(--hive-data) 45%, var(--hive-surface))"></span>Committed</span>
+                    <span><span class="swatch" style="background: repeating-linear-gradient(135deg, var(--hive-control) 0 2px, transparent 2px 5px)"></span>Remaining estimate</span>
+                    <span><span class="swatch" style="background: var(--hive-ink); width: 2px"></span>Budget</span>
+                </div>
+            </div>
+            <div class="table-wrap border-0 rounded-0">
+                <table class="table">
+                    <thead>
+                        <tr><th>Category</th><th>Line</th><th class="num">Budget</th><th class="num">Committed</th><th class="num">Actual</th><th class="num">Remaining</th><th class="num">Forecast</th><th style="min-width: 140px"><span class="visually-hidden">Bar</span></th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($lines as $line)
+                            @php($over = $line['forecast']->greaterThan($line['budget']))
+                            @php($scale = max($line['budget']->minor, $line['forecast']->minor, 1))
+                            <tr>
+                                <td class="text-nowrap">{{ $workspace->costCategoryName($line['category']) }}</td>
+                                <td>
+                                    {{ $line['description'] }}
+                                    @if ($line['supplier_id'])
+                                        <div class="small text-muted">{{ $workspace->suppliers()->get($line['supplier_id'])['name'] }}</div>
+                                    @endif
+                                    @if ($line['original'])
+                                        <div class="small text-muted">{{ $line['original']->format(false) }} at {{ $line['fx_rate'] }} £/€</div>
+                                    @endif
+                                </td>
+                                <td class="num">{{ $line['budget']->format(false) }}</td>
+                                <td class="num">{{ $line['committed']->format(false) }}</td>
+                                <td class="num">{{ $line['actual']->format(false) }}</td>
+                                <td class="num">{{ $line['remaining']->format(false) }}</td>
+                                <td @class(['num', 'text-negative fw-medium' => $over])>{{ $line['forecast']->format(false) }}</td>
+                                <td>
+                                    <div class="budget-bar" role="img" aria-label="Forecast {{ $line['forecast']->format(false) }} against {{ $line['budget']->format(false) }}">
+                                        <span class="seg-actual" style="width: {{ round($line['actual']->minor * 100 / $scale, 2) }}%"></span>
+                                        <span class="seg-committed" style="width: {{ round($line['committed']->minor * 100 / $scale, 2) }}%"></span>
+                                        <span class="seg-remaining" style="width: {{ round($line['remaining']->minor * 100 / $scale, 2) }}%"></span>
+                                        <span class="budget-line" style="left: calc({{ round($line['budget']->minor * 100 / $scale, 2) }}% - 1px)"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr class="fw-medium">
+                            <td colspan="2">Total</td>
+                            <td class="num">{{ $financials->budget->format(false) }}</td>
+                            <td class="num">{{ $financials->committed->format(false) }}</td>
+                            <td class="num">{{ $financials->actual->format(false) }}</td>
+                            <td class="num">{{ $financials->remaining->format(false) }}</td>
+                            <td @class(['num', 'text-negative' => $financials->forecast()->greaterThan($financials->budget)])>{{ $financials->forecast()->format(false) }}</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+
+        <div class="grid-12">
+            <section class="card span-6">
+                <div class="card-header"><h2 class="card-title">Client revenue</h2></div>
+                <ul class="list-rows">
+                    @foreach ($revenueLines as $r)
+                        <li><div class="row-main">{{ $r['description'] }}</div><span class="tnum">{{ Money::of($r['amount_minor'])->format(false) }}</span></li>
+                    @endforeach
+                </ul>
+            </section>
+            <section class="card span-6">
+                <div class="card-header"><h2 class="card-title">Payment milestones</h2></div>
+                @if ($milestones->isNotEmpty())
+                    <ul class="list-rows">
+                        @foreach ($milestones as $m)
+                            <li>
+                                <div class="row-main"><div>{{ $m['description'] }}</div><div class="row-sub tnum">Due {{ Display::date($m['due_date']) }}@if ($m['invoice_reference']), {{ $m['invoice_reference'] }}@endif</div></div>
+                                <span class="tnum">{{ Money::of($m['amount_minor'])->format(false) }}</span>
+                                <x-status :value="BillingStatus::from($m['status'])" />
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <x-empty title="No milestones yet">Deposit and payment milestones are added when the contract is signed.</x-empty>
+                @endif
+            </section>
+        </div>
+    @endif
+
+    {{-- ============================================================ purchase orders --}}
+    @if ($tab === 'purchase-orders')
+        <div class="table-wrap">
+            @if ($pos->isEmpty())
+                <x-empty title="No purchase orders yet">POs raised against this event’s budget lines appear here with their approval status.</x-empty>
+            @else
+                <table class="table">
+                    <thead><tr><th>PO</th><th>Supplier</th><th>Line</th><th class="num">Net</th><th class="num">VAT</th><th class="num">Total</th><th>Status</th><th>Raised by</th></tr></thead>
+                    <tbody>
+                        @foreach ($pos as $po)
+                            <tr>
+                                <td class="code">{{ $po['code'] }}</td>
+                                <td>{{ $workspace->suppliers()->get($po['supplier_id'])['name'] }}</td>
+                                <td>{{ $po['lines'][0]['description'] }}</td>
+                                <td class="num">{{ Money::of($po['subtotal_minor'], $po['currency'])->format() }}</td>
+                                <td class="num">{{ Money::of($po['vat_minor'], $po['currency'])->format() }}</td>
+                                <td class="num">{{ Money::of($po['total_minor'], $po['currency'])->format() }}</td>
+                                <td><x-status :value="PurchaseOrderStatus::from($po['status'])" /></td>
+                                <td>{{ $workspace->personName($po['raised_by']) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
+    @endif
+
+    {{-- ============================================================ invoices --}}
+    @if ($tab === 'invoices')
+        <div class="table-wrap">
+            @if ($invoices->isEmpty())
+                <x-empty title="No supplier invoices yet">Invoices recorded against this event’s POs appear here, with any variance from the PO.</x-empty>
+            @else
+                <table class="table">
+                    <thead><tr><th>Invoice</th><th>Supplier</th><th>Against</th><th class="num">Net</th><th class="num">Variance</th><th>Status</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach ($invoices as $si)
+                            @php($over = $workspace->invoiceOverTolerance($si))
+                            <tr>
+                                <td class="code">{{ $si['invoice_number'] }}</td>
+                                <td>{{ $workspace->suppliers()->get($si['supplier_id'])['name'] }}</td>
+                                <td class="code">{{ $workspace->purchaseOrders()->get($si['purchase_order_id'])['code'] ?? 'No PO' }}</td>
+                                <td class="num">{{ Money::of($si['net_minor'], $si['currency'])->format() }}</td>
+                                <td @class(['num', 'text-negative' => $over])>{{ $si['variance_minor'] ? Money::of($si['variance_minor'], $si['currency'])->format() : '—' }}</td>
+                                <td>
+                                    <x-status :value="SupplierInvoiceStatus::from($si['status'])" />
+                                    @if ($over && ! in_array($si['status'], ['approved', 'paid'], true))
+                                        <x-pill tone="negative">Over tolerance</x-pill>
+                                    @endif
+                                </td>
+                                <td class="text-end">
+                                    @can('supplier-invoice.approve', [$si])
+                                        <a href="{{ route('supplier-invoices', ['invoice' => $si['id']]) }}" class="btn btn-secondary btn-sm" wire:navigate>Review</a>
+                                    @endcan
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
+    @endif
+
+    {{-- ============================================================ timesheets --}}
+    @if ($tab === 'timesheets')
+        <div class="table-wrap">
+            @if ($entries->isEmpty())
+                <x-empty title="No time recorded yet">Crew time on this event appears here once people start their timesheets.</x-empty>
+            @else
+                <table class="table">
+                    <thead><tr><th>Date</th><th>Person</th><th>Phase</th><th>Hours</th><th class="num">Worked</th><th>Status</th></tr></thead>
+                    <tbody>
+                        @foreach ($entries as $row)
+                            <tr>
+                                <td class="tnum">{{ Display::date($row['entry']['date'], true) }}</td>
+                                <td>{{ $workspace->personName($row['sheet']['person_id']) }}</td>
+                                <td>{{ ucfirst($row['entry']['phase'] ?? '—') }}</td>
+                                <td class="tnum">{{ $row['entry']['start_time'] }}–{{ $row['entry']['end_time'] }}</td>
+                                <td class="num">{{ Display::hours($row['entry']['hours']) }}</td>
+                                <td>
+                                    @if ($row['sheet']['status'] === 'draft')
+                                        <x-pill>Draft</x-pill>
+                                    @else
+                                        <x-status :value="EntryStatus::from($row['entry']['status'])" />
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
+    @endif
+
+    {{-- ============================================================ files --}}
+    @if ($tab === 'files')
+        <div class="card">
+            @if ($event['files'])
+                <ul class="list-rows">
+                    @foreach ($event['files'] as $file)
+                        <li>
+                            <i class="bi bi-file-earmark{{ str_ends_with($file['name'], '.xlsx') ? '-spreadsheet' : '-pdf' }} text-muted" aria-hidden="true"></i>
+                            <div class="row-main">{{ $file['name'] }}</div>
+                            <span class="small text-muted">{{ ucfirst(str_replace('-', ' ', $file['type'])) }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <x-empty title="No files yet">Briefs, contracts, floor plans and the run of show live here. Files are stored privately and shared with signed links.</x-empty>
+            @endif
+        </div>
+    @endif
+
+    {{-- ============================================================ activity --}}
+    @if ($tab === 'activity')
+        <div class="grid-12">
+            <section class="card span-7">
+                <div class="card-header"><h2 class="card-title">Activity</h2></div>
+                @if ($activity->isNotEmpty())
+                    <ul class="list-rows">
+                        @foreach ($activity as $a)
+                            <li>
+                                <div class="row-main">
+                                    <div>{{ $a['description'] }}</div>
+                                    <div class="row-sub">{{ $a['who'] }}, {{ Display::dateTime($a['at']) }} @if ($a['live'])<x-pill tone="info" class="ms-1">This session</x-pill>@endif</div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <x-empty title="Nothing logged yet">Every change to this event, its crew and its money is logged here with who made it and when.</x-empty>
+                @endif
+            </section>
+            <section class="card span-5">
+                <div class="card-header"><h2 class="card-title">Stage history</h2></div>
+                @if ($history->isNotEmpty())
+                    <ul class="list-rows">
+                        @foreach ($history as $h)
+                            <li>
+                                <div class="row-main">
+                                    <div>{{ $h['from'] ? EventStage::from($h['from'])->label() : 'New' }} to {{ EventStage::from($h['to'])->label() }}</div>
+                                    <div class="row-sub">{{ $workspace->personName($h['by']) }}, {{ Display::dateTime($h['at']) }}</div>
+                                    @if ($h['note'])
+                                        <div class="note small mt-1">{{ $h['note'] }}</div>
+                                    @endif
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <x-empty title="No stage changes yet">Each move through the pipeline is recorded here with an optional note.</x-empty>
+                @endif
+            </section>
+        </div>
+    @endif
+    </div>
+
+    <x-modal id="stage-modal" :title="$targetStage ? 'Move to '.EventStage::from($targetStage)->label() : 'Change stage'">
+        @if ($targetStage)
+            @php($to = EventStage::from($targetStage))
+            @if ($stageBlockers)
+                <div class="callout is-warning mb-3">
+                    <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                    <div>
+                        <div class="fw-medium mb-1">{{ $event['name'] }} can’t move to {{ $to->label() }} yet</div>
+                        <ul class="mb-0 ps-3">
+                            @foreach ($stageBlockers as $blocker)
+                                <li>{{ $blocker }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @else
+                @if ($to === EventStage::Cancelled)
+                    <p>Cancelling releases every booking on {{ $event['code'] }}, tells each person, and asks finance to record any cancellation fees. This can’t be undone.</p>
+                @elseif ($to === EventStage::Confirmed)
+                    <p>Confirming lets first holds on this event become confirmed bookings.</p>
+                @else
+                    <p>{{ $event['name'] }} moves from {{ $stage->label() }} to {{ $to->label() }}.</p>
+                @endif
+                <label for="stage-note" class="form-label">Note for the activity log (optional)</label>
+                <textarea id="stage-note" class="form-control" rows="2" wire:model="stageNote"></textarea>
+            @endif
+        @endif
+        <x-slot:footer>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ $stageBlockers ? 'Close' : 'Keep as it is' }}</button>
+            @if ($targetStage && ! $stageBlockers)
+                <button type="button" @class(['btn', 'btn-danger' => in_array($targetStage, ['cancelled', 'lost'], true), 'btn-primary' => ! in_array($targetStage, ['cancelled', 'lost'], true)]) wire:click="changeStage" wire:loading.attr="disabled">
+                    {{ $targetStage === 'cancelled' ? 'Cancel event and release bookings' : 'Move to '.EventStage::from($targetStage)->label() }}
+                </button>
+            @endif
+        </x-slot:footer>
+    </x-modal>
+</div>

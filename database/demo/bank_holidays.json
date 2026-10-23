@@ -1,0 +1,27 @@
+[
+  {
+    "region": "england-and-wales",
+    "date": "2026-08-31",
+    "name": "Summer bank holiday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2026-12-25",
+    "name": "Christmas Day"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2026-12-28",
+    "name": "Boxing Day (substitute day)"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2027-01-01",
+    "name": "New Year’s Day"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-11-30",
+    "name": "St Andrew’s Day"
+  }
+]

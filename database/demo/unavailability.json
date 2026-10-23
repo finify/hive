@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "person_id": 30,
+    "start_date": "2026-11-02",
+    "end_date": "2026-11-06",
+    "note": "Booked elsewhere"
+  },
+  {
+    "id": 2,
+    "person_id": 31,
+    "start_date": "2026-10-26",
+    "end_date": "2026-10-28",
+    "note": "Holiday"
+  },
+  {
+    "id": 3,
+    "person_id": 28,
+    "start_date": "2026-10-24",
+    "end_date": "2026-10-31",
+    "note": "Touring in Porto"
+  },
+  {
+    "id": 4,
+    "person_id": 26,
+    "start_date": "2026-10-28",
+    "end_date": "2026-10-29",
+    "note": "Training course"
+  },
+  {
+    "id": 5,
+    "person_id": 59,
+    "start_date": "2026-10-26",
+    "end_date": "2026-11-01",
+    "note": "Unavailable"
+  }
+]

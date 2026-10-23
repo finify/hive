@@ -1,0 +1,1820 @@
+[
+  {
+    "id": 1,
+    "code": "EV-26101",
+    "name": "Ironbark Energy Investor Day",
+    "client_id": 8,
+    "producer_id": 4,
+    "event_type": "conference",
+    "stage": "closed",
+    "venue_id": 6,
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-06-11",
+    "end_date": "2026-06-11",
+    "expected_attendance": 220,
+    "client_fee_minor": 9800000,
+    "currency": "GBP",
+    "colour": "#5b7f95",
+    "description": "Half-day investor programme with CEO keynote and three panels.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2026-06-10",
+        "end_date": "2026-06-10"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-06-11",
+        "end_date": "2026-06-11"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 4,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "wrap",
+        "to": "reconciled",
+        "by": 20,
+        "at": "2026-07-20T09:15:00Z",
+        "note": "All costs final."
+      },
+      {
+        "from": "reconciled",
+        "to": "closed",
+        "by": 1,
+        "at": "2026-08-03T09:15:00Z",
+        "note": null
+      }
+    ],
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Contract countersigned",
+        "assignee_id": 4,
+        "due_date": "2026-02-11",
+        "status": "done"
+      },
+      {
+        "id": 2,
+        "title": "Venue site visit",
+        "assignee_id": 4,
+        "due_date": "2026-04-12",
+        "status": "done"
+      },
+      {
+        "id": 3,
+        "title": "Crew calls issued",
+        "assignee_id": 4,
+        "due_date": "2026-05-12",
+        "status": "done"
+      },
+      {
+        "id": 4,
+        "title": "Run of show v1 to client",
+        "assignee_id": 4,
+        "due_date": "2026-05-21",
+        "status": "done"
+      },
+      {
+        "id": 5,
+        "title": "Final numbers to caterer",
+        "assignee_id": 4,
+        "due_date": "2026-06-04",
+        "status": "done"
+      },
+      {
+        "id": 6,
+        "title": "Call sheets sent",
+        "assignee_id": 4,
+        "due_date": "2026-06-08",
+        "status": "done"
+      },
+      {
+        "id": 7,
+        "title": "Wrap report",
+        "assignee_id": 4,
+        "due_date": "2026-06-21",
+        "status": "done"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26101 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26101 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "code": "EV-26102",
+    "name": "Solstice Pharma Sales Kick-off",
+    "client_id": 7,
+    "producer_id": 5,
+    "event_type": "conference",
+    "stage": "closed",
+    "venue_id": 10,
+    "city": "Manchester",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-07-07",
+    "end_date": "2026-07-08",
+    "expected_attendance": 600,
+    "client_fee_minor": 16400000,
+    "currency": "GBP",
+    "colour": "#7a6f9b",
+    "description": "Two-day sales conference with awards dinner.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2026-07-06",
+        "end_date": "2026-07-06"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-07-07",
+        "end_date": "2026-07-08"
+      },
+      {
+        "type": "breakdown",
+        "start_date": "2026-07-08",
+        "end_date": "2026-07-08"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 5,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "reconciled",
+        "to": "closed",
+        "by": 1,
+        "at": "2026-09-01T09:15:00Z",
+        "note": null
+      }
+    ],
+    "tasks": [
+      {
+        "id": 8,
+        "title": "Contract countersigned",
+        "assignee_id": 5,
+        "due_date": "2026-03-09",
+        "status": "done"
+      },
+      {
+        "id": 9,
+        "title": "Venue site visit",
+        "assignee_id": 5,
+        "due_date": "2026-05-08",
+        "status": "done"
+      },
+      {
+        "id": 10,
+        "title": "Crew calls issued",
+        "assignee_id": 5,
+        "due_date": "2026-06-07",
+        "status": "done"
+      },
+      {
+        "id": 11,
+        "title": "Run of show v1 to client",
+        "assignee_id": 5,
+        "due_date": "2026-06-16",
+        "status": "done"
+      },
+      {
+        "id": 12,
+        "title": "Final numbers to caterer",
+        "assignee_id": 5,
+        "due_date": "2026-06-30",
+        "status": "done"
+      },
+      {
+        "id": 13,
+        "title": "Call sheets sent",
+        "assignee_id": 5,
+        "due_date": "2026-07-04",
+        "status": "done"
+      },
+      {
+        "id": 14,
+        "title": "Wrap report",
+        "assignee_id": 5,
+        "due_date": "2026-07-17",
+        "status": "done"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26102 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26102 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "code": "EV-26103",
+    "name": "Corvid Security CISO Roundtable",
+    "client_id": 5,
+    "producer_id": 25,
+    "event_type": "executive-summit",
+    "stage": "reconciled",
+    "venue_id": 6,
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-09-24",
+    "end_date": "2026-09-24",
+    "expected_attendance": 60,
+    "client_fee_minor": 7200000,
+    "currency": "GBP",
+    "colour": "#4f7a6a",
+    "description": "Invitation-only roundtable with dinner for 60 security leaders.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2026-09-23",
+        "end_date": "2026-09-23"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-09-24",
+        "end_date": "2026-09-24"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 25,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "wrap",
+        "to": "reconciled",
+        "by": 20,
+        "at": "2026-10-16T09:15:00Z",
+        "note": "Final caterer invoice approved."
+      }
+    ],
+    "tasks": [
+      {
+        "id": 15,
+        "title": "Contract countersigned",
+        "assignee_id": 25,
+        "due_date": "2026-05-27",
+        "status": "done"
+      },
+      {
+        "id": 16,
+        "title": "Venue site visit",
+        "assignee_id": 25,
+        "due_date": "2026-07-26",
+        "status": "done"
+      },
+      {
+        "id": 17,
+        "title": "Crew calls issued",
+        "assignee_id": 25,
+        "due_date": "2026-08-25",
+        "status": "done"
+      },
+      {
+        "id": 18,
+        "title": "Run of show v1 to client",
+        "assignee_id": 25,
+        "due_date": "2026-09-03",
+        "status": "done"
+      },
+      {
+        "id": 19,
+        "title": "Final numbers to caterer",
+        "assignee_id": 25,
+        "due_date": "2026-09-17",
+        "status": "done"
+      },
+      {
+        "id": 20,
+        "title": "Call sheets sent",
+        "assignee_id": 25,
+        "due_date": "2026-09-21",
+        "status": "done"
+      },
+      {
+        "id": 21,
+        "title": "Wrap report",
+        "assignee_id": 25,
+        "due_date": "2026-10-04",
+        "status": "done"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26103 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26103 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "code": "EV-26104",
+    "name": "Meridian Bank Leadership Forum",
+    "client_id": 4,
+    "producer_id": 4,
+    "event_type": "executive-summit",
+    "stage": "wrap",
+    "venue_id": 4,
+    "city": "Edinburgh",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-10-06",
+    "end_date": "2026-10-08",
+    "expected_attendance": 180,
+    "client_fee_minor": 21200000,
+    "currency": "GBP",
+    "colour": "#9b6b5b",
+    "description": "Three-day leadership forum for 180 senior managers. Late scope change added a hybrid stream.",
+    "phases": [
+      {
+        "type": "travel",
+        "start_date": "2026-10-04",
+        "end_date": "2026-10-04"
+      },
+      {
+        "type": "build",
+        "start_date": "2026-10-05",
+        "end_date": "2026-10-05"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-10-06",
+        "end_date": "2026-10-08"
+      },
+      {
+        "type": "breakdown",
+        "start_date": "2026-10-08",
+        "end_date": "2026-10-08"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 4,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "live",
+        "to": "wrap",
+        "by": 4,
+        "at": "2026-10-09T09:15:00Z",
+        "note": "Hybrid stream added on day 2 at client request; change request not yet signed."
+      }
+    ],
+    "tasks": [
+      {
+        "id": 22,
+        "title": "Contract countersigned",
+        "assignee_id": 4,
+        "due_date": "2026-06-08",
+        "status": "done"
+      },
+      {
+        "id": 23,
+        "title": "Venue site visit",
+        "assignee_id": 4,
+        "due_date": "2026-08-07",
+        "status": "done"
+      },
+      {
+        "id": 24,
+        "title": "Crew calls issued",
+        "assignee_id": 4,
+        "due_date": "2026-09-06",
+        "status": "done"
+      },
+      {
+        "id": 25,
+        "title": "Run of show v1 to client",
+        "assignee_id": 4,
+        "due_date": "2026-09-15",
+        "status": "done"
+      },
+      {
+        "id": 26,
+        "title": "Final numbers to caterer",
+        "assignee_id": 4,
+        "due_date": "2026-09-29",
+        "status": "done"
+      },
+      {
+        "id": 27,
+        "title": "Call sheets sent",
+        "assignee_id": 4,
+        "due_date": "2026-10-03",
+        "status": "done"
+      },
+      {
+        "id": 28,
+        "title": "Wrap report",
+        "assignee_id": 4,
+        "due_date": "2026-10-16",
+        "status": "done"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26104 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26104 client brief.pdf",
+        "type": "brief"
+      },
+      {
+        "name": "EV-26104 run of show v4.xlsx",
+        "type": "run-of-show"
+      },
+      {
+        "name": "EV-26104 floor plan.pdf",
+        "type": "floor-plan"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "code": "EV-26105",
+    "name": "Halcyon Health Clinical Showcase",
+    "client_id": 2,
+    "producer_id": 4,
+    "event_type": "exhibition",
+    "stage": "wrap",
+    "venue_id": 1,
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-10-14",
+    "end_date": "2026-10-15",
+    "expected_attendance": 900,
+    "client_fee_minor": 14600000,
+    "currency": "GBP",
+    "colour": "#5b8f8a",
+    "description": "Two-day clinical showcase with 24 demo pods and a main stage.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2026-10-13",
+        "end_date": "2026-10-13"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-10-14",
+        "end_date": "2026-10-15"
+      },
+      {
+        "type": "breakdown",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 4,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "live",
+        "to": "wrap",
+        "by": 4,
+        "at": "2026-10-16T09:15:00Z",
+        "note": null
+      }
+    ],
+    "tasks": [
+      {
+        "id": 29,
+        "title": "Contract countersigned",
+        "assignee_id": 4,
+        "due_date": "2026-06-16",
+        "status": "done"
+      },
+      {
+        "id": 30,
+        "title": "Venue site visit",
+        "assignee_id": 4,
+        "due_date": "2026-08-15",
+        "status": "done"
+      },
+      {
+        "id": 31,
+        "title": "Crew calls issued",
+        "assignee_id": 4,
+        "due_date": "2026-09-14",
+        "status": "done"
+      },
+      {
+        "id": 32,
+        "title": "Run of show v1 to client",
+        "assignee_id": 4,
+        "due_date": "2026-09-23",
+        "status": "done"
+      },
+      {
+        "id": 33,
+        "title": "Final numbers to caterer",
+        "assignee_id": 4,
+        "due_date": "2026-10-07",
+        "status": "done"
+      },
+      {
+        "id": 34,
+        "title": "Call sheets sent",
+        "assignee_id": 4,
+        "due_date": "2026-10-11",
+        "status": "done"
+      },
+      {
+        "id": 35,
+        "title": "Wrap report",
+        "assignee_id": 4,
+        "due_date": "2026-10-24",
+        "status": "in-progress"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26105 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26105 client brief.pdf",
+        "type": "brief"
+      },
+      {
+        "name": "EV-26105 run of show v4.xlsx",
+        "type": "run-of-show"
+      },
+      {
+        "name": "EV-26105 floor plan.pdf",
+        "type": "floor-plan"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "code": "EV-26111",
+    "name": "Pelican Travel Group Incentive, Lisbon",
+    "client_id": 6,
+    "producer_id": 25,
+    "event_type": "incentive-trip",
+    "stage": "cancelled",
+    "venue_id": 2,
+    "city": "Lisbon",
+    "country": "Portugal",
+    "timezone": "Europe/Lisbon",
+    "start_date": "2026-11-17",
+    "end_date": "2026-11-20",
+    "expected_attendance": 120,
+    "client_fee_minor": 26800000,
+    "currency": "GBP",
+    "colour": "#8a8a8a",
+    "description": "Incentive trip for 120 top-performing agents. Cancelled by the client on 2 Oct after a restructure.",
+    "phases": [
+      {
+        "type": "travel",
+        "start_date": "2026-11-16",
+        "end_date": "2026-11-16"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-11-17",
+        "end_date": "2026-11-20"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 25,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "confirmed",
+        "to": "cancelled",
+        "by": 25,
+        "at": "2026-10-02T09:15:00Z",
+        "note": "Client restructure. Cancellation fee of 25% invoiced per contract."
+      }
+    ],
+    "tasks": [],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26111 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26111 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "code": "EV-26114",
+    "name": "Northwind Systems Partner Summit 2026",
+    "client_id": 1,
+    "producer_id": 4,
+    "event_type": "conference",
+    "stage": "live",
+    "venue_id": 1,
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-10-22",
+    "end_date": "2026-10-23",
+    "expected_attendance": 1400,
+    "client_fee_minor": 48600000,
+    "currency": "GBP",
+    "colour": "#3f6fb5",
+    "description": "Two-day partner summit for 1,400 guests: main stage, 12 breakout rooms, partner expo and a hybrid stream.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2026-10-20",
+        "end_date": "2026-10-21"
+      },
+      {
+        "type": "rehearsal",
+        "start_date": "2026-10-21",
+        "end_date": "2026-10-21"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-10-22",
+        "end_date": "2026-10-23"
+      },
+      {
+        "type": "breakdown",
+        "start_date": "2026-10-24",
+        "end_date": "2026-10-24"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 4,
+        "role": "Producer"
+      },
+      {
+        "person_id": 7,
+        "role": "Production manager"
+      },
+      {
+        "person_id": 22,
+        "role": "Finance contact"
+      },
+      {
+        "person_id": 18,
+        "role": "Registration lead"
+      },
+      {
+        "person_id": 10,
+        "role": "Designer"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "enquiry",
+        "to": "proposal-sent",
+        "by": 4,
+        "at": "2026-03-02T10:15:00Z",
+        "note": null
+      },
+      {
+        "from": "proposal-sent",
+        "to": "confirmed",
+        "by": 4,
+        "at": "2026-04-14T09:15:00Z",
+        "note": "Contract signed, 40% deposit received."
+      },
+      {
+        "from": "confirmed",
+        "to": "pre-production",
+        "by": 4,
+        "at": "2026-06-01T09:15:00Z",
+        "note": null
+      },
+      {
+        "from": "pre-production",
+        "to": "live",
+        "by": 4,
+        "at": "2026-10-20T09:15:00Z",
+        "note": "Build started on time."
+      }
+    ],
+    "tasks": [
+      {
+        "id": 36,
+        "title": "Contract countersigned",
+        "assignee_id": 4,
+        "due_date": "2026-06-24",
+        "status": "done"
+      },
+      {
+        "id": 37,
+        "title": "Venue site visit",
+        "assignee_id": 7,
+        "due_date": "2026-08-23",
+        "status": "done"
+      },
+      {
+        "id": 38,
+        "title": "Crew calls issued",
+        "assignee_id": 7,
+        "due_date": "2026-09-22",
+        "status": "done"
+      },
+      {
+        "id": 39,
+        "title": "Run of show v1 to client",
+        "assignee_id": 7,
+        "due_date": "2026-10-01",
+        "status": "done"
+      },
+      {
+        "id": 40,
+        "title": "Final numbers to caterer",
+        "assignee_id": 7,
+        "due_date": "2026-10-15",
+        "status": "done"
+      },
+      {
+        "id": 41,
+        "title": "Call sheets sent",
+        "assignee_id": 7,
+        "due_date": "2026-10-19",
+        "status": "done"
+      },
+      {
+        "id": 42,
+        "title": "Wrap report",
+        "assignee_id": 4,
+        "due_date": "2026-11-01",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26114 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26114 client brief.pdf",
+        "type": "brief"
+      },
+      {
+        "name": "EV-26114 run of show v4.xlsx",
+        "type": "run-of-show"
+      },
+      {
+        "name": "EV-26114 floor plan.pdf",
+        "type": "floor-plan"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "code": "EV-26116",
+    "name": "Arclight Audio “Pulse” Launch",
+    "client_id": 3,
+    "producer_id": 5,
+    "event_type": "product-launch",
+    "stage": "live",
+    "venue_id": 3,
+    "city": "Manchester",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-10-23",
+    "end_date": "2026-10-23",
+    "expected_attendance": 400,
+    "client_fee_minor": 13800000,
+    "currency": "GBP",
+    "colour": "#b5803f",
+    "description": "Evening product launch for press and dealers with a 360° LED reveal. Content pre-light on 16 Oct.",
+    "phases": [
+      {
+        "type": "rehearsal",
+        "start_date": "2026-10-16",
+        "end_date": "2026-10-16"
+      },
+      {
+        "type": "build",
+        "start_date": "2026-10-22",
+        "end_date": "2026-10-22"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-10-23",
+        "end_date": "2026-10-23"
+      },
+      {
+        "type": "breakdown",
+        "start_date": "2026-10-23",
+        "end_date": "2026-10-23"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 5,
+        "role": "Producer"
+      },
+      {
+        "person_id": 13,
+        "role": "Technical production manager"
+      },
+      {
+        "person_id": 8,
+        "role": "Coordinator"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "pre-production",
+        "to": "live",
+        "by": 5,
+        "at": "2026-10-22T09:15:00Z",
+        "note": null
+      }
+    ],
+    "tasks": [
+      {
+        "id": 43,
+        "title": "Contract countersigned",
+        "assignee_id": 5,
+        "due_date": "2026-06-25",
+        "status": "done"
+      },
+      {
+        "id": 44,
+        "title": "Venue site visit",
+        "assignee_id": 13,
+        "due_date": "2026-08-24",
+        "status": "done"
+      },
+      {
+        "id": 45,
+        "title": "Crew calls issued",
+        "assignee_id": 13,
+        "due_date": "2026-09-23",
+        "status": "done"
+      },
+      {
+        "id": 46,
+        "title": "Run of show v1 to client",
+        "assignee_id": 13,
+        "due_date": "2026-10-02",
+        "status": "done"
+      },
+      {
+        "id": 47,
+        "title": "Final numbers to caterer",
+        "assignee_id": 13,
+        "due_date": "2026-10-16",
+        "status": "done"
+      },
+      {
+        "id": 48,
+        "title": "Call sheets sent",
+        "assignee_id": 13,
+        "due_date": "2026-10-20",
+        "status": "done"
+      },
+      {
+        "id": 49,
+        "title": "Wrap report",
+        "assignee_id": 5,
+        "due_date": "2026-11-02",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26116 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26116 client brief.pdf",
+        "type": "brief"
+      },
+      {
+        "name": "EV-26116 run of show v4.xlsx",
+        "type": "run-of-show"
+      },
+      {
+        "name": "EV-26116 floor plan.pdf",
+        "type": "floor-plan"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "code": "EV-26117",
+    "name": "Halcyon Health European Congress",
+    "client_id": 2,
+    "producer_id": 4,
+    "event_type": "conference",
+    "stage": "pre-production",
+    "venue_id": 2,
+    "city": "Lisbon",
+    "country": "Portugal",
+    "timezone": "Europe/Lisbon",
+    "start_date": "2026-11-10",
+    "end_date": "2026-11-13",
+    "expected_attendance": 1100,
+    "client_fee_minor": 31200000,
+    "currency": "GBP",
+    "colour": "#2f8f7a",
+    "description": "Four-day medical congress in Lisbon. Venue, catering and hotels contracted in euros.",
+    "phases": [
+      {
+        "type": "travel",
+        "start_date": "2026-11-08",
+        "end_date": "2026-11-08"
+      },
+      {
+        "type": "build",
+        "start_date": "2026-11-09",
+        "end_date": "2026-11-09"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-11-10",
+        "end_date": "2026-11-13"
+      },
+      {
+        "type": "breakdown",
+        "start_date": "2026-11-13",
+        "end_date": "2026-11-13"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 4,
+        "role": "Producer"
+      },
+      {
+        "person_id": 16,
+        "role": "Stage manager"
+      },
+      {
+        "person_id": 19,
+        "role": "Logistics"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "confirmed",
+        "to": "pre-production",
+        "by": 4,
+        "at": "2026-08-17T09:15:00Z",
+        "note": null
+      }
+    ],
+    "tasks": [
+      {
+        "id": 50,
+        "title": "Contract countersigned",
+        "assignee_id": 4,
+        "due_date": "2026-07-13",
+        "status": "done"
+      },
+      {
+        "id": 51,
+        "title": "Venue site visit",
+        "assignee_id": 16,
+        "due_date": "2026-09-11",
+        "status": "done"
+      },
+      {
+        "id": 52,
+        "title": "Crew calls issued",
+        "assignee_id": 16,
+        "due_date": "2026-10-11",
+        "status": "done"
+      },
+      {
+        "id": 53,
+        "title": "Run of show v1 to client",
+        "assignee_id": 16,
+        "due_date": "2026-10-20",
+        "status": "done"
+      },
+      {
+        "id": 54,
+        "title": "Final numbers to caterer",
+        "assignee_id": 16,
+        "due_date": "2026-11-03",
+        "status": "to-do"
+      },
+      {
+        "id": 55,
+        "title": "Call sheets sent",
+        "assignee_id": 16,
+        "due_date": "2026-11-07",
+        "status": "to-do"
+      },
+      {
+        "id": 56,
+        "title": "Wrap report",
+        "assignee_id": 4,
+        "due_date": "2026-11-20",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26117 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26117 client brief.pdf",
+        "type": "brief"
+      },
+      {
+        "name": "EV-26117 run of show v4.xlsx",
+        "type": "run-of-show"
+      },
+      {
+        "name": "EV-26117 floor plan.pdf",
+        "type": "floor-plan"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "code": "EV-26118",
+    "name": "Meridian Bank Graduate Welcome",
+    "client_id": 4,
+    "producer_id": 6,
+    "event_type": "brand-activation",
+    "stage": "pre-production",
+    "venue_id": 6,
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-11-05",
+    "end_date": "2026-11-05",
+    "expected_attendance": 250,
+    "client_fee_minor": 5400000,
+    "currency": "GBP",
+    "colour": "#6b8f3f",
+    "description": "Evening welcome for the 2026 graduate intake.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2026-11-05",
+        "end_date": "2026-11-05"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-11-05",
+        "end_date": "2026-11-05"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 6,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [],
+    "tasks": [
+      {
+        "id": 57,
+        "title": "Contract countersigned",
+        "assignee_id": 6,
+        "due_date": "2026-07-08",
+        "status": "done"
+      },
+      {
+        "id": 58,
+        "title": "Venue site visit",
+        "assignee_id": 6,
+        "due_date": "2026-09-06",
+        "status": "done"
+      },
+      {
+        "id": 59,
+        "title": "Crew calls issued",
+        "assignee_id": 6,
+        "due_date": "2026-10-06",
+        "status": "done"
+      },
+      {
+        "id": 60,
+        "title": "Run of show v1 to client",
+        "assignee_id": 6,
+        "due_date": "2026-10-15",
+        "status": "done"
+      },
+      {
+        "id": 61,
+        "title": "Final numbers to caterer",
+        "assignee_id": 6,
+        "due_date": "2026-10-29",
+        "status": "in-progress"
+      },
+      {
+        "id": 62,
+        "title": "Call sheets sent",
+        "assignee_id": 6,
+        "due_date": "2026-11-02",
+        "status": "to-do"
+      },
+      {
+        "id": 63,
+        "title": "Wrap report",
+        "assignee_id": 6,
+        "due_date": "2026-11-15",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26118 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26118 client brief.pdf",
+        "type": "brief"
+      },
+      {
+        "name": "EV-26118 run of show v4.xlsx",
+        "type": "run-of-show"
+      },
+      {
+        "name": "EV-26118 floor plan.pdf",
+        "type": "floor-plan"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "code": "EV-26120",
+    "name": "Ironbark Energy Net Zero Summit",
+    "client_id": 8,
+    "producer_id": 5,
+    "event_type": "conference",
+    "stage": "pre-production",
+    "venue_id": 9,
+    "city": "Aberdeen",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-11-18",
+    "end_date": "2026-11-19",
+    "expected_attendance": 800,
+    "client_fee_minor": 22800000,
+    "currency": "GBP",
+    "colour": "#3f8fb5",
+    "description": "Two-day industry summit in Aberdeen.",
+    "phases": [
+      {
+        "type": "travel",
+        "start_date": "2026-11-16",
+        "end_date": "2026-11-16"
+      },
+      {
+        "type": "build",
+        "start_date": "2026-11-17",
+        "end_date": "2026-11-17"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-11-18",
+        "end_date": "2026-11-19"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 5,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [],
+    "tasks": [
+      {
+        "id": 64,
+        "title": "Contract countersigned",
+        "assignee_id": 5,
+        "due_date": "2026-07-21",
+        "status": "done"
+      },
+      {
+        "id": 65,
+        "title": "Venue site visit",
+        "assignee_id": 5,
+        "due_date": "2026-09-19",
+        "status": "done"
+      },
+      {
+        "id": 66,
+        "title": "Crew calls issued",
+        "assignee_id": 5,
+        "due_date": "2026-10-19",
+        "status": "done"
+      },
+      {
+        "id": 67,
+        "title": "Run of show v1 to client",
+        "assignee_id": 5,
+        "due_date": "2026-10-28",
+        "status": "in-progress"
+      },
+      {
+        "id": 68,
+        "title": "Final numbers to caterer",
+        "assignee_id": 5,
+        "due_date": "2026-11-11",
+        "status": "to-do"
+      },
+      {
+        "id": 69,
+        "title": "Call sheets sent",
+        "assignee_id": 5,
+        "due_date": "2026-11-15",
+        "status": "to-do"
+      },
+      {
+        "id": 70,
+        "title": "Wrap report",
+        "assignee_id": 5,
+        "due_date": "2026-11-28",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26120 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26120 client brief.pdf",
+        "type": "brief"
+      },
+      {
+        "name": "EV-26120 run of show v4.xlsx",
+        "type": "run-of-show"
+      },
+      {
+        "name": "EV-26120 floor plan.pdf",
+        "type": "floor-plan"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "code": "EV-26119",
+    "name": "Solstice Pharma at MedTech Europe",
+    "client_id": 7,
+    "producer_id": 6,
+    "event_type": "exhibition",
+    "stage": "confirmed",
+    "venue_id": 5,
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "timezone": "Europe/Amsterdam",
+    "start_date": "2026-12-02",
+    "end_date": "2026-12-04",
+    "expected_attendance": 6000,
+    "client_fee_minor": 19600000,
+    "currency": "GBP",
+    "colour": "#8f3f6b",
+    "description": "Double-deck exhibition stand, 180 m², at MedTech Europe in Amsterdam. Build contracted in euros.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2026-11-30",
+        "end_date": "2026-12-01"
+      },
+      {
+        "type": "live",
+        "start_date": "2026-12-02",
+        "end_date": "2026-12-04"
+      },
+      {
+        "type": "breakdown",
+        "start_date": "2026-12-04",
+        "end_date": "2026-12-05"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 6,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [],
+    "tasks": [
+      {
+        "id": 71,
+        "title": "Contract countersigned",
+        "assignee_id": 6,
+        "due_date": "2026-08-04",
+        "status": "done"
+      },
+      {
+        "id": 72,
+        "title": "Venue site visit",
+        "assignee_id": 6,
+        "due_date": "2026-10-03",
+        "status": "done"
+      },
+      {
+        "id": 73,
+        "title": "Crew calls issued",
+        "assignee_id": 6,
+        "due_date": "2026-11-02",
+        "status": "to-do"
+      },
+      {
+        "id": 74,
+        "title": "Run of show v1 to client",
+        "assignee_id": 6,
+        "due_date": "2026-11-11",
+        "status": "to-do"
+      },
+      {
+        "id": 75,
+        "title": "Final numbers to caterer",
+        "assignee_id": 6,
+        "due_date": "2026-11-25",
+        "status": "to-do"
+      },
+      {
+        "id": 76,
+        "title": "Call sheets sent",
+        "assignee_id": 6,
+        "due_date": "2026-11-29",
+        "status": "to-do"
+      },
+      {
+        "id": 77,
+        "title": "Wrap report",
+        "assignee_id": 6,
+        "due_date": "2026-12-12",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26119 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26119 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "code": "EV-26121",
+    "name": "Corvid Security “Sentinel” Launch",
+    "client_id": 5,
+    "producer_id": 25,
+    "event_type": "product-launch",
+    "stage": "confirmed",
+    "venue_id": 6,
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2027-01-26",
+    "end_date": "2027-01-26",
+    "expected_attendance": 300,
+    "client_fee_minor": 11800000,
+    "currency": "GBP",
+    "colour": "#5b5b9b",
+    "description": "Launch of the Sentinel platform with live demo theatre.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-25"
+      },
+      {
+        "type": "live",
+        "start_date": "2027-01-26",
+        "end_date": "2027-01-26"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 25,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [],
+    "tasks": [
+      {
+        "id": 78,
+        "title": "Contract countersigned",
+        "assignee_id": 25,
+        "due_date": "2026-09-28",
+        "status": "done"
+      },
+      {
+        "id": 79,
+        "title": "Venue site visit",
+        "assignee_id": 25,
+        "due_date": "2026-11-27",
+        "status": "to-do"
+      },
+      {
+        "id": 80,
+        "title": "Crew calls issued",
+        "assignee_id": 25,
+        "due_date": "2026-12-27",
+        "status": "to-do"
+      },
+      {
+        "id": 81,
+        "title": "Run of show v1 to client",
+        "assignee_id": 25,
+        "due_date": "2027-01-05",
+        "status": "to-do"
+      },
+      {
+        "id": 82,
+        "title": "Final numbers to caterer",
+        "assignee_id": 25,
+        "due_date": "2027-01-19",
+        "status": "to-do"
+      },
+      {
+        "id": 83,
+        "title": "Call sheets sent",
+        "assignee_id": 25,
+        "due_date": "2027-01-23",
+        "status": "to-do"
+      },
+      {
+        "id": 84,
+        "title": "Wrap report",
+        "assignee_id": 25,
+        "due_date": "2027-02-05",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": true,
+    "files": [
+      {
+        "name": "EV-26121 signed contract.pdf",
+        "type": "contract"
+      },
+      {
+        "name": "EV-26121 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "code": "EV-26123",
+    "name": "Northwind Systems EMEA Kick-off 2027",
+    "client_id": 1,
+    "producer_id": 4,
+    "event_type": "conference",
+    "stage": "proposal-sent",
+    "venue_id": 7,
+    "city": "Birmingham",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2027-01-19",
+    "end_date": "2027-01-21",
+    "expected_attendance": 2200,
+    "client_fee_minor": 54000000,
+    "currency": "GBP",
+    "colour": "#3f6fb5",
+    "description": "Proposal for a three-day EMEA sales kick-off.",
+    "phases": [
+      {
+        "type": "build",
+        "start_date": "2027-01-17",
+        "end_date": "2027-01-18"
+      },
+      {
+        "type": "live",
+        "start_date": "2027-01-19",
+        "end_date": "2027-01-21"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 4,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [],
+    "tasks": [
+      {
+        "id": 85,
+        "title": "Contract countersigned",
+        "assignee_id": 4,
+        "due_date": "2026-09-21",
+        "status": "done"
+      },
+      {
+        "id": 86,
+        "title": "Venue site visit",
+        "assignee_id": 4,
+        "due_date": "2026-11-20",
+        "status": "to-do"
+      },
+      {
+        "id": 87,
+        "title": "Crew calls issued",
+        "assignee_id": 4,
+        "due_date": "2026-12-20",
+        "status": "to-do"
+      },
+      {
+        "id": 88,
+        "title": "Run of show v1 to client",
+        "assignee_id": 4,
+        "due_date": "2026-12-29",
+        "status": "to-do"
+      },
+      {
+        "id": 89,
+        "title": "Final numbers to caterer",
+        "assignee_id": 4,
+        "due_date": "2027-01-12",
+        "status": "to-do"
+      },
+      {
+        "id": 90,
+        "title": "Call sheets sent",
+        "assignee_id": 4,
+        "due_date": "2027-01-16",
+        "status": "to-do"
+      },
+      {
+        "id": 91,
+        "title": "Wrap report",
+        "assignee_id": 4,
+        "due_date": "2027-01-29",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": false,
+    "files": [
+      {
+        "name": "EV-26123 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "code": "EV-26124",
+    "name": "Arclight Audio Dealer Tour",
+    "client_id": 3,
+    "producer_id": 5,
+    "event_type": "brand-activation",
+    "stage": "proposal-sent",
+    "venue_id": 10,
+    "city": "Manchester",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2027-02-22",
+    "end_date": "2027-03-12",
+    "expected_attendance": 900,
+    "client_fee_minor": 17600000,
+    "currency": "GBP",
+    "colour": "#b5803f",
+    "description": "Six-city dealer roadshow, proposal sent 9 Oct.",
+    "phases": [
+      {
+        "type": "live",
+        "start_date": "2027-02-22",
+        "end_date": "2027-03-12"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 5,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [],
+    "tasks": [
+      {
+        "id": 92,
+        "title": "Contract countersigned",
+        "assignee_id": 5,
+        "due_date": "2026-10-25",
+        "status": "in-progress"
+      },
+      {
+        "id": 93,
+        "title": "Venue site visit",
+        "assignee_id": 5,
+        "due_date": "2026-12-24",
+        "status": "to-do"
+      },
+      {
+        "id": 94,
+        "title": "Crew calls issued",
+        "assignee_id": 5,
+        "due_date": "2027-01-23",
+        "status": "to-do"
+      },
+      {
+        "id": 95,
+        "title": "Run of show v1 to client",
+        "assignee_id": 5,
+        "due_date": "2027-02-01",
+        "status": "to-do"
+      },
+      {
+        "id": 96,
+        "title": "Final numbers to caterer",
+        "assignee_id": 5,
+        "due_date": "2027-02-15",
+        "status": "to-do"
+      },
+      {
+        "id": 97,
+        "title": "Call sheets sent",
+        "assignee_id": 5,
+        "due_date": "2027-02-19",
+        "status": "to-do"
+      },
+      {
+        "id": 98,
+        "title": "Wrap report",
+        "assignee_id": 5,
+        "due_date": "2027-03-04",
+        "status": "to-do"
+      }
+    ],
+    "contract_signed": false,
+    "files": [
+      {
+        "name": "EV-26124 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "code": "EV-26126",
+    "name": "Solstice Pharma Advisory Board",
+    "client_id": 7,
+    "producer_id": 6,
+    "event_type": "executive-summit",
+    "stage": "enquiry",
+    "venue_id": 8,
+    "city": "Dublin",
+    "country": "Ireland",
+    "timezone": "Europe/Dublin",
+    "start_date": "2027-03-11",
+    "end_date": "2027-03-11",
+    "expected_attendance": 40,
+    "client_fee_minor": 6400000,
+    "currency": "GBP",
+    "colour": "#7a6f9b",
+    "description": "Enquiry for a one-day advisory board meeting in Dublin.",
+    "phases": [
+      {
+        "type": "live",
+        "start_date": "2027-03-11",
+        "end_date": "2027-03-11"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 6,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [],
+    "tasks": [],
+    "contract_signed": false,
+    "files": []
+  },
+  {
+    "id": 17,
+    "code": "EV-26127",
+    "name": "Halcyon Health Brand Activation",
+    "client_id": 2,
+    "producer_id": 6,
+    "event_type": "brand-activation",
+    "stage": "enquiry",
+    "venue_id": 6,
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2027-04-14",
+    "end_date": "2027-04-16",
+    "expected_attendance": 3000,
+    "client_fee_minor": null,
+    "currency": "GBP",
+    "colour": "#5b8f8a",
+    "description": "Early enquiry: pop-up activation at a London station. Dates and budget to confirm.",
+    "phases": [],
+    "team": [
+      {
+        "person_id": 6,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [],
+    "tasks": [],
+    "contract_signed": false,
+    "files": []
+  },
+  {
+    "id": 18,
+    "code": "EV-26122",
+    "name": "Pelican Travel Group Agent Awards",
+    "client_id": 6,
+    "producer_id": 25,
+    "event_type": "conference",
+    "stage": "lost",
+    "venue_id": 7,
+    "city": "Birmingham",
+    "country": "United Kingdom",
+    "timezone": "Europe/London",
+    "start_date": "2026-12-10",
+    "end_date": "2026-12-10",
+    "expected_attendance": 500,
+    "client_fee_minor": 9200000,
+    "currency": "GBP",
+    "colour": "#8a8a8a",
+    "description": "Lost to an incumbent agency on price.",
+    "phases": [
+      {
+        "type": "live",
+        "start_date": "2026-12-10",
+        "end_date": "2026-12-10"
+      }
+    ],
+    "team": [
+      {
+        "person_id": 25,
+        "role": "Producer"
+      }
+    ],
+    "stage_history": [
+      {
+        "from": "proposal-sent",
+        "to": "lost",
+        "by": 25,
+        "at": "2026-09-18T09:15:00Z",
+        "note": "Lost on price; incumbent 12% cheaper."
+      }
+    ],
+    "tasks": [],
+    "contract_signed": false,
+    "files": [
+      {
+        "name": "EV-26122 client brief.pdf",
+        "type": "brief"
+      }
+    ]
+  }
+]

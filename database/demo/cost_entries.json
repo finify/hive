@@ -1,0 +1,1522 @@
+[
+  {
+    "id": 1,
+    "event_id": 7,
+    "budget_line_id": 1,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 1,
+      "ref": "RCC-55120"
+    },
+    "kind": "actual",
+    "amount_minor": 4800000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 4800000,
+    "posted_at": "2026-07-01T14:00:00Z"
+  },
+  {
+    "id": 2,
+    "event_id": 7,
+    "budget_line_id": 1,
+    "source": {
+      "type": "purchase-order",
+      "id": 1,
+      "ref": "PO-26-0031"
+    },
+    "kind": "committed",
+    "amount_minor": 4800000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 4800000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 3,
+    "event_id": 7,
+    "budget_line_id": 2,
+    "source": {
+      "type": "purchase-order",
+      "id": 2,
+      "ref": "PO-26-0032"
+    },
+    "kind": "committed",
+    "amount_minor": 5650000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 5650000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 4,
+    "event_id": 7,
+    "budget_line_id": 3,
+    "source": {
+      "type": "purchase-order",
+      "id": 3,
+      "ref": "PO-26-0033"
+    },
+    "kind": "committed",
+    "amount_minor": 1840000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1840000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 5,
+    "event_id": 7,
+    "budget_line_id": 4,
+    "source": {
+      "type": "purchase-order",
+      "id": 4,
+      "ref": "PO-26-0034"
+    },
+    "kind": "committed",
+    "amount_minor": 4120000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 4120000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 6,
+    "event_id": 7,
+    "budget_line_id": 5,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Creative team time"
+    },
+    "kind": "actual",
+    "amount_minor": 2200000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 2200000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 7,
+    "event_id": 7,
+    "budget_line_id": 6,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 3,
+      "ref": "INK-7781"
+    },
+    "kind": "actual",
+    "amount_minor": 965000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 965000,
+    "posted_at": "2026-10-14T14:00:00Z"
+  },
+  {
+    "id": 8,
+    "event_id": 7,
+    "budget_line_id": 7,
+    "source": {
+      "type": "purchase-order",
+      "id": 6,
+      "ref": "PO-26-0036"
+    },
+    "kind": "committed",
+    "amount_minor": 6980000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 6980000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 9,
+    "event_id": 7,
+    "budget_line_id": 9,
+    "source": {
+      "type": "purchase-order",
+      "id": 7,
+      "ref": "PO-26-0037"
+    },
+    "kind": "committed",
+    "amount_minor": 760000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 760000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 10,
+    "event_id": 7,
+    "budget_line_id": 10,
+    "source": {
+      "type": "purchase-order",
+      "id": 8,
+      "ref": "PO-26-0038"
+    },
+    "kind": "committed",
+    "amount_minor": 598000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 598000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 11,
+    "event_id": 8,
+    "budget_line_id": 12,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 4,
+      "ref": "MSS-1182"
+    },
+    "kind": "actual",
+    "amount_minor": 1400000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1400000,
+    "posted_at": "2026-10-01T14:00:00Z"
+  },
+  {
+    "id": 12,
+    "event_id": 8,
+    "budget_line_id": 13,
+    "source": {
+      "type": "purchase-order",
+      "id": 10,
+      "ref": "PO-26-0040"
+    },
+    "kind": "committed",
+    "amount_minor": 3740000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 3740000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 13,
+    "event_id": 8,
+    "budget_line_id": 14,
+    "source": {
+      "type": "purchase-order",
+      "id": 11,
+      "ref": "PO-26-0041"
+    },
+    "kind": "committed",
+    "amount_minor": 1680000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1680000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 14,
+    "event_id": 8,
+    "budget_line_id": 15,
+    "source": {
+      "type": "purchase-order",
+      "id": 12,
+      "ref": "PO-26-0042"
+    },
+    "kind": "committed",
+    "amount_minor": 1520000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1520000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 15,
+    "event_id": 8,
+    "budget_line_id": 17,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Motion team time"
+    },
+    "kind": "actual",
+    "amount_minor": 740000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 740000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 16,
+    "event_id": 4,
+    "budget_line_id": 19,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 5,
+      "ref": "CAR-0412"
+    },
+    "kind": "actual",
+    "amount_minor": 2600000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 2600000,
+    "posted_at": "2026-09-10T14:00:00Z"
+  },
+  {
+    "id": 17,
+    "event_id": 4,
+    "budget_line_id": 20,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 6,
+      "ref": "NLV-3310"
+    },
+    "kind": "actual",
+    "amount_minor": 4360000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 4360000,
+    "posted_at": "2026-10-12T14:00:00Z"
+  },
+  {
+    "id": 18,
+    "event_id": 4,
+    "budget_line_id": 21,
+    "source": {
+      "type": "purchase-order",
+      "id": 15,
+      "ref": "PO-26-0045"
+    },
+    "kind": "committed",
+    "amount_minor": 2400000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 2400000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 19,
+    "event_id": 4,
+    "budget_line_id": 22,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 8,
+      "ref": "HTC-4410"
+    },
+    "kind": "actual",
+    "amount_minor": 3690000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 3690000,
+    "posted_at": "2026-10-13T14:00:00Z"
+  },
+  {
+    "id": 20,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 7,
+      "ref": "TE-7"
+    },
+    "kind": "actual",
+    "amount_minor": 42000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 42000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 21,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 8,
+      "ref": "TE-8"
+    },
+    "kind": "actual",
+    "amount_minor": 42000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 42000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 22,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 9,
+      "ref": "TE-9"
+    },
+    "kind": "actual",
+    "amount_minor": 42000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 42000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 23,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 10,
+      "ref": "TE-10"
+    },
+    "kind": "actual",
+    "amount_minor": 42000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 42000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 24,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 11,
+      "ref": "TE-11"
+    },
+    "kind": "actual",
+    "amount_minor": 35000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 35000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 25,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 12,
+      "ref": "TE-12"
+    },
+    "kind": "actual",
+    "amount_minor": 35000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 35000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 26,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 13,
+      "ref": "TE-13"
+    },
+    "kind": "actual",
+    "amount_minor": 35000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 35000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 27,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 14,
+      "ref": "TE-14"
+    },
+    "kind": "actual",
+    "amount_minor": 35000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 35000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 28,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 15,
+      "ref": "TE-15"
+    },
+    "kind": "actual",
+    "amount_minor": 33000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 33000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 29,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 16,
+      "ref": "TE-16"
+    },
+    "kind": "actual",
+    "amount_minor": 33000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 33000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 30,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 17,
+      "ref": "TE-17"
+    },
+    "kind": "actual",
+    "amount_minor": 33000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 33000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 31,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 18,
+      "ref": "TE-18"
+    },
+    "kind": "actual",
+    "amount_minor": 33000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 33000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 32,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 19,
+      "ref": "TE-19"
+    },
+    "kind": "actual",
+    "amount_minor": 48000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 48000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 33,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 20,
+      "ref": "TE-20"
+    },
+    "kind": "actual",
+    "amount_minor": 48000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 48000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 34,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 21,
+      "ref": "TE-21"
+    },
+    "kind": "actual",
+    "amount_minor": 48000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 48000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 35,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 22,
+      "ref": "TE-22"
+    },
+    "kind": "actual",
+    "amount_minor": 48000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 48000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 36,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 23,
+      "ref": "TE-23"
+    },
+    "kind": "actual",
+    "amount_minor": 34000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 34000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 37,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 24,
+      "ref": "TE-24"
+    },
+    "kind": "actual",
+    "amount_minor": 34000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 34000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 38,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 25,
+      "ref": "TE-25"
+    },
+    "kind": "actual",
+    "amount_minor": 34000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 34000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 39,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 26,
+      "ref": "TE-26"
+    },
+    "kind": "actual",
+    "amount_minor": 34000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 34000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 40,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 27,
+      "ref": "TE-27"
+    },
+    "kind": "actual",
+    "amount_minor": 39000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 39000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 41,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 28,
+      "ref": "TE-28"
+    },
+    "kind": "actual",
+    "amount_minor": 39000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 39000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 42,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 29,
+      "ref": "TE-29"
+    },
+    "kind": "actual",
+    "amount_minor": 37000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 37000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 43,
+    "event_id": 4,
+    "budget_line_id": 23,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 30,
+      "ref": "TE-30"
+    },
+    "kind": "actual",
+    "amount_minor": 37000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 37000,
+    "posted_at": "2026-10-12T09:30:00Z"
+  },
+  {
+    "id": 44,
+    "event_id": 4,
+    "budget_line_id": 24,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 9,
+      "ref": "SH-22018"
+    },
+    "kind": "actual",
+    "amount_minor": 1840000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1840000,
+    "posted_at": "2026-10-12T14:00:00Z"
+  },
+  {
+    "id": 45,
+    "event_id": 4,
+    "budget_line_id": 25,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Travel bookings"
+    },
+    "kind": "actual",
+    "amount_minor": 1120000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1120000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 46,
+    "event_id": 5,
+    "budget_line_id": 27,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 10,
+      "ref": "RCC-55311"
+    },
+    "kind": "actual",
+    "amount_minor": 3200000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 3200000,
+    "posted_at": "2026-09-01T14:00:00Z"
+  },
+  {
+    "id": 47,
+    "event_id": 5,
+    "budget_line_id": 28,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 11,
+      "ref": "FWS-8812"
+    },
+    "kind": "actual",
+    "amount_minor": 4020000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 4020000,
+    "posted_at": "2026-10-19T14:00:00Z"
+  },
+  {
+    "id": 48,
+    "event_id": 5,
+    "budget_line_id": 29,
+    "source": {
+      "type": "purchase-order",
+      "id": 20,
+      "ref": "PO-26-0050"
+    },
+    "kind": "committed",
+    "amount_minor": 2140000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 2140000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 49,
+    "event_id": 5,
+    "budget_line_id": 30,
+    "source": {
+      "type": "purchase-order",
+      "id": 21,
+      "ref": "PO-26-0051"
+    },
+    "kind": "committed",
+    "amount_minor": 1760000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1760000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 50,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 42,
+      "ref": "TE-42"
+    },
+    "kind": "actual",
+    "amount_minor": 43000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 43000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 51,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 43,
+      "ref": "TE-43"
+    },
+    "kind": "actual",
+    "amount_minor": 43000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 43000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 52,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 44,
+      "ref": "TE-44"
+    },
+    "kind": "actual",
+    "amount_minor": 43000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 43000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 53,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 45,
+      "ref": "TE-45"
+    },
+    "kind": "actual",
+    "amount_minor": 36000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 36000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 54,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 46,
+      "ref": "TE-46"
+    },
+    "kind": "actual",
+    "amount_minor": 36000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 36000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 55,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 47,
+      "ref": "TE-47"
+    },
+    "kind": "actual",
+    "amount_minor": 36000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 36000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 56,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 48,
+      "ref": "TE-48"
+    },
+    "kind": "actual",
+    "amount_minor": 18000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 18000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 57,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 49,
+      "ref": "TE-49"
+    },
+    "kind": "actual",
+    "amount_minor": 18000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 18000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 58,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 50,
+      "ref": "TE-50"
+    },
+    "kind": "actual",
+    "amount_minor": 19000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 19000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 59,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 51,
+      "ref": "TE-51"
+    },
+    "kind": "actual",
+    "amount_minor": 19000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 19000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 60,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 52,
+      "ref": "TE-52"
+    },
+    "kind": "actual",
+    "amount_minor": 17000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 17000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 61,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 53,
+      "ref": "TE-53"
+    },
+    "kind": "actual",
+    "amount_minor": 17000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 17000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 62,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 54,
+      "ref": "TE-54"
+    },
+    "kind": "actual",
+    "amount_minor": 17000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 17000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 63,
+    "event_id": 5,
+    "budget_line_id": 31,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 55,
+      "ref": "TE-55"
+    },
+    "kind": "actual",
+    "amount_minor": 17000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 17000,
+    "posted_at": "2026-10-19T09:30:00Z"
+  },
+  {
+    "id": 64,
+    "event_id": 5,
+    "budget_line_id": 32,
+    "source": {
+      "type": "supplier-invoice",
+      "id": 13,
+      "ref": "INK-7790"
+    },
+    "kind": "actual",
+    "amount_minor": 590000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 590000,
+    "posted_at": "2026-10-16T14:00:00Z"
+  },
+  {
+    "id": 65,
+    "event_id": 9,
+    "budget_line_id": 34,
+    "source": {
+      "type": "purchase-order",
+      "id": 23,
+      "ref": "PO-26-0053"
+    },
+    "kind": "committed",
+    "amount_minor": 8400000,
+    "currency": "EUR",
+    "fx_rate": "0.8650",
+    "amount_gbp_minor": 7266000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 66,
+    "event_id": 9,
+    "budget_line_id": 35,
+    "source": {
+      "type": "purchase-order",
+      "id": 24,
+      "ref": "PO-26-0054"
+    },
+    "kind": "committed",
+    "amount_minor": 6020000,
+    "currency": "EUR",
+    "fx_rate": "0.8650",
+    "amount_gbp_minor": 5207300,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 67,
+    "event_id": 9,
+    "budget_line_id": 36,
+    "source": {
+      "type": "purchase-order",
+      "id": 25,
+      "ref": "PO-26-0055"
+    },
+    "kind": "committed",
+    "amount_minor": 3750000,
+    "currency": "EUR",
+    "fx_rate": "0.8650",
+    "amount_gbp_minor": 3243750,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 68,
+    "event_id": 9,
+    "budget_line_id": 37,
+    "source": {
+      "type": "purchase-order",
+      "id": 26,
+      "ref": "PO-26-0056"
+    },
+    "kind": "committed",
+    "amount_minor": 3520000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 3520000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 69,
+    "event_id": 12,
+    "budget_line_id": 42,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Organiser invoice"
+    },
+    "kind": "actual",
+    "amount_minor": 5200000,
+    "currency": "EUR",
+    "fx_rate": "0.8650",
+    "amount_gbp_minor": 4498000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 70,
+    "event_id": 12,
+    "budget_line_id": 43,
+    "source": {
+      "type": "purchase-order",
+      "id": 28,
+      "ref": "PO-26-0058"
+    },
+    "kind": "committed",
+    "amount_minor": 6350000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 6350000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 71,
+    "event_id": 10,
+    "budget_line_id": 48,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Venue contract"
+    },
+    "kind": "committed",
+    "amount_minor": 900000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 900000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 72,
+    "event_id": 10,
+    "budget_line_id": 49,
+    "source": {
+      "type": "purchase-order",
+      "id": 30,
+      "ref": "PO-26-0060"
+    },
+    "kind": "committed",
+    "amount_minor": 1060000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1060000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 73,
+    "event_id": 10,
+    "budget_line_id": 50,
+    "source": {
+      "type": "purchase-order",
+      "id": 31,
+      "ref": "PO-26-0061"
+    },
+    "kind": "committed",
+    "amount_minor": 650000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 650000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 74,
+    "event_id": 11,
+    "budget_line_id": 54,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Venue contract"
+    },
+    "kind": "committed",
+    "amount_minor": 3800000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 3800000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 75,
+    "event_id": 11,
+    "budget_line_id": 55,
+    "source": {
+      "type": "purchase-order",
+      "id": 32,
+      "ref": "PO-26-0062"
+    },
+    "kind": "committed",
+    "amount_minor": 4030000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 4030000,
+    "posted_at": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": 76,
+    "event_id": 3,
+    "budget_line_id": 60,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Venue invoice"
+    },
+    "kind": "actual",
+    "amount_minor": 1200000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1200000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 77,
+    "event_id": 3,
+    "budget_line_id": 61,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "HTC-4377"
+    },
+    "kind": "actual",
+    "amount_minor": 984000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 984000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 78,
+    "event_id": 3,
+    "budget_line_id": 62,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "SR-1022"
+    },
+    "kind": "actual",
+    "amount_minor": 680000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 680000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 79,
+    "event_id": 3,
+    "budget_line_id": 63,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 1,
+      "ref": "TE-1"
+    },
+    "kind": "actual",
+    "amount_minor": 36000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 36000,
+    "posted_at": "2026-09-28T09:30:00Z"
+  },
+  {
+    "id": 80,
+    "event_id": 3,
+    "budget_line_id": 63,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 2,
+      "ref": "TE-2"
+    },
+    "kind": "actual",
+    "amount_minor": 36000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 36000,
+    "posted_at": "2026-09-28T09:30:00Z"
+  },
+  {
+    "id": 81,
+    "event_id": 3,
+    "budget_line_id": 63,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 3,
+      "ref": "TE-3"
+    },
+    "kind": "actual",
+    "amount_minor": 42000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 42000,
+    "posted_at": "2026-09-28T09:30:00Z"
+  },
+  {
+    "id": 82,
+    "event_id": 3,
+    "budget_line_id": 63,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 4,
+      "ref": "TE-4"
+    },
+    "kind": "actual",
+    "amount_minor": 42000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 42000,
+    "posted_at": "2026-09-28T09:30:00Z"
+  },
+  {
+    "id": 83,
+    "event_id": 3,
+    "budget_line_id": 63,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 5,
+      "ref": "TE-5"
+    },
+    "kind": "actual",
+    "amount_minor": 34000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 34000,
+    "posted_at": "2026-09-28T09:30:00Z"
+  },
+  {
+    "id": 84,
+    "event_id": 3,
+    "budget_line_id": 63,
+    "source": {
+      "type": "timesheet-entry",
+      "id": 6,
+      "ref": "TE-6"
+    },
+    "kind": "actual",
+    "amount_minor": 34000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 34000,
+    "posted_at": "2026-09-28T09:30:00Z"
+  },
+  {
+    "id": 85,
+    "event_id": 3,
+    "budget_line_id": 64,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Design time"
+    },
+    "kind": "actual",
+    "amount_minor": 360000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 360000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 86,
+    "event_id": 1,
+    "budget_line_id": 65,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Opening balance"
+    },
+    "kind": "actual",
+    "amount_minor": 3720000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 3720000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 87,
+    "event_id": 1,
+    "budget_line_id": 66,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Opening balance"
+    },
+    "kind": "actual",
+    "amount_minor": 2040000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 2040000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 88,
+    "event_id": 1,
+    "budget_line_id": 67,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Opening balance"
+    },
+    "kind": "actual",
+    "amount_minor": 765000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 765000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 89,
+    "event_id": 1,
+    "budget_line_id": 68,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Opening balance"
+    },
+    "kind": "actual",
+    "amount_minor": 880000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 880000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 90,
+    "event_id": 2,
+    "budget_line_id": 69,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Opening balance"
+    },
+    "kind": "actual",
+    "amount_minor": 6390000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 6390000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 91,
+    "event_id": 2,
+    "budget_line_id": 70,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Opening balance"
+    },
+    "kind": "actual",
+    "amount_minor": 3320000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 3320000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 92,
+    "event_id": 2,
+    "budget_line_id": 71,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Opening balance"
+    },
+    "kind": "actual",
+    "amount_minor": 1410000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1410000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 93,
+    "event_id": 2,
+    "budget_line_id": 72,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Opening balance"
+    },
+    "kind": "actual",
+    "amount_minor": 1370000,
+    "currency": "GBP",
+    "fx_rate": null,
+    "amount_gbp_minor": 1370000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 94,
+    "event_id": 6,
+    "budget_line_id": 73,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "HCC cancellation invoice"
+    },
+    "kind": "actual",
+    "amount_minor": 1400000,
+    "currency": "EUR",
+    "fx_rate": "0.8650",
+    "amount_gbp_minor": 1211000,
+    "posted_at": "2026-09-01T08:00:00Z"
+  },
+  {
+    "id": 95,
+    "event_id": 6,
+    "budget_line_id": 74,
+    "source": {
+      "type": "manual",
+      "id": null,
+      "ref": "Hotel attrition invoice"
+    },
+    "kind": "actual",
+    "amount_minor": 520000,
+    "currency": "EUR",
+    "fx_rate": "0.8650",
+    "amount_gbp_minor": 449800,
+    "posted_at": "2026-09-01T08:00:00Z"
+  }
+]

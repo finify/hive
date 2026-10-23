@@ -1,0 +1,133 @@
+[
+  {
+    "email": "priya@lumenco.test",
+    "name": "Priya Raman",
+    "person_id": 1,
+    "roles": [
+      "operations-director"
+    ],
+    "headline": "Sees the whole agency: pipeline, margin, utilisation and anything at risk.",
+    "start": "dashboard",
+    "tour": [
+      "One live clash on Friday 23 Oct",
+      "Meridian Bank forum is over budget",
+      "Pipeline value by stage"
+    ]
+  },
+  {
+    "email": "hannah@lumenco.test",
+    "name": "Hannah Clarke",
+    "person_id": 4,
+    "roles": [
+      "producer"
+    ],
+    "headline": "Producer of the live Northwind summit. Resolves the clash, approves crew time.",
+    "start": "rota",
+    "tour": [
+      "Resolve Kofi’s double booking from the rota",
+      "Approve a timesheet with a 14-hour shift",
+      "Watch crew cost land in the budget"
+    ]
+  },
+  {
+    "email": "marcus@lumenco.test",
+    "name": "Marcus Bell",
+    "person_id": 5,
+    "roles": [
+      "producer"
+    ],
+    "headline": "Producer in Manchester running the Arclight launch tonight.",
+    "start": "approvals",
+    "tour": [
+      "Approve his part of a two-event timesheet",
+      "Check the Arclight crew list"
+    ]
+  },
+  {
+    "email": "grace@lumenco.test",
+    "name": "Grace Adeyemi",
+    "person_id": 20,
+    "roles": [
+      "finance"
+    ],
+    "headline": "Finance manager. Approves supplier invoices and watches committed against actual.",
+    "start": "supplier-invoices",
+    "tour": [
+      "Approve an AV invoice that is £1,250 over its PO",
+      "See forecast margin move on Northwind",
+      "Find what blocks Halcyon from reconciling"
+    ]
+  },
+  {
+    "email": "leah@lumenco.test",
+    "name": "Leah Fitzgerald",
+    "person_id": 23,
+    "roles": [
+      "hr"
+    ],
+    "headline": "Head of People. Restricted fields, expiring documents and leave.",
+    "start": "people.index",
+    "tour": [
+      "Ola Brennan’s insurance has expired",
+      "A leave request that clashes with a booking",
+      "Restricted fields only HR can see"
+    ]
+  },
+  {
+    "email": "tomasz@lumenco.test",
+    "name": "Tomasz Nowak",
+    "person_id": 12,
+    "roles": [
+      "head-of-department"
+    ],
+    "headline": "Head of Technical. Staffs the crew and keeps an eye on utilisation.",
+    "start": "rota",
+    "tour": [
+      "Technical team on the rota",
+      "Find a Disguise operator for Lisbon"
+    ]
+  },
+  {
+    "email": "jamie@lumenco.test",
+    "name": "Jamie Ross",
+    "person_id": 10,
+    "roles": [
+      "employee"
+    ],
+    "headline": "Graphic designer. Own bookings, timesheets and leave only.",
+    "start": "my-work",
+    "tour": [
+      "Own bookings and leave",
+      "Directory without rates or personal fields"
+    ]
+  },
+  {
+    "email": "kofi@freelance.test",
+    "name": "Kofi Mensah",
+    "person_id": 26,
+    "roles": [
+      "freelancer"
+    ],
+    "headline": "Freelance AV technician. Accepts bookings and submits time from a phone.",
+    "start": "my-work",
+    "tour": [
+      "Accept the Lisbon booking request",
+      "Sees only his own work",
+      "Ask Hive about budgets and get a refusal"
+    ]
+  },
+  {
+    "email": "sam@lumenco.test",
+    "name": "Sam Okafor",
+    "person_id": 2,
+    "roles": [
+      "super-admin"
+    ],
+    "headline": "Platform owner. Users, roles, invitations and the audit log.",
+    "start": "admin.users",
+    "tour": [
+      "Invite a user and assign a role",
+      "Audit log of everything just done"
+    ]
+  }
+]

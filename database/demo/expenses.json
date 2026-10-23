@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "person_id": 26,
+    "event_id": 5,
+    "category": "taxi",
+    "date": "2026-10-14",
+    "description": "Taxi home after 21:30 wrap",
+    "amount_minor": 3840,
+    "currency": "GBP",
+    "vat_minor": 640,
+    "mileage_miles": null,
+    "status": "pending",
+    "receipt": "receipts/taxi-1014.jpg"
+  },
+  {
+    "id": 2,
+    "person_id": 26,
+    "event_id": 8,
+    "category": "travel",
+    "date": "2026-10-16",
+    "description": "Return rail London to Manchester",
+    "amount_minor": 18650,
+    "currency": "GBP",
+    "vat_minor": 0,
+    "mileage_miles": null,
+    "status": "approved",
+    "receipt": "receipts/rail-1016.jpg"
+  },
+  {
+    "id": 3,
+    "person_id": 7,
+    "event_id": 7,
+    "category": "materials",
+    "date": "2026-10-20",
+    "description": "Gaffer tape and cable ties",
+    "amount_minor": 6420,
+    "currency": "GBP",
+    "vat_minor": 1070,
+    "mileage_miles": null,
+    "status": "pending",
+    "receipt": "receipts/materials-1020.jpg"
+  },
+  {
+    "id": 4,
+    "person_id": 13,
+    "event_id": 8,
+    "category": "mileage",
+    "date": "2026-10-22",
+    "description": "Van run to Mill Street, 46 miles",
+    "amount_minor": 2070,
+    "currency": "GBP",
+    "vat_minor": 0,
+    "mileage_miles": 46,
+    "status": "pending",
+    "receipt": null
+  },
+  {
+    "id": 5,
+    "person_id": 6,
+    "event_id": 12,
+    "category": "subsistence",
+    "date": "2026-10-08",
+    "description": "Lunch on Amsterdam site visit",
+    "amount_minor": 2850,
+    "currency": "EUR",
+    "vat_minor": 240,
+    "mileage_miles": null,
+    "status": "approved",
+    "receipt": "receipts/lunch-1008.jpg"
+  }
+]
