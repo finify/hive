@@ -56,6 +56,10 @@ return [
 
     'demo' => [
         'enabled' => (bool) env('HIVE_DEMO', false),
+        // "live": the demo runs on today's date and its data is moved forward
+        // in whole weeks to stay around it. "fixed": the data's own date
+        // (organisation.json demo_today), for tests and screenshots.
+        'clock' => env('HIVE_DEMO_CLOCK', 'live'),
         'path' => database_path('demo'),
         'password' => 'password',
     ],

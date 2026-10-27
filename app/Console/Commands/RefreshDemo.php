@@ -2,12 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Demo\DemoData;
 use App\Enums\DocumentType;
 use App\Models\Approval;
 use App\Models\ApprovalDelegation;
 use App\Models\BankHoliday;
 use App\Models\Checklist;
 use App\Models\ChecklistTemplate;
+use App\Models\DayRate;
 use App\Models\Document;
 use App\Models\Event;
 use App\Models\ExchangeRate;
@@ -16,6 +18,8 @@ use App\Models\FreelancerInvoice;
 use App\Models\LeaveAllowance;
 use App\Models\LeaveRequest;
 use App\Models\PeriodLock;
+use App\Models\Person;
+use App\Models\Setting;
 use App\Models\Task;
 use App\Models\TaskTemplate;
 use App\Models\Timesheet;
@@ -82,6 +86,7 @@ class RefreshDemo extends Command
         });
 
         $disk->delete($files->all());
+        $this->moveDirectoryDates();
         $this->callSilently('db:seed', ['--class' => DemoEventsSeeder::class, '--force' => true]);
         $this->callSilently('db:seed', ['--class' => DemoResourcingSeeder::class, '--force' => true]);
         $this->callSilently('db:seed', ['--class' => DemoTimeSeeder::class, '--force' => true]);
@@ -91,5 +96,37 @@ class RefreshDemo extends Command
         $this->info('Demo data refreshed.');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * People, their documents and day rates are seeded once, not refreshed.
+     * When the live demo clock has moved into a new week since, move their
+     * dates by the same number of days as everything else.
+     */
+    private function moveDirectoryDates(): void
+    {
+        $now = app(DemoData::class)->shiftDays();
+        $applied = (int) (Setting::query()->find('demo.shift_days')->value ?? $now);
+        $delta = $now - $applied;
+
+        if ($delta !== 0) {
+            $move = fn ($date) => $date?->copy()->addDays($delta)->toDateString();
+
+            Person::withoutEvents(function () use ($move) {
+                foreach (Person::withTrashed()->get() as $p) {
+                    $p->forceFill(['start_date' => $move($p->start_date), 'end_date' => $move($p->end_date)])->saveQuietly();
+                }
+            });
+
+            foreach (Document::query()->where('documentable_type', '!=', Event::class)->get() as $d) {
+                $d->forceFill(['issued_at' => $move($d->issued_at), 'expires_at' => $move($d->expires_at)])->saveQuietly();
+            }
+
+            foreach (DayRate::query()->get() as $r) {
+                $r->forceFill(['effective_from' => $move($r->effective_from), 'effective_to' => $move($r->effective_to)])->saveQuietly();
+            }
+        }
+
+        Setting::query()->updateOrCreate(['key' => 'demo.shift_days'], ['value' => $now]);
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Contact;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\Person;
+use App\Models\Setting;
 use App\Models\Skill;
 use App\Models\Supplier;
 use App\Models\Venue;
@@ -71,7 +72,7 @@ class DemoDirectorySeeder extends Seeder
                 foreach (Rows::of($row['skills']) as $skill) {
                     $person->skills()->attach($skill['skill_id'], [
                         'level' => $skill['level'],
-                        'verified_at' => $skill['verified'] ? '2026-01-15 09:00:00' : null,
+                        'verified_at' => $skill['verified'] ? app(DemoData::class)->at('2026-01-15 09:00:00') : null,
                     ]);
                 }
             }
@@ -123,6 +124,9 @@ class DemoDirectorySeeder extends Seeder
         });
 
         Activity::query()->where('log_name', 'people')->orWhere('log_name', 'directory')->delete();
+
+        // How far these dates were moved, so hive:demo-refresh can keep them in step.
+        Setting::query()->updateOrCreate(['key' => 'demo.shift_days'], ['value' => app(DemoData::class)->shiftDays()]);
     }
 
     private function contacts(Client|Supplier $owner, mixed $contacts): void

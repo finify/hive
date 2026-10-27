@@ -69,7 +69,7 @@
         @if ($demo)
             <section class="signin-personas" aria-labelledby="personas-title">
                 <h2 id="personas-title">Walk through Hive as someone at the agency</h2>
-                <p class="text-muted mb-3">It is {{ app(\App\Demo\DemoData::class)->today()->format('l j F Y') }}. Northwind’s partner summit is live in London, Arclight launches tonight in Manchester, and Kofi is booked on both. Pick a persona to sign in with their details filled in. The password for each is <span class="code">{{ config('hive.demo.password') }}</span>.</p>
+                <p class="text-muted mb-3">It is {{ app(\App\Demo\DemoData::class)->today()->format('l j F Y') }}. The agency’s dates move with the calendar: this week Northwind’s partner summit is on in London and Arclight launches in Manchester, and Kofi is booked on both. Pick a persona to sign in with their details filled in. The password for each is <span class="code">{{ config('hive.demo.password') }}</span>.</p>
 
                 <div class="persona-grid">
                     @foreach ($personas as $persona)

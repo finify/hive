@@ -4,7 +4,7 @@
     $today = app(\App\Demo\DemoData::class)->today();
 @endphp
 <div class="demo-band" role="region" aria-label="Demo controls">
-    <span><strong class="fw-medium">Demo</strong><span class="demo-hint"> with fictional data, dated</span> {{ $today->format('D j M Y') }}</span>
+    <span><strong class="fw-medium">Demo</strong><span class="demo-hint"> with fictional data, kept current to</span> {{ $today->format('D j M Y') }}</span>
 
     <div class="dropdown">
         <button class="btn btn-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Switch persona</button>

@@ -85,6 +85,8 @@ Run Pint, Larastan and the tests before calling a phase done.
 
 `HIVE_DEMO=true` shows persona cards on the sign-in page, the demo band (switch persona, reset), and the current TOTP code on the two-factor screen for demo personas. Demo users come from `DemoUserSeeder` (local, staging and testing only; it refuses to run in production). Changes made during the walkthrough live in the session (`DemoLedger`) and are cleared on sign-out or "Reset demo". Never enable demo mode in production.
 
+The demo runs on today's date (`HIVE_DEMO_CLOCK=live`): `DemoData` moves every date in the JSON forward in whole weeks so 23 Oct 2026's week is this week; dates written in seeders go through `DemoData::at()`. Tests run on `fixed` (23 Oct 2026). Never write a demo date in prose ("tonight", "Friday 23 Oct").
+
 ## Design skills installed in `.claude/skills`
 
 From the "five free plugins that make Claude good at design" list:

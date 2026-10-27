@@ -89,9 +89,9 @@ class DemoFinanceSeeder extends Seeder
                     'budget_line_id' => $row['budget_line_id'], 'status' => $row['status'], 'currency' => $row['currency'], 'fx_rate' => $row['fx_rate'],
                     'subtotal_minor' => $row['subtotal_minor'], 'vat_minor' => $row['vat_minor'], 'total_minor' => $row['total_minor'],
                     'raised_by' => $row['raised_by'], 'approved_by' => $row['approved_by'],
-                    'approved_at' => $row['approved_by'] ? '2026-06-01 09:00:00' : null,
-                    'sent_at' => in_array($row['status'], ['sent', 'partially-invoiced', 'invoiced'], true) ? '2026-06-02 09:00:00' : null,
-                    'goods_received_at' => $row['goods_received'] ? '2026-10-01 09:00:00' : null,
+                    'approved_at' => $row['approved_by'] ? app(DemoData::class)->at('2026-06-01 09:00:00') : null,
+                    'sent_at' => in_array($row['status'], ['sent', 'partially-invoiced', 'invoiced'], true) ? app(DemoData::class)->at('2026-06-02 09:00:00') : null,
+                    'goods_received_at' => $row['goods_received'] ? app(DemoData::class)->at('2026-10-01 09:00:00') : null,
                 ]);
 
                 foreach (Rows::of($row['lines']) as $line) {
@@ -140,29 +140,29 @@ class DemoFinanceSeeder extends Seeder
 
             // Arjun has a self-billing agreement, so Hive can raise his invoices.
             Person::query()->findOrFail(31)->documents()->create([
-                'type' => DocumentType::SelfBillingAgreement, 'title' => 'Self-billing agreement', 'issued_at' => '2026-01-10', 'expires_at' => '2027-01-09', 'mandatory' => false,
+                'type' => DocumentType::SelfBillingAgreement, 'title' => 'Self-billing agreement', 'issued_at' => app(DemoData::class)->at('2026-01-10'), 'expires_at' => app(DemoData::class)->at('2027-01-09'), 'mandatory' => false,
             ]);
 
             // Kofi's September invoice, matched to his approved time and paid.
             // Hollie's September invoice matched her approved time and is paid.
             // Yasmin's is £60 over hers and waits for finance.
             $workspace = app(Workspace::class);
-            $hollie = $workspace->approvedTimeCost(30, '2026-09-01', '2026-09-30')->minor;
+            $hollie = $workspace->approvedTimeCost(30, app(DemoData::class)->at('2026-09-01'), app(DemoData::class)->at('2026-09-30'))->minor;
             FreelancerInvoice::query()->create([
-                'person_id' => 30, 'period_start' => '2026-09-01', 'period_end' => '2026-09-30', 'invoice_number' => 'HS-2609',
+                'person_id' => 30, 'period_start' => app(DemoData::class)->at('2026-09-01'), 'period_end' => app(DemoData::class)->at('2026-09-30'), 'invoice_number' => 'HS-2609',
                 'net_minor' => $hollie, 'vat_minor' => 0, 'gross_minor' => $hollie, 'expected_minor' => $hollie,
-                'status' => FreelancerInvoiceStatus::Paid, 'approved_by' => 20, 'approved_at' => '2026-10-06 10:00:00', 'paid_on' => '2026-10-15',
+                'status' => FreelancerInvoiceStatus::Paid, 'approved_by' => 20, 'approved_at' => app(DemoData::class)->at('2026-10-06 10:00:00'), 'paid_on' => app(DemoData::class)->at('2026-10-15'),
                 'original_name' => 'HS-2609.pdf',
             ]);
 
-            $yasmin = $workspace->approvedTimeCost(38, '2026-09-01', '2026-09-30');
+            $yasmin = $workspace->approvedTimeCost(38, app(DemoData::class)->at('2026-09-01'), app(DemoData::class)->at('2026-09-30'));
             $net = $yasmin->plus(Money::of(6000));
             $vat = VatRate::Standard->on($net);
             FreelancerInvoice::query()->create([
-                'person_id' => 38, 'period_start' => '2026-09-01', 'period_end' => '2026-09-30', 'invoice_number' => 'YF-114',
+                'person_id' => 38, 'period_start' => app(DemoData::class)->at('2026-09-01'), 'period_end' => app(DemoData::class)->at('2026-09-30'), 'invoice_number' => 'YF-114',
                 'net_minor' => $net->minor, 'vat_minor' => $vat->minor, 'gross_minor' => $net->plus($vat)->minor,
                 'expected_minor' => $yasmin->minor, 'status' => FreelancerInvoiceStatus::Received, 'original_name' => 'YF-114.pdf',
-                'notes' => 'Includes a parking charge.', 'created_at' => '2026-10-12 09:00:00',
+                'notes' => 'Includes a parking charge.', 'created_at' => app(DemoData::class)->at('2026-10-12 09:00:00'),
             ]);
         });
 
@@ -174,7 +174,7 @@ class DemoFinanceSeeder extends Seeder
         $engine = app(ApprovalEngine::class);
 
         foreach (PurchaseOrder::query()->where('status', PurchaseOrderStatus::PendingApproval)->get() as $po) {
-            $this->backdate($engine->request($po), '2026-10-19 10:00:00');
+            $this->backdate($engine->request($po), app(DemoData::class)->at('2026-10-19 10:00:00'));
         }
 
         foreach (SupplierInvoice::query()->whereIn('status', [SupplierInvoiceStatus::Received, SupplierInvoiceStatus::Matched])->get() as $invoice) {

@@ -33,6 +33,7 @@
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
         <env name="HIVE_DEMO" value="true"/>
+        <env name="HIVE_DEMO_CLOCK" value="fixed"/>
         <env name="HIVE_ENFORCE_TWO_FACTOR" value="true"/>
         <env name="ASK_HIVE_ENABLED" value="true"/>
         <env name="ANTHROPIC_API_KEY" value=""/>

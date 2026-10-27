@@ -301,3 +301,7 @@ Section 5.15's thresholds and limits are stored in a `settings` table and applie
 ## 74. Query budget and caching
 
 Every list page stays within 15 queries (tests enforce it), the busiest dashboard within 25. The Workspace shares its table reads between requests in one cache entry per data version, bumped by `Workspace::forget()` and by saving or deleting any model it reads; people are cached without their encrypted fields. The trade-off: a mass update that skips both would be served stale for up to an hour, which is why Actions always call `forget()`.
+
+## 75. The demo runs on today's date
+
+The demo data is written around Friday 23 Oct 2026. On the live clock (`HIVE_DEMO_CLOCK=live`, the default) Hive uses today's UK date and moves every date in the demo data forward by whole weeks so that week becomes the current one: weekdays stay right (timesheet weeks start on Monday, weekends stay weekends) and the story stays "this week". Bank holidays are real dates and never move. The hourly `hive:demo-refresh` re-seeds with the current shift and moves the people, documents and day rates seeded once by the same number of days. Tests use the fixed clock so their dates are stable. Outside demo mode Hive always uses the real date (before this, `today()` read the demo date even with demo mode off).
