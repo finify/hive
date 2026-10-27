@@ -7,6 +7,7 @@ use App\Demo\Viewer;
 use App\Demo\Workspace;
 use App\Support\DateRange;
 use App\Support\Display;
+use Carbon\CarbonImmutable;
 
 /**
  * A deterministic engine for the demo and for tests: it reads the question,
@@ -48,6 +49,8 @@ class LocalEngine implements AskHiveEngine
         $q = mb_strtolower($question->text);
 
         return match (true) {
+            (bool) preg_match('/\b(accept|decline)\b.*\bev-?\d{5}\b/', $q) => $this->respondToBooking($q, $tools),
+            (bool) preg_match('/\b(book|request|take|ask for)\b.*\b(leave|holiday|time off)\b/', $q) => $this->requestLeave($q, $tools),
             (bool) preg_match('/\bev-?\d{5}\b/', $q) => $this->eventSummary($q, $tools),
             $this->mentions($q, ['risk', 'over budget', 'budget', 'margin', 'trending', 'overspend']) => $this->budgetHealth($tools),
             $this->mentions($q, ['free', 'available', 'availability', 'who can', 'cover']) => $this->whoIsFree($q, $tools),
@@ -55,6 +58,7 @@ class LocalEngine implements AskHiveEngine
             $this->mentions($q, ['approv', 'waiting for me', 'waiting for my', 'to sign off']) => $this->approvals($tools),
             $this->mentions($q, ['document', 'insurance', 'expir', 'certificate']) => $this->documents($tools),
             $this->mentions($q, ['leave left', 'leave do i have', 'holiday left', 'days left', 'my balance', 'toil']) => $this->myLeave($tools),
+            $this->mentions($q, ['my leave', 'leave request', 'go through', 'been approved']) => $this->myLeaveRequests($tools),
             $this->mentions($q, ['booked on', 'my next', 'am i booked', 'my booking', 'next booking', 'day off']) => $this->myBookings($q, $tools),
             $this->mentions($q, ['off next week', 'who is off', 'who’s off', 'on leave', 'holiday', 'away']) => $this->leave($tools),
             default => new Answer([
@@ -251,7 +255,7 @@ class LocalEngine implements AskHiveEngine
             $paragraphs[] = 'Days not covered by these bookings are free as far as Hive knows; mark any you can’t work as unavailable.';
         }
 
-        $pending = array_filter($r['bookings'], fn ($b) => ! $b['answered']);
+        $pending = array_filter($r['bookings'], fn ($b) => $b['waiting_for_your_answer']);
 
         if ($pending) {
             $paragraphs[] = count($pending) === 1 ? 'One booking request is waiting for your answer on My work.' : count($pending).' booking requests are waiting for your answer on My work.';
@@ -261,6 +265,87 @@ class LocalEngine implements AskHiveEngine
             $paragraphs,
             array_map(fn ($b) => "{$b['code']} {$b['event']}, {$b['dates']}, ".str_replace('-', ' ', $b['status']).'.', $r['bookings']),
             [['label' => 'My work', 'href' => route('my-work')]],
+            $tools->calls(),
+        );
+    }
+
+    /**
+     * "Accept the booking on EV-26114": proposes the answer for the user to
+     * confirm.
+     */
+    private function respondToBooking(string $q, Tools $tools): Answer
+    {
+        preg_match('/\bev-?(\d{5})\b/', $q, $m);
+        $accept = str_contains($q, 'accept');
+        $r = $tools->run('propose_respond_to_booking', ['event_code' => 'EV-'.$m[1], 'accept' => $accept]);
+
+        return $this->proposed($r, $tools);
+    }
+
+    /**
+     * "Book annual leave from 2026-11-16 to 2026-11-18" (or "16 Nov to 18
+     * Nov"): proposes the request. Without two dates it asks for them.
+     */
+    private function requestLeave(string $q, Tools $tools): Answer
+    {
+        preg_match_all('/\b(\d{4}-\d{2}-\d{2}|\d{1,2} (?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*(?: \d{4})?)\b/', $q, $m);
+        $today = $this->workspace->today();
+        $dates = array_map(function (string $d) use ($today) {
+            $date = CarbonImmutable::parse(preg_match('/\d{4}/', $d) ? $d : $d.' '.$today->year);
+
+            return ($date->lt($today) && ! preg_match('/\d{4}/', $d) ? $date->addYear() : $date)->toDateString();
+        }, $m[1]);
+
+        if ($dates === []) {
+            return new Answer(['Which dates? Say, for example, “book annual leave from 16 Nov to 18 Nov”.'], tools: $tools->calls());
+        }
+
+        $type = match (true) {
+            str_contains($q, 'toil') || str_contains($q, 'in lieu') => 'toil',
+            str_contains($q, 'training') => 'training',
+            str_contains($q, 'unpaid') => 'unpaid',
+            default => 'annual',
+        };
+
+        $r = $tools->run('propose_request_leave', ['leave_type' => $type, 'start_date' => $dates[0], 'end_date' => $dates[1] ?? $dates[0]]);
+
+        return $this->proposed($r, $tools);
+    }
+
+    /**
+     * @param  array<string, mixed>  $r
+     */
+    private function proposed(array $r, Tools $tools): Answer
+    {
+        if (($r['allowed'] ?? true) === false) {
+            return new Answer(['Your role can’t make that change in Hive.'], tools: $tools->calls(), refused: true);
+        }
+
+        if (isset($r['error'])) {
+            return new Answer([str_replace('Hive would refuse this change: ', 'Hive wouldn’t accept that: ', (string) $r['error'])], tools: $tools->calls());
+        }
+
+        return new Answer(['Here’s the change. Check it and press Confirm to make it; nothing has changed yet.'], tools: $tools->calls(), proposals: $tools->proposals());
+    }
+
+    private function myLeaveRequests(Tools $tools): Answer
+    {
+        $r = $tools->listMyLeave();
+
+        if (! $r['allowed']) {
+            return new Answer(['Leave isn’t recorded in Hive for your role.'], tools: $tools->calls(), refused: true);
+        }
+
+        $upcoming = array_values(array_filter($r['leave'], fn ($l) => $l['can_cancel'] || $l['status'] === 'pending'));
+
+        if ($upcoming === []) {
+            return new Answer(['You have no upcoming leave requested in Hive.'], tools: $tools->calls());
+        }
+
+        return new Answer(
+            ['Your upcoming leave:'],
+            array_map(fn ($l) => "{$l['type']}, {$l['dates']} (".Display::days((float) $l['days']).'): '.($l['status'] === 'pending' ? 'waiting for your manager' : $l['status']).'.', $upcoming),
+            [['label' => 'Leave', 'href' => route('leave')]],
             $tools->calls(),
         );
     }

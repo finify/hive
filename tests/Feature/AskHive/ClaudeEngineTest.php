@@ -6,24 +6,17 @@ use App\Livewire\AskHive as AskHivePanel;
 use App\Models\AiRequest;
 use App\Services\AskHive\AskHiveEngine;
 use App\Services\AskHive\ClaudeEngine;
-use App\Services\AskHive\Gateway\ModelGateway;
 use App\Services\AskHive\Gateway\ModelTurn;
 use App\Services\AskHive\Tools;
 use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 use Tests\Feature\AskHive\FakeGateway;
 
-/**
- * Ask Hive with the Claude engine, against a scripted model: these prove what
- * the model is sent, not what a real model would say.
+/*
+ * Ask Hive with the Claude engine, against a scripted model (claude() in
+ * tests/Pest.php): these prove what the model is sent, not what a real
+ * model would say.
  */
-function claude(FakeGateway $fake): FakeGateway
-{
-    config(['hive.ai.engine' => 'claude']);
-    app()->instance(ModelGateway::class, $fake);
-
-    return $fake;
-}
 
 /** Every tool, with inputs that make each one return data. */
 function everyTool(): array
@@ -34,6 +27,11 @@ function everyTool(): array
         'list_clashes' => [], 'get_budget_health' => [], 'list_pending_approvals' => [], 'list_pending_timesheet_entries' => [],
         'get_leave_calendar' => ['start_date' => '2026-09-01', 'end_date' => '2026-12-31'], 'list_my_bookings' => [], 'get_my_leave_balance' => [],
         'list_expiring_documents' => [], 'list_crew_calls' => ['event_code' => 'EV-26114'], 'get_event_wrap_facts' => ['event_code' => 'EV-26104'],
+        'list_my_leave' => [], 'list_leave_to_decide' => [], 'get_my_timesheet' => ['week' => '2026-10-19'],
+        'get_event_tasks' => ['event_code' => 'EV-26114'], 'get_event_crew' => ['event_code' => 'EV-26114'],
+        'search_people' => ['text' => 'a'], 'get_person' => ['person_id' => 2], 'search_directory' => ['text' => 'a'],
+        'list_purchase_orders' => [], 'list_supplier_invoices' => [], 'list_my_expenses' => [], 'list_my_notifications' => [],
+        'list_my_checklist_items' => [], 'list_reports' => [], 'run_report' => ['key' => 'leave'],
     ];
 }
 

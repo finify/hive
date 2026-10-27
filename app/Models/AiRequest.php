@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property int $user_id
+ * @property int|null $previous_id
  * @property string $engine
  * @property string $status queued, answered or failed
  * @property string|null $workflow
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AiRequest extends Model
 {
     protected $fillable = [
-        'user_id', 'engine', 'status', 'workflow', 'subject', 'model', 'prompt', 'tools_called', 'response', 'answer', 'error',
+        'user_id', 'previous_id', 'engine', 'status', 'workflow', 'subject', 'model', 'prompt', 'tools_called', 'response', 'answer', 'error',
         'refused', 'input_tokens', 'output_tokens', 'duration_ms',
     ];
 
@@ -48,6 +49,63 @@ class AiRequest extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The earlier turns of this conversation, oldest first, as text the
+     * model can read: each answer with what happened to its proposals.
+     *
+     * @return list<array{question: string, answer: string}>
+     */
+    public function history(int $turns = 6): array
+    {
+        $history = [];
+        $previous = $this->previous_id ? self::query()->find($this->previous_id) : null;
+
+        while ($previous !== null && $previous->user_id === $this->user_id && count($history) < $turns) {
+            if ($previous->status === 'answered') {
+                $outcomes = array_map(
+                    fn (array $p) => '['.match ($p['status']) {
+                        'done' => 'Confirmed and done: ',
+                        'cancelled' => 'The user cancelled: ',
+                        'failed' => 'Hive refused when confirmed: ',
+                        default => 'Proposed, not yet confirmed: ',
+                    }.$p['summary'].($p['message'] ? ' — '.$p['message'] : '').']',
+                    $previous->proposals(),
+                );
+                array_unshift($history, ['question' => $previous->prompt, 'answer' => trim($previous->response."\n".implode("\n", $outcomes))]);
+            }
+
+            $previous = $previous->previous_id ? self::query()->find($previous->previous_id) : null;
+        }
+
+        return $history;
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public function proposals(): array
+    {
+        return array_values($this->answer['proposals'] ?? []);
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function proposal(string $id): ?array
+    {
+        return collect($this->proposals())->firstWhere('id', $id);
+    }
+
+    /**
+     * @param  array<string, mixed>  $changes
+     */
+    public function updateProposal(string $id, array $changes): void
+    {
+        $answer = $this->answer ?? [];
+        $answer['proposals'] = array_map(fn (array $p) => $p['id'] === $id ? array_merge($p, $changes) : $p, $this->proposals());
+        $this->update(['answer' => $answer]);
     }
 
     public function isPending(): bool

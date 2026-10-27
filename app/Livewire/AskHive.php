@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Actions\Ai\AskHive as AskHiveAction;
+use App\Actions\Ai\ConfirmProposal;
 use App\Demo\Workspace;
 use App\Models\AiRequest;
 use App\Services\AskHive\Workflow;
@@ -13,8 +14,9 @@ use Livewire\Component;
 
 /**
  * The Ask Hive panel. Questions are queued and the panel polls until each
- * one is answered. Answers are drafts to read, with the records they used;
- * nothing here approves, books, pays or deletes anything.
+ * one is answered; each follows on from the one before, so the conversation
+ * carries context. Answers are drafts to read, with the records they used.
+ * A change Ask Hive proposes happens only when the user confirms it here.
  */
 class AskHive extends Component
 {
@@ -28,7 +30,7 @@ class AskHive extends Component
         $this->resetValidation();
 
         try {
-            $request = $ask->handle(auth()->user(), $this->question);
+            $request = $ask->handle(auth()->user(), $this->question, previousId: $this->previousId());
         } catch (ValidationException $e) {
             $this->setErrorBag($e->validator->errors());
 
@@ -54,7 +56,7 @@ class AskHive extends Component
         $this->resetValidation();
 
         try {
-            $request = $ask->handle(auth()->user(), '', Workflow::from($workflow), $subject);
+            $request = $ask->handle(auth()->user(), '', Workflow::from($workflow), $subject, $this->previousId());
         } catch (ValidationException $e) {
             $this->setErrorBag($e->validator->errors());
 
@@ -62,6 +64,38 @@ class AskHive extends Component
         }
 
         $this->requestIds[] = $request->id;
+    }
+
+    public function confirm(int $requestId, string $proposalId, ConfirmProposal $proposals): void
+    {
+        try {
+            $result = $proposals->handle(auth()->user(), $requestId, $proposalId);
+        } catch (ValidationException $e) {
+            $this->dispatch('toast', message: $e->validator->errors()->first(), type: 'error');
+
+            return;
+        }
+
+        $this->dispatch('toast', message: $result['message'], type: $result['ok'] ? 'success' : 'error');
+
+        if ($result['ok']) {
+            // The page behind the panel may show what just changed.
+            $this->dispatch('ask-hive-changed');
+        }
+    }
+
+    public function cancelProposal(int $requestId, string $proposalId, ConfirmProposal $proposals): void
+    {
+        try {
+            $proposals->cancel(auth()->user(), $requestId, $proposalId);
+        } catch (ValidationException $e) {
+            $this->dispatch('toast', message: $e->validator->errors()->first(), type: 'error');
+        }
+    }
+
+    private function previousId(): ?int
+    {
+        return $this->requestIds === [] ? null : (int) end($this->requestIds);
     }
 
     public function clear(): void

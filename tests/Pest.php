@@ -1,7 +1,9 @@
 <?php
 
 use App\Models\User;
+use App\Services\AskHive\Gateway\ModelGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Feature\AskHive\FakeGateway;
 use Tests\TestCase;
 
 pest()->extend(TestCase::class)
@@ -20,4 +22,15 @@ function persona(string $firstName): User
     ];
 
     return User::query()->where('email', $emails[$firstName])->firstOrFail();
+}
+
+/**
+ * Ask Hive with the Claude engine against a scripted model.
+ */
+function claude(FakeGateway $fake): FakeGateway
+{
+    config(['hive.ai.engine' => 'claude']);
+    app()->instance(ModelGateway::class, $fake);
+
+    return $fake;
 }

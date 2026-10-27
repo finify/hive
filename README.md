@@ -68,7 +68,7 @@ Sign-in, roles, permissions, invitations, two-factor, the audit log, people, the
 | Leave: allowances by leave year with carry-over, balances, TOIL from weekend and bank holiday event work, bank holidays by region, absence recorded by HR or line managers, sensitive types shown as Absent | Built on the database and tested (phase 6) |
 | Onboarding and offboarding checklists per employment type, with owners and due dates; travel and accommodation per event with costs to the budget and a manifest; skills catalogue | Built on the database and tested (phase 6) |
 | Reports (profitability, utilisation, freelancer and supplier spend, pipeline, leave, timesheet compliance, working time flags), filterable with CSV export; notification preferences and a daily digest | Built and tested (phase 6) |
-| Ask Hive: Claude through the official SDK with policy-scoped read-only tools, verified citations, queued answers, logging and rate limits; timesheet summaries, budget risk narratives, wrap report drafts and crew suggestions | Built and tested (phase 7); a deterministic local engine runs without an API key |
+| Ask Hive: Claude through the official SDK with policy-scoped tools (28 read tools, and 15 changes it proposes for the user to confirm), verified citations, queued answers, logging and rate limits; timesheet summaries, budget risk narratives, wrap report drafts and crew suggestions | Built and tested (phase 7); a deterministic local engine runs without an API key |
 | Integrations: Microsoft (Entra ID) sign-in, calendar feeds, CSV import, signed webhooks, Xero bills and payments; GDPR export, anonymisation and retention review; settings; queue and health checks | Built and tested (phase 8) |
 
 ## Ask Hive with Claude
@@ -79,7 +79,7 @@ Set `ANTHROPIC_API_KEY` and Ask Hive uses Claude (`claude-opus-5-5` by default; 
 php artisan hive:ask "Which events are at risk this month and why?" --as=priya@lumenco.test
 ```
 
-The model sees only the question, the user's name and role, and what the read-only tools return for that user. Every request is logged in `ai_requests` with the tools it called and the tokens used.
+The model sees only the question, the user's name and role, the earlier turns of the conversation, and what the tools return for that user. It never changes anything: a `propose_` tool checks the change by running the real Action in a rolled-back transaction, and the user confirms it in the panel, which runs the Action as them. Every request is logged in `ai_requests` with the tools it called and the tokens used.
 
 ## Help for staff
 

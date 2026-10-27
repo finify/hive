@@ -24,7 +24,7 @@ php artisan serve                       # http://127.0.0.1:8000, personas on the
 
 ./vendor/bin/pint                       # format (CI runs --test)
 ./vendor/bin/phpstan analyse            # Larastan level 6, no baseline, no ignores
-php artisan test                        # Pest, ~580 tests
+php artisan test                        # Pest, ~620 tests
 php artisan hive:ask "…" --as=email     # Ask Hive from the console (checks the API key)
 npm run build                           # after any change to resources/scss or resources/js
 php artisan db:seed --class=RolesAndPermissionsSeeder   # after editing config/hive-permissions.php
@@ -42,7 +42,7 @@ Run Pint, Larastan and the tests before calling a phase done.
 | `app/Support` | Value objects and pure calculators: `Money`, `DateRange`, `Display`, `Navigation`, `Resourcing\ClashDetector`, `Resourcing\ShiftPattern`, `Finance\RateBook`, `Finance\HealthCalculator`, `Finance\InvoiceTolerance`, `Time\WorkingTimeRules`. |
 | `app/Policies` | Gates for demo records (timesheet entries, assignments, invoices, events, leave) and `UserPolicy`. |
 | `app/Services/Approvals` | The shared approvals engine and a rule per approvable type (`config/hive.php` → `approvals.rules`). Open approvals when something is submitted (`request`), decide through `decide`, read `inbox`. |
-| `app/Services/AskHive` | `Tools` (read-only, viewer-scoped; `definitions()` and `run()` for the model), `AskHiveEngine` with `LocalEngine` (deterministic, tests and keyless demo) and `ClaudeEngine` (tool loop, verified sources), `Gateway\AnthropicGateway` (the only class that touches the Anthropic SDK), `Workflow` (the four drafting buttons), `Question`. `App\Actions\Ai\AskHive` logs and queues; `App\Jobs\AnswerAskHiveQuestion` answers. Tests script the model with `tests/Feature/AskHive/FakeGateway`. |
+| `app/Services/AskHive` | `Tools` (viewer-scoped read tools; `definitions()`, `definitionsFor()` adding the `propose_` tools a role may use, and `run()`), `Proposals` and `Operations/*` (changes Ask Hive proposes: each wraps an Action, is dry-run in a rolled-back transaction, and runs only when the user confirms through `App\Actions\Ai\ConfirmProposal`), `AskHiveEngine` with `LocalEngine` (deterministic, tests and keyless demo) and `ClaudeEngine` (tool loop, verified sources), `Gateway\AnthropicGateway` (the only class that touches the Anthropic SDK), `Workflow` (the four drafting buttons), `Question`. `App\Actions\Ai\AskHive` logs and queues; `App\Jobs\AnswerAskHiveQuestion` answers. Tests script the model with `tests/Feature/AskHive/FakeGateway`. |
 | `config/hive.php` | Thresholds, demo mode, two-factor roles, AI settings, leave year and TOIL rules. |
 | `app/Services/Leave/LeaveBook` | Leave years, bank holidays by region, working days, balances (`LeaveBalance`), year-end carry-over. |
 | `app/Reports` | One class per section 5.11 report (permission, filters, columns, raw rows); `Reports::for($user)` lists what a user may run; CSV through `App\Support\Csv`. |
@@ -78,7 +78,7 @@ Run Pint, Larastan and the tests before calling a phase done.
 - Travel costs go through `SaveTravelBooking` (which posts through `PostCost`).
 - Livewire gotcha: don't name a public property after a `$wire` method (`call`, `set`, `get`, `refresh`...); `wire:model="call.x"` silently never syncs.
 - SQLite stores `date` casts with a time, so query them with `whereDate`.
-- Ask Hive tools only read, and only through `Viewer`; a new tool needs a definition, a `run()` branch and a line in the restricted-fields test.
+- Ask Hive read tools only read, and only through `Viewer`; a new one needs a definition, a `run()` branch and a line in `everyTool()` (the restricted-fields test). Ask Hive never writes directly: a change is an `Operation` that calls an existing Action, listed in `Proposals::OPERATIONS` and covered by the every-operation test in `ProposalsTest`.
 - No new Composer or npm packages without asking (spec section 0.8).
 
 ## Demo mode

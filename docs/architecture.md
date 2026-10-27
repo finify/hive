@@ -33,7 +33,7 @@ flowchart LR
 
     subgraph AI["Ask Hive"]
         Engine[ClaudeEngine or LocalEngine]
-        Tools[Read-only Tools, viewer-scoped]
+        Tools[Tools, viewer-scoped: read, and propose for the user to confirm]
         Gateway[AnthropicGateway: the only class using the SDK]
     end
 

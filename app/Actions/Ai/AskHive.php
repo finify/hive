@@ -31,7 +31,10 @@ class AskHive
         private readonly Workspace $workspace,
     ) {}
 
-    public function handle(User $user, string $question, ?Workflow $workflow = null, ?string $subject = null): AiRequest
+    /**
+     * @param  int|null  $previousId  the last request in the same panel conversation
+     */
+    public function handle(User $user, string $question, ?Workflow $workflow = null, ?string $subject = null, ?int $previousId = null): AiRequest
     {
         abort_unless(config('hive.ai.enabled'), 403);
         Gate::forUser($user)->authorize('ai.use');
@@ -60,6 +63,7 @@ class AskHive
 
         $request = AiRequest::create([
             'user_id' => $user->id,
+            'previous_id' => $previousId !== null && AiRequest::query()->whereKey($previousId)->where('user_id', $user->id)->exists() ? $previousId : null,
             'engine' => $this->engine->name(),
             'status' => 'queued',
             'workflow' => $workflow?->value,
@@ -87,7 +91,8 @@ class AskHive
         $viewer = new Viewer($user, $this->workspace);
         $tools = new Tools($this->workspace, $viewer, new Insights($this->workspace, $viewer));
         $workflow = $request->workflow ? Workflow::from($request->workflow) : null;
-        $question = $workflow ? Question::workflow($workflow, $request->subject) : new Question($request->prompt);
+        $history = $request->history();
+        $question = $workflow ? Question::workflow($workflow, $request->subject, $history) : new Question($request->prompt, history: $history);
 
         $started = hrtime(true);
 
