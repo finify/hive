@@ -78,3 +78,23 @@ jobs:
 
       - name: npm audit
         run: npm audit --audit-level=high
+
+  # Staging deploys only after every check above passes on main (section 13,
+  # phase 8). Laravel Cloud's deploy hook builds the exact commit tested.
+  # Turn off push-to-deploy on the staging environment so pushes deploy once.
+  deploy-staging:
+    name: Deploy to staging (Laravel Cloud)
+    needs: checks
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Trigger the Laravel Cloud deploy hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.LARAVEL_CLOUD_STAGING_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::warning::LARAVEL_CLOUD_STAGING_DEPLOY_HOOK is not set; skipping the staging deploy."
+            exit 0
+          fi
+          curl --fail-with-body --silent --show-error -X POST "${DEPLOY_HOOK}?commit_hash=${GITHUB_SHA}"

@@ -1,0 +1,27 @@
+name: Deploy to production
+
+# Run by hand once staging looks right. Protect the "production" environment
+# in GitHub (required reviewers) so a second person approves each deploy.
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Commit to deploy (defaults to the latest on main)
+        required: false
+
+jobs:
+  deploy:
+    name: Deploy to production (Laravel Cloud)
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger the Laravel Cloud deploy hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.LARAVEL_CLOUD_PRODUCTION_DEPLOY_HOOK }}
+          COMMIT: ${{ inputs.commit || github.sha }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::error::LARAVEL_CLOUD_PRODUCTION_DEPLOY_HOOK is not set."
+            exit 1
+          fi
+          curl --fail-with-body --silent --show-error -X POST "${DEPLOY_HOOK}?commit_hash=${COMMIT}"

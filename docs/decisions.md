@@ -277,3 +277,27 @@ Leadership figures need `budgets.approve` as well as company-wide events and rep
 ## 68. Notification preferences and the digest
 
 In-app notices are always on. Each person chooses, per type, whether they also get an email, and can switch to a daily digest at 08:00 UK time with everything of those types from the previous 24 hours. Preferences live on the person, so freelancers without a sign-in can still be configured later. Call sheets and purchase orders sent to suppliers are documents, not notices, and are always emailed. Event stage changes now notify the producer and the event team (section 5.10), apart from whoever made the change.
+
+## 69. Hosting on Laravel Cloud, not Forge
+
+The brief named Laravel Forge on DigitalOcean; the project runs on Laravel Cloud, which provides what phase 8 asked Forge for: separate staging and production environments, a managed queue worker and scheduler, zero-downtime deploys, database backups and logs. CI deploys staging through Cloud's deploy hook only after every check passes on `main`; production is a manual, reviewer-protected workflow. The runbook covers both.
+
+## 70. Microsoft sign-in without a package
+
+Entra ID uses OpenID Connect directly (no Socialite, per the no-new-packages rule): authorisation code with PKCE and a nonce, and the ID token's RS256 signature checked against the tenant's published keys, plus issuer, audience, tenant and expiry. Hive never creates accounts from it: the person must already have an active account, matched on their Entra object id or, the first time, their email. Hive's own two-factor step is skipped for these sign-ins because Entra's conditional access applies.
+
+## 71. Webhooks, calendars, imports and Xero
+
+Webhooks are signed the Standard Webhooks way (`webhook-id`, `webhook-timestamp`, `webhook-signature: v1,<base64 HMAC-SHA256>`), retry for about an hour, refuse private or local addresses, and carry no rates or restricted data. Calendar feeds use a secret URL per person; only its hash is stored, and a new one retires the old. CSV imports go through the same Actions as the forms, previewed in a rolled-back transaction and imported all or nothing. Xero uses a custom connection (client credentials): approved supplier invoices go as authorised bills coded by budget category (account codes in `config/hive.php`), and payments come back hourly. Teams and Slack channel notices (section 5.13) are not built; email and the bell cover them for now.
+
+## 72. GDPR tools
+
+Subject access exports are JSON plus documents in a ZIP, for HR, logged. Erasure anonymises rather than deletes: personal, restricted and contact fields, documents, skills and notices go, the sign-in is closed, and financial records stay under "Former staff member N". The audit log is kept as the record of processing; it may still name the person in old entries. Only leavers with no bookings left can be anonymised. Retention periods are settings; records past them are flagged monthly and nothing is deleted until HR decides.
+
+## 73. Settings in the database
+
+Section 5.15's thresholds and limits are stored in a `settings` table and applied over `config/hive.php` at boot, so changes need no deploy. Credentials stay in the environment. Organisation details, logo and brand colour, departments, leave types and checklist templates are still seeded data rather than editable screens.
+
+## 74. Query budget and caching
+
+Every list page stays within 15 queries (tests enforce it), the busiest dashboard within 25. The Workspace shares its table reads between requests in one cache entry per data version, bumped by `Workspace::forget()` and by saving or deleting any model it reads; people are cached without their encrypted fields. The trade-off: a mass update that skips both would be served stale for up to an hour, which is why Actions always call `forget()`.

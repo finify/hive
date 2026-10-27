@@ -24,7 +24,7 @@ php artisan serve                       # http://127.0.0.1:8000, personas on the
 
 ./vendor/bin/pint                       # format (CI runs --test)
 ./vendor/bin/phpstan analyse            # Larastan level 6, no baseline, no ignores
-php artisan test                        # Pest, ~465 tests
+php artisan test                        # Pest, ~580 tests
 php artisan hive:ask "…" --as=email     # Ask Hive from the console (checks the API key)
 npm run build                           # after any change to resources/scss or resources/js
 php artisan db:seed --class=RolesAndPermissionsSeeder   # after editing config/hive-permissions.php
@@ -46,6 +46,9 @@ Run Pint, Larastan and the tests before calling a phase done.
 | `config/hive.php` | Thresholds, demo mode, two-factor roles, AI settings, leave year and TOIL rules. |
 | `app/Services/Leave/LeaveBook` | Leave years, bank holidays by region, working days, balances (`LeaveBalance`), year-end carry-over. |
 | `app/Reports` | One class per section 5.11 report (permission, filters, columns, raw rows); `Reports::for($user)` lists what a user may run; CSV through `App\Support\Csv`. |
+| `app/Services/{Identity,Accounting,Webhooks,Calendar}` | Integrations behind interfaces: `SingleSignOn` (Entra ID OIDC), `AccountingGateway` (Xero), `Webhooks` (signed outbound), `IcsCalendar`. Actions in `app/Actions/Integrations` and `app/Actions/Gdpr`. Tests fake HTTP. |
+| `app/Support/Settings` | Admin-editable thresholds and limits, stored in `settings` and applied over config at boot. |
+| `docs/architecture.md`, `docs/runbook.md` | Module diagram; deploys (Laravel Cloud), queue failures, backups, secrets. |
 | `app/Support/NotificationPreferences` | Per-person email choices and the daily digest; every notice's `via()` asks it. |
 | `config/hive-permissions.php` | Section 6 as data: every permission and every role's grants. |
 | `database/demo/*.json` | The fictional agency. Edit freely; ids must stay consistent across files. People, skills, departments, documents, clients, suppliers and venues are loaded by `DemoDirectorySeeder`, events (phases, team, stage history, tasks, files, task templates) by `DemoEventsSeeder`, crew calls, assignments, unavailability and leave requests by `DemoResourcingSeeder`, timesheets, payroll locks and their approvals by `DemoTimeSeeder` (after the users), budgets, POs, invoices, expenses, billing, rates and cost entries by `DemoFinanceSeeder` (after time), bank holidays, allowances, TOIL and checklists by `DemoHrSeeder`, and travel by `DemoTravelSeeder`; the rest is still read directly. |
@@ -68,6 +71,8 @@ Run Pint, Larastan and the tests before calling a phase done.
 - Cost entries are written only by `App\Actions\Finance\PostCost` (commit, release, actual). Never edit one; post a reversing entry.
 - Approvals go through `ApprovalEngine`: `request()` on submit, `decide()` on approve or return, `withdraw()` on cancel. Never set an approvable's status without it.
 - Notify people with `$workspace->notify($personId, $type, ...)`: it stores a `HiveNotice` on the `Person` and emails them unless their preferences say otherwise. Use a type from `NotificationPreferences::TYPES`.
+- The Workspace shares table reads between requests (one cache entry per data version). Models it reads use `TouchesWorkspace`; mass updates must be followed by `$workspace->forget()`. Never cache restricted fields.
+- List pages stay within 15 queries (`tests/Feature/Performance/QueryBudgetTest.php`); answer approval checks with `ApprovalEngine::decides()` rather than a query per row.
 - Leave days and balances come from `LeaveBook`; never count days or read allowances directly.
 - Travel costs go through `SaveTravelBooking` (which posts through `PostCost`).
 - Livewire gotcha: don't name a public property after a `$wire` method (`call`, `set`, `get`, `refresh`...); `wire:model="call.x"` silently never syncs.
@@ -92,4 +97,4 @@ From the "five free plugins that make Claude good at design" list:
 
 ## Build phases
 
-See the README for status. Phases 0 to 7 are complete; screens for later phases run on the demo data layer, and each phase replaces its part of `app/Demo` with Eloquent models without changing the Actions' contracts.
+See the README for status. All phases (0 to 8) are complete; screens for later phases run on the demo data layer, and each phase replaces its part of `app/Demo` with Eloquent models without changing the Actions' contracts.
