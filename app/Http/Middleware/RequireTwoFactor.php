@@ -17,7 +17,7 @@ class RequireTwoFactor
     {
         $user = $request->user();
 
-        if ($user && config('hive.enforce_two_factor') && $user->requiresTwoFactor() && ! $user->hasConfirmedTwoFactor()) {
+        if ($user && config('hive.enforce_two_factor') && $request->session()->get('auth_via') !== 'entra' && $user->requiresTwoFactor() && ! $user->hasConfirmedTwoFactor()) {
             if ($request->expectsJson()) {
                 abort(403, 'Set up two-factor authentication to continue.');
             }

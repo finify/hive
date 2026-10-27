@@ -12,11 +12,15 @@ use App\Policies\EventPolicy;
 use App\Policies\LeaveRequestPolicy;
 use App\Policies\SupplierInvoicePolicy;
 use App\Policies\TimesheetEntryPolicy;
+use App\Services\Accounting\AccountingGateway;
+use App\Services\Accounting\XeroGateway;
 use App\Services\AskHive\AskHiveEngine;
 use App\Services\AskHive\ClaudeEngine;
 use App\Services\AskHive\Gateway\AnthropicGateway;
 use App\Services\AskHive\Gateway\ModelGateway;
 use App\Services\AskHive\LocalEngine;
+use App\Services\Identity\EntraId;
+use App\Services\Identity\SingleSignOn;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +41,8 @@ class AppServiceProvider extends ServiceProvider
         ));
 
         $this->app->bind(ModelGateway::class, fn () => AnthropicGateway::fromConfig());
+        $this->app->bind(AccountingGateway::class, XeroGateway::class);
+        $this->app->bind(SingleSignOn::class, EntraId::class);
         $this->app->bind(AskHiveEngine::class, fn ($app) => config('hive.ai.engine') === 'claude'
             ? $app->make(ClaudeEngine::class)
             : $app->make(LocalEngine::class));

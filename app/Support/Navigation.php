@@ -55,7 +55,6 @@ final class Navigation
     {
         return [
             'settings' => ['title' => 'Settings', 'phase' => 8, 'summary' => 'Organisation details, approval limits, thresholds, leave years and Ask Hive controls.'],
-            'integrations' => ['title' => 'Integrations', 'phase' => 8, 'summary' => 'Microsoft Entra ID sign-in, Xero, Teams or Slack, calendar feeds and outbound webhooks.'],
         ];
     }
 
@@ -113,7 +112,8 @@ final class Navigation
             'Admin' => [
                 ['label' => 'Users and roles', 'icon' => 'shield-lock', 'route' => 'admin.users', 'can' => ['users.manage']],
                 ['label' => 'Settings', 'icon' => 'gear', 'planned' => 'settings', 'can' => ['settings.view']],
-                ['label' => 'Integrations', 'icon' => 'plug', 'planned' => 'integrations', 'can' => ['settings.manage']],
+                ['label' => 'Integrations', 'icon' => 'plug', 'route' => 'integrations', 'can' => ['settings.view']],
+                ['label' => 'Import from CSV', 'icon' => 'upload', 'route' => 'import', 'can' => ['people.manage', 'directory.manage']],
                 ['label' => 'Audit log', 'icon' => 'journal-text', 'route' => 'admin.audit', 'can' => ['audit.view']],
             ],
         ];

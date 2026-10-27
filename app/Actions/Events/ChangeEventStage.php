@@ -10,6 +10,7 @@ use App\Models\Assignment;
 use App\Models\Event;
 use App\Models\EventStageChange;
 use App\Models\User;
+use App\Services\Webhooks\Webhooks;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -19,6 +20,7 @@ class ChangeEventStage
     public function __construct(
         private readonly Workspace $workspace,
         private readonly ApplyTaskTemplate $templates,
+        private readonly Webhooks $webhooks,
     ) {}
 
     /**
@@ -119,6 +121,8 @@ class ChangeEventStage
             ->withProperties(['ref' => $event['code'], 'old' => ['stage' => $from], 'attributes' => ['stage' => $to->value, 'note' => $note, 'released_bookings' => $released, 'tasks_added' => $tasksAdded]])
             ->event('stage-changed')
             ->log("Moved {$event['name']} to {$to->label()}".($released ? " and released {$released} bookings" : ''));
+
+        $this->webhooks->stageChanged($eventId, $from, $to->value);
 
         // The producer and the event team hear about it, apart from whoever moved it.
         $told = Rows::of($event['team'])->pluck('person_id')->push($event['producer_id'])->filter()->unique()->reject(fn ($id) => $id === $user->person_id);

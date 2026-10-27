@@ -153,6 +153,38 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Integrations (section 5.13)
+    |--------------------------------------------------------------------------
+    |
+    | Each one is off until its credentials are set. Xero uses a custom
+    | connection (client credentials); approved supplier invoices are pushed
+    | as bills and their payment status pulled back. Entra ID signs staff in
+    | with OpenID Connect; Hive still decides who has an account.
+    |
+    */
+
+    'integrations' => [
+        'xero' => [
+            'client_id' => env('XERO_CLIENT_ID'),
+            'client_secret' => env('XERO_CLIENT_SECRET'),
+            'tenant_id' => env('XERO_TENANT_ID'),
+            // Cost category => Xero account code.
+            'accounts' => [
+                'venue' => '5000', 'production' => '5010', 'av' => '5020', 'creative' => '5030', 'print' => '5040', 'catering' => '5050',
+                'crew' => '5100', 'travel' => '5200', 'accommodation' => '5210', 'freight' => '5300', 'registration' => '5400',
+                'contingency' => '5900', 'agency-fee' => '5950',
+            ],
+            'default_account' => '5900',
+        ],
+        'entra' => [
+            'tenant_id' => env('ENTRA_TENANT_ID'),
+            'client_id' => env('ENTRA_CLIENT_ID'),
+            'client_secret' => env('ENTRA_CLIENT_SECRET'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Approvals engine
     |--------------------------------------------------------------------------
     |

@@ -276,4 +276,4 @@ Leadership figures need `budgets.approve` as well as company-wide events and rep
 
 ## 68. Notification preferences and the digest
 
-In-app notices are always on. Each person chooses, per type, whether they also get an email, and can switch to a daily digest at 07:30 UK time with everything of those types from the previous 24 hours. Preferences live on the person, so freelancers without a sign-in can still be configured later. Call sheets and purchase orders sent to suppliers are documents, not notices, and are always emailed. Event stage changes now notify the producer and the event team (section 5.10), apart from whoever made the change.
+In-app notices are always on. Each person chooses, per type, whether they also get an email, and can switch to a daily digest at 08:00 UK time with everything of those types from the previous 24 hours. Preferences live on the person, so freelancers without a sign-in can still be configured later. Call sheets and purchase orders sent to suppliers are documents, not notices, and are always emailed. Event stage changes now notify the producer and the event team (section 5.10), apart from whoever made the change.

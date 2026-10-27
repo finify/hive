@@ -15,8 +15,12 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::job(new RemindMissingTimesheets)->weeklyOn(5, '14:00')->timezone('Europe/London')->name('remind-missing-timesheets');
 Schedule::job(new RemindApproversOfPendingItems)->weeklyOn(1, '09:00')->timezone('Europe/London')->name('remind-approvers');
 Schedule::job(new SendWeeklyRotaDigest)->weeklyOn(1, '08:00')->timezone('Europe/London')->name('weekly-rota-digest');
-Schedule::job(new SendDailyDigest)->dailyAt('07:30')->timezone('Europe/London')->name('daily-digest');
+Schedule::job(new SendDailyDigest)->dailyAt('08:00')->timezone('Europe/London')->name('daily-digest');
 Schedule::job(new SendDocumentExpiryReminders)->dailyAt('07:00')->timezone('Europe/London')->name('document-expiry-reminders');
+
+// Bills to Xero and payments back, once it is connected.
+Schedule::command('hive:accounting-sync')->hourlyAt(17)->withoutOverlapping()->name('accounting-sync')
+    ->when(fn () => filled(config('hive.integrations.xero.client_id')));
 
 // Opens the new leave year with carry-over, on the day it starts.
 [$leaveMonth, $leaveDay] = array_map('intval', explode('-', (string) config('hive.leave.year_start')));

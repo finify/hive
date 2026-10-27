@@ -58,6 +58,10 @@
                 <button type="submit" class="btn btn-primary w-100">Sign in</button>
             </form>
 
+            @if (app(\App\Services\Identity\SingleSignOn::class)->isConfigured())
+                <a href="{{ route('sso.redirect') }}" class="btn btn-secondary w-100 mt-2 d-inline-flex align-items-center justify-content-center gap-2"><i class="bi bi-microsoft" aria-hidden="true"></i>Sign in with Microsoft</a>
+            @endif
+
             <p class="small text-muted mt-4 mb-0">There is no public sign-up. Ask HR or an admin for an invitation.</p>
             <p class="small text-muted mt-auto pt-5 mb-0">An independent portfolio project. All companies, people and figures are fictional.</p>
         </section>

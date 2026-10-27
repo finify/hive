@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Settings;
 
+use App\Actions\Calendar\CalendarFeeds;
 use App\Actions\Settings\SaveNotificationPreferences;
 use App\Livewire\Concerns\UsesWorkspace;
 use App\Models\Person;
@@ -13,7 +14,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
-#[Title('Notification settings')]
+#[Title('Notifications and calendar')]
 class Notifications extends Component
 {
     use UsesWorkspace;
@@ -22,6 +23,9 @@ class Notifications extends Component
     public array $email = [];
 
     public bool $digest = false;
+
+    /** Shown once, straight after a new feed address is issued. */
+    public ?string $feedUrl = null;
 
     public function mount(): void
     {
@@ -44,8 +48,25 @@ class Notifications extends Component
         $this->toast('Notification settings saved.');
     }
 
+    public function issueFeed(CalendarFeeds $feeds): void
+    {
+        $this->feedUrl = route('calendar.personal', $feeds->issue(auth()->user()));
+        $this->toast('New calendar address made. Any old one has stopped working.');
+    }
+
+    public function revokeFeed(CalendarFeeds $feeds): void
+    {
+        $feeds->revoke(auth()->user());
+        $this->feedUrl = null;
+        $this->toast('Calendar feed turned off.');
+    }
+
     public function render(): View
     {
-        return view('livewire.settings.notifications', ['types' => NotificationPreferences::TYPES, 'linked' => auth()->user()->person_id !== null]);
+        return view('livewire.settings.notifications', [
+            'types' => NotificationPreferences::TYPES,
+            'linked' => auth()->user()->person_id !== null,
+            'hasFeed' => auth()->user()->calendar_token_hash !== null,
+        ]);
     }
 }

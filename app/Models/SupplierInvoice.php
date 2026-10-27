@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\SupplierInvoiceStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -17,6 +18,10 @@ use Illuminate\Support\Carbon;
  * @property string $invoice_number
  * @property Carbon $invoice_date
  * @property Carbon|null $due_date
+ * @property string|null $accounting_id
+ * @property Carbon|null $accounting_synced_at
+ * @property-read Supplier|null $supplier
+ * @property-read PurchaseOrder|null $purchaseOrder
  * @property string $currency
  * @property string|null $fx_rate
  * @property int $net_minor
@@ -39,7 +44,7 @@ class SupplierInvoice extends Model
     protected $fillable = [
         'supplier_id', 'purchase_order_id', 'event_id', 'budget_line_id', 'invoice_number', 'invoice_date', 'due_date', 'currency', 'fx_rate', 'net_minor', 'vat_minor',
         'gross_minor', 'status', 'variance_minor', 'approved_by', 'approved_at', 'approval_note', 'no_po_reason', 'notes', 'file_path', 'original_name',
-        'received_at', 'paid_on',
+        'received_at', 'paid_on', 'accounting_id', 'accounting_synced_at',
     ];
 
     /**
@@ -50,7 +55,24 @@ class SupplierInvoice extends Model
         return [
             'status' => SupplierInvoiceStatus::class, 'invoice_date' => 'date', 'due_date' => 'date', 'net_minor' => 'integer', 'vat_minor' => 'integer',
             'gross_minor' => 'integer', 'variance_minor' => 'integer', 'approved_at' => 'datetime', 'received_at' => 'datetime', 'paid_on' => 'date',
+            'accounting_synced_at' => 'datetime',
         ];
+    }
+
+    /**
+     * @return BelongsTo<Supplier, $this>
+     */
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    /**
+     * @return BelongsTo<PurchaseOrder, $this>
+     */
+    public function purchaseOrder(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseOrder::class);
     }
 
     /**

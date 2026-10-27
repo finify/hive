@@ -77,7 +77,7 @@ class ConfirmAssignment
             throw ValidationException::withMessages(['assignment' => $blockers]);
         }
 
-        Assignment::query()->whereKey($assignmentId)->update(['status' => AssignmentStatus::Confirmed]);
+        Assignment::query()->findOrFail($assignmentId)->update(['status' => AssignmentStatus::Confirmed]);
         $this->workspace->forget();
 
         return AssignmentStatus::Confirmed;

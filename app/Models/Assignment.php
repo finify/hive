@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AssignmentStatus;
+use App\Services\Webhooks\Webhooks;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -30,6 +31,16 @@ class Assignment extends Model
         'crew_call_id', 'event_id', 'person_id', 'start_date', 'end_date', 'status', 'agreed_rate_minor', 'currency',
         'clash_override_reason', 'clash_note', 'requested_at', 'responded_at',
     ];
+
+    protected static function booted(): void
+    {
+        // Every way a booking becomes confirmed tells subscribed webhooks.
+        static::saved(function (Assignment $assignment) {
+            if ($assignment->status === AssignmentStatus::Confirmed && ($assignment->wasRecentlyCreated || $assignment->wasChanged('status'))) {
+                app(Webhooks::class)->bookingConfirmed($assignment);
+            }
+        });
+    }
 
     /**
      * @return array<string, string>

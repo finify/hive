@@ -24,6 +24,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $last_login_at
  * @property Carbon|null $two_factor_confirmed_at
  * @property string|null $two_factor_secret
+ * @property string|null $calendar_token_hash
+ * @property string|null $entra_object_id
  */
 class User extends Authenticatable
 {
@@ -50,6 +52,7 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'calendar_token_hash',
     ];
 
     /**

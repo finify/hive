@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\CalendarFeedController;
 use App\Http\Controllers\CallSheetController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DocumentDownloadController;
 use App\Http\Controllers\FinanceExportController;
+use App\Http\Controllers\ImportTemplateController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PurchaseOrderPdfController;
 use App\Http\Controllers\ReportExportController;
+use App\Http\Controllers\SingleSignOnController;
 use App\Http\Controllers\TravelManifestController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +18,15 @@ Route::redirect('/', '/dashboard');
 
 Route::view('/privacy', 'privacy')->name('privacy');
 
+// Private calendar feeds: the token is the credential.
+Route::middleware('throttle:60,1')->group(function () {
+    Route::get('/calendar/{token}.ics', [CalendarFeedController::class, 'personal'])->name('calendar.personal');
+    Route::get('/calendar/{token}/events/{code}.ics', [CalendarFeedController::class, 'event'])->name('calendar.event');
+});
+
 Route::middleware('guest')->group(function () {
+    Route::get('/auth/microsoft', [SingleSignOnController::class, 'redirect'])->middleware('throttle:20,1')->name('sso.redirect');
+    Route::get('/auth/microsoft/callback', [SingleSignOnController::class, 'callback'])->middleware('throttle:20,1')->name('sso.callback');
     Route::get('/invitations/{token}', [InvitationController::class, 'show'])->name('invitations.show');
     Route::post('/invitations/{token}', [InvitationController::class, 'accept'])->middleware('throttle:10,1')->name('invitations.accept');
 });
@@ -92,6 +103,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/reports/{key}', Livewire\Reports\Show::class)->name('reports.show')->middleware('can:reports.view');
 
         Route::get('/admin/users', Livewire\Admin\Users::class)->name('admin.users')->middleware('can:users.manage');
+        Route::get('/admin/integrations', Livewire\Admin\Integrations::class)->name('integrations')->middleware('can:settings.view');
+        Route::get('/admin/import', Livewire\Admin\Import::class)->name('import')->middleware('can_any:people.manage,directory.manage');
+        Route::get('/admin/import/{type}/template.csv', ImportTemplateController::class)->name('import.template')->middleware('can_any:people.manage,directory.manage');
         Route::get('/admin/audit', Livewire\Admin\AuditLog::class)->name('admin.audit')->middleware('can:audit.view');
 
         Route::get('/later/{module}', Livewire\Planned::class)->name('planned');
