@@ -52,3 +52,13 @@ const boot = () => {
 
 document.addEventListener('DOMContentLoaded', boot);
 document.addEventListener('livewire:navigated', boot);
+
+// Tooltips: one delegated instance covers everything with data-bs-toggle="tooltip",
+// including content Livewire adds later. Re-attached after wire:navigate swaps the page.
+const tooltips = () => {
+    bootstrap.Tooltip.getInstance(document.body)?.dispose();
+    new bootstrap.Tooltip(document.body, { selector: '[data-bs-toggle="tooltip"]', trigger: 'hover focus', delay: { show: 300, hide: 0 } });
+};
+document.addEventListener('DOMContentLoaded', tooltips);
+document.addEventListener('livewire:navigated', tooltips);
+document.addEventListener('livewire:navigating', () => document.querySelectorAll('.tooltip').forEach((t) => t.remove()));

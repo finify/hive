@@ -15,6 +15,7 @@
                 <a href="{{ route($item['route'], $item['params']) }}"
                    @class(['nav-item-link', 'active' => $active, 'is-planned' => $item['planned']])
                    @if ($active) aria-current="page" @endif
+                   @if ($item['tip']) data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{ $item['tip'] }}" @endif
                    wire:navigate>
                     <i class="bi bi-{{ $item['icon'] }}" aria-hidden="true"></i>
                     <span>{{ $item['label'] }}</span>

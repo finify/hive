@@ -81,6 +81,10 @@ php artisan hive:ask "Which events are at risk this month and why?" --as=priya@l
 
 The model sees only the question, the user's name and role, and what the read-only tools return for that user. Every request is logged in `ai_requests` with the tools it called and the tokens used.
 
+## Help for staff
+
+Inside Hive, **Help** in the sidebar has a guide to every section, written for staff (`resources/help`). Hovering a sidebar item shows what it is for, and the **?** beside each page title opens that page’s guide.
+
 ## Deployment
 
 Hive runs on Laravel Cloud. Pushes to `main` run CI and, when everything passes, deploy staging through Cloud's deploy hook; production is deployed by hand from GitHub Actions. See [`docs/runbook.md`](docs/runbook.md) for deploys, environment variables, queue failures, restoring a backup and rotating secrets, and [`docs/architecture.md`](docs/architecture.md) for how the parts fit.

@@ -12,7 +12,7 @@ use App\Models\User;
 final class Navigation
 {
     /**
-     * @return list<array{label: string, items: list<array{label: string, icon: string, route: string, params: array<string, string>, active: string, planned: bool}>}>
+     * @return list<array{label: string, items: list<array{label: string, icon: string, route: string, params: array<string, string>, active: string, planned: bool, tip: string|null}>}>
      */
     public static function for(User $user): array
     {
@@ -35,6 +35,7 @@ final class Navigation
                     'params' => isset($item['route']) ? [] : ['module' => $item['planned']],
                     'active' => $item['active'] ?? ($item['route'] ?? 'planned'),
                     'planned' => ! isset($item['route']),
+                    'tip' => isset($item['route']) && ($key = Help::forRoute($item['route'])) ? Help::GUIDES[$key]['summary'] : null,
                 ];
             }
 
@@ -67,6 +68,7 @@ final class Navigation
                 ['label' => 'Dashboard', 'icon' => 'grid-1x2', 'route' => 'dashboard'],
                 ['label' => 'My work', 'icon' => 'person-workspace', 'route' => 'my-work'],
                 ['label' => 'Notifications', 'icon' => 'bell', 'route' => 'notifications'],
+                ['label' => 'Help', 'icon' => 'question-circle', 'route' => 'help', 'active' => 'help*'],
             ],
             'Events' => [
                 ['label' => 'Events', 'icon' => 'calendar-event', 'route' => 'events.index', 'active' => 'events.index', 'can' => ['events.view']],

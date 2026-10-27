@@ -48,6 +48,7 @@ Run Pint, Larastan and the tests before calling a phase done.
 | `app/Reports` | One class per section 5.11 report (permission, filters, columns, raw rows); `Reports::for($user)` lists what a user may run; CSV through `App\Support\Csv`. |
 | `app/Services/{Identity,Accounting,Webhooks,Calendar}` | Integrations behind interfaces: `SingleSignOn` (Entra ID OIDC), `AccountingGateway` (Xero), `Webhooks` (signed outbound), `IcsCalendar`. Actions in `app/Actions/Integrations` and `app/Actions/Gdpr`. Tests fake HTTP. |
 | `app/Support/Settings` | Admin-editable thresholds and limits, stored in `settings` and applied over config at boot. |
+| `resources/help/*.md`, `app/Support/Help.php` | The staff guide at /help: one Markdown page per section, with a one-line summary used as the sidebar tooltip and the ? beside page titles. A new page or route needs its guide (tests check every sidebar item has one). |
 | `docs/architecture.md`, `docs/runbook.md` | Module diagram; deploys (Laravel Cloud), queue failures, backups, secrets. |
 | `app/Support/NotificationPreferences` | Per-person email choices and the daily digest; every notice's `via()` asks it. |
 | `config/hive-permissions.php` | Section 6 as data: every permission and every role's grants. |
