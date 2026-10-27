@@ -2,6 +2,7 @@
 
 namespace App\Actions\Events;
 
+use App\Demo\Rows;
 use App\Demo\Workspace;
 use App\Enums\AssignmentStatus;
 use App\Enums\EventStage;
@@ -118,6 +119,13 @@ class ChangeEventStage
             ->withProperties(['ref' => $event['code'], 'old' => ['stage' => $from], 'attributes' => ['stage' => $to->value, 'note' => $note, 'released_bookings' => $released, 'tasks_added' => $tasksAdded]])
             ->event('stage-changed')
             ->log("Moved {$event['name']} to {$to->label()}".($released ? " and released {$released} bookings" : ''));
+
+        // The producer and the event team hear about it, apart from whoever moved it.
+        $told = Rows::of($event['team'])->pluck('person_id')->push($event['producer_id'])->filter()->unique()->reject(fn ($id) => $id === $user->person_id);
+
+        foreach ($told as $personId) {
+            $this->workspace->notify((int) $personId, 'stage', "{$event['code']} is now {$to->label()}", "{$event['name']} moved from ".EventStage::from($from)->label()." to {$to->label()}.", 'events');
+        }
     }
 
     /**

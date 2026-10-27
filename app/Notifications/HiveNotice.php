@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Support\NotificationPreferences;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -19,6 +20,7 @@ class HiveNotice extends Notification
     public const ROUTES = [
         'rota' => 'rota', 'approvals' => 'approvals', 'supplier-invoices' => 'supplier-invoices', 'people' => 'people.index',
         'my-work' => 'my-work', 'events' => 'events.index', 'timesheets' => 'timesheets', 'clashes' => 'clashes', 'crew-calls' => 'crew-calls',
+        'leave' => 'leave', 'onboarding' => 'onboarding',
     ];
 
     public function __construct(
@@ -34,7 +36,7 @@ class HiveNotice extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return NotificationPreferences::of($notifiable)->channels($this->type);
     }
 
     public function toMail(object $notifiable): MailMessage

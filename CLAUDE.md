@@ -24,7 +24,7 @@ php artisan serve                       # http://127.0.0.1:8000, personas on the
 
 ./vendor/bin/pint                       # format (CI runs --test)
 ./vendor/bin/phpstan analyse            # Larastan level 6, no baseline, no ignores
-php artisan test                        # Pest, ~415 tests
+php artisan test                        # Pest, ~465 tests
 php artisan hive:ask "…" --as=email     # Ask Hive from the console (checks the API key)
 npm run build                           # after any change to resources/scss or resources/js
 php artisan db:seed --class=RolesAndPermissionsSeeder   # after editing config/hive-permissions.php
@@ -43,11 +43,14 @@ Run Pint, Larastan and the tests before calling a phase done.
 | `app/Policies` | Gates for demo records (timesheet entries, assignments, invoices, events, leave) and `UserPolicy`. |
 | `app/Services/Approvals` | The shared approvals engine and a rule per approvable type (`config/hive.php` → `approvals.rules`). Open approvals when something is submitted (`request`), decide through `decide`, read `inbox`. |
 | `app/Services/AskHive` | `Tools` (read-only, viewer-scoped; `definitions()` and `run()` for the model), `AskHiveEngine` with `LocalEngine` (deterministic, tests and keyless demo) and `ClaudeEngine` (tool loop, verified sources), `Gateway\AnthropicGateway` (the only class that touches the Anthropic SDK), `Workflow` (the four drafting buttons), `Question`. `App\Actions\Ai\AskHive` logs and queues; `App\Jobs\AnswerAskHiveQuestion` answers. Tests script the model with `tests/Feature/AskHive/FakeGateway`. |
-| `config/hive.php` | Thresholds, demo mode, two-factor roles, AI settings. |
+| `config/hive.php` | Thresholds, demo mode, two-factor roles, AI settings, leave year and TOIL rules. |
+| `app/Services/Leave/LeaveBook` | Leave years, bank holidays by region, working days, balances (`LeaveBalance`), year-end carry-over. |
+| `app/Reports` | One class per section 5.11 report (permission, filters, columns, raw rows); `Reports::for($user)` lists what a user may run; CSV through `App\Support\Csv`. |
+| `app/Support/NotificationPreferences` | Per-person email choices and the daily digest; every notice's `via()` asks it. |
 | `config/hive-permissions.php` | Section 6 as data: every permission and every role's grants. |
-| `database/demo/*.json` | The fictional agency. Edit freely; ids must stay consistent across files. People, skills, departments, documents, clients, suppliers and venues are loaded by `DemoDirectorySeeder`, events (phases, team, stage history, tasks, files, task templates) by `DemoEventsSeeder`, crew calls, assignments, unavailability and leave requests by `DemoResourcingSeeder`, timesheets, payroll locks and their approvals by `DemoTimeSeeder` (after the users), and budgets, POs, invoices, expenses, billing, rates and cost entries by `DemoFinanceSeeder` (after time); the rest is still read directly. |
-| `app/Models` | Phase 1: `Person` (+ `PersonRestricted`, encrypted), `DayRate`, `Skill`, `Department`, `Document`, `Client`, `Supplier`, `Venue`, `Contact`. Phase 2: `Event`, `EventPhase`, `EventTeamMember`, `EventStageChange`, `Task`, `TaskTemplate`, `TaskTemplateItem`. Phase 3: `CrewCall`, `Assignment`, `Unavailability`, `LeaveRequest`. Phase 4: `Timesheet`, `TimesheetEntry`, `PeriodLock`, `CostEntry`, `Approval`, `ApprovalDelegation`. Phase 5: `Budget` (versions), `BudgetLine`, `RevenueLine`, `PurchaseOrder`, `PurchaseOrderLine`, `SupplierInvoice`, `FreelancerInvoice`, `Expense`, `BillingMilestone`, `ExchangeRate`. Each top-level model has `toWorkspaceArray()` for the Workspace. |
-| `app/Jobs`, `app/Console/Commands` | Scheduled work (`routes/console.php`): `SendDocumentExpiryReminders` daily at 07:00 UK time, `SendWeeklyRotaDigest` Monday 08:00, `RemindApproversOfPendingItems` Monday 09:00, `RemindMissingTimesheets` Friday 14:00, `hive:demo-refresh` hourly while demo mode is on (events and bookings are shared in the database). `DetectClashes` is queued after a booking over a clash; `AnswerAskHiveQuestion` after every Ask Hive question. |
+| `database/demo/*.json` | The fictional agency. Edit freely; ids must stay consistent across files. People, skills, departments, documents, clients, suppliers and venues are loaded by `DemoDirectorySeeder`, events (phases, team, stage history, tasks, files, task templates) by `DemoEventsSeeder`, crew calls, assignments, unavailability and leave requests by `DemoResourcingSeeder`, timesheets, payroll locks and their approvals by `DemoTimeSeeder` (after the users), budgets, POs, invoices, expenses, billing, rates and cost entries by `DemoFinanceSeeder` (after time), bank holidays, allowances, TOIL and checklists by `DemoHrSeeder`, and travel by `DemoTravelSeeder`; the rest is still read directly. |
+| `app/Models` | Phase 1: `Person` (+ `PersonRestricted`, encrypted), `DayRate`, `Skill`, `Department`, `Document`, `Client`, `Supplier`, `Venue`, `Contact`. Phase 2: `Event`, `EventPhase`, `EventTeamMember`, `EventStageChange`, `Task`, `TaskTemplate`, `TaskTemplateItem`. Phase 3: `CrewCall`, `Assignment`, `Unavailability`, `LeaveRequest`. Phase 4: `Timesheet`, `TimesheetEntry`, `PeriodLock`, `CostEntry`, `Approval`, `ApprovalDelegation`. Phase 5: `Budget` (versions), `BudgetLine`, `RevenueLine`, `PurchaseOrder`, `PurchaseOrderLine`, `SupplierInvoice`, `FreelancerInvoice`, `Expense`, `BillingMilestone`, `ExchangeRate`. Phase 6: `BankHoliday`, `LeaveAllowance`, `ToilAccrual`, `ChecklistTemplate`(+`Item`), `Checklist`, `ChecklistItem`, `TravelBooking`. Each top-level model has `toWorkspaceArray()` for the Workspace. |
+| `app/Jobs`, `app/Console/Commands` | Scheduled work (`routes/console.php`): `SendDocumentExpiryReminders` daily at 07:00 UK time, `SendWeeklyRotaDigest` Monday 08:00, `RemindApproversOfPendingItems` Monday 09:00, `RemindMissingTimesheets` Friday 14:00, `SendDailyDigest` daily 07:30, `hive:leave-year` on the first day of the leave year, `hive:demo-refresh` hourly while demo mode is on (events and bookings are shared in the database). `DetectClashes` is queued after a booking over a clash; `AnswerAskHiveQuestion` after every Ask Hive question. |
 | `resources/scss/app.scss` | The whole theme: tokens, light and dark. See `DESIGN.md`. |
 | `PRODUCT.md`, `DESIGN.md` | Product context and design system, read by the design skills. |
 
@@ -64,7 +67,9 @@ Run Pint, Larastan and the tests before calling a phase done.
 - Event stages change only through `ChangeEventStage`; `SaveEvent` never sets the stage.
 - Cost entries are written only by `App\Actions\Finance\PostCost` (commit, release, actual). Never edit one; post a reversing entry.
 - Approvals go through `ApprovalEngine`: `request()` on submit, `decide()` on approve or return, `withdraw()` on cancel. Never set an approvable's status without it.
-- Notify people with `$workspace->notify($personId, ...)`: it stores a `HiveNotice` on the `Person` and emails them.
+- Notify people with `$workspace->notify($personId, $type, ...)`: it stores a `HiveNotice` on the `Person` and emails them unless their preferences say otherwise. Use a type from `NotificationPreferences::TYPES`.
+- Leave days and balances come from `LeaveBook`; never count days or read allowances directly.
+- Travel costs go through `SaveTravelBooking` (which posts through `PostCost`).
 - Livewire gotcha: don't name a public property after a `$wire` method (`call`, `set`, `get`, `refresh`...); `wire:model="call.x"` silently never syncs.
 - SQLite stores `date` casts with a time, so query them with `whereDate`.
 - Ask Hive tools only read, and only through `Viewer`; a new tool needs a definition, a `run()` branch and a line in the restricted-fields test.
@@ -87,4 +92,4 @@ From the "five free plugins that make Claude good at design" list:
 
 ## Build phases
 
-See the README for status. Phases 0 to 5 and 7 (Ask Hive) are complete; screens for later phases run on the demo data layer, and each phase replaces its part of `app/Demo` with Eloquent models without changing the Actions' contracts.
+See the README for status. Phases 0 to 7 are complete; screens for later phases run on the demo data layer, and each phase replaces its part of `app/Demo` with Eloquent models without changing the Actions' contracts.

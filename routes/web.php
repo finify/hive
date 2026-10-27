@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', Livewire\Dashboard::class)->name('dashboard');
         Route::get('/my-work', Livewire\MyWork::class)->name('my-work');
         Route::get('/notifications', Livewire\Notifications::class)->name('notifications');
+        Route::get('/settings/notifications', Livewire\Settings\Notifications::class)->name('notification-settings');
 
         Route::get('/events', Livewire\Events\Index::class)->name('events.index')->middleware('can:events.view');
         Route::get('/events/pipeline', Livewire\Events\Pipeline::class)->name('events.pipeline')->middleware('can:events.view_all');

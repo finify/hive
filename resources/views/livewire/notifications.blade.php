@@ -11,6 +11,7 @@
             @if ($unread)
                 <button type="button" class="btn btn-secondary" wire:click="markAllRead">Mark all as read</button>
             @endif
+            <a href="{{ route('notification-settings') }}" class="btn btn-quiet" wire:navigate>Email settings</a>
         </x-slot:actions>
     </x-page-head>
 

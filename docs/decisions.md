@@ -245,3 +245,35 @@ Asking logs the request as queued and dispatches `AnswerAskHiveQuestion`; the pa
 ## 60. The four workflows
 
 Timesheet approval summary (Approvals, timesheets tab), budget risk narrative (event budget tab), wrap report draft (event page from Live onwards) and crew call suggestions (crew tab). Each is a fixed question the user sees in the panel, with extra instructions to the model, answered with the same tools. The button appears only for people who may run it, and the Action checks again. Two tools were added for them: `get_event_wrap_facts` (money only with budget access) and `list_crew_calls`, plus `list_pending_timesheet_entries`, which never includes cost. Drafts can be copied; nothing is saved, booked or approved.
+
+## 61. Leave years, balances and carry-over
+
+The leave year starts on 1 January (`HIVE_LEAVE_YEAR_START`, month-day). Annual leave counts against the year its first day falls in. A balance is allowance plus carry-over, less leave taken (approved, started) and booked (approved, future); "available" also takes off requests waiting for approval, and a request can't exceed it. The seeded `days_taken` becomes `days_taken_before` (leave before Hive recorded it) less the approved leave Hive already holds, so the figures don't double count. `hive:leave-year` runs on the first day of the year and carries up to five unused days (configurable); carried days don't expire, which the brief didn't ask for. Half days are not supported yet; allowances can be half days.
+
+## 62. Bank holidays and TOIL
+
+Bank holidays live in the database by region: England and Wales (the default), Scotland and Northern Ireland, seeded for 2026 and 2027 from the published lists. Each person has a region on their profile; working days and TOIL use it. HR can add or remove days. TOIL is earned only by employees and fixed-term staff (freelancers are paid for the day) when approved time on an event falls on a weekend or a bank holiday (`hive.leave.toil.accrue_on`). It counts days as entered, or hours over 7.5, to the nearest half day, at most one day per day worked, once per entry. TOIL is a running balance, not tied to a leave year.
+
+## 63. Recording absence
+
+Sickness and other absence not asked for in advance is recorded by HR or the person's line manager, as approved leave without the approvals engine. The type stays restricted: everyone else sees "Absent" (rule 13). The leave report shows sickness days to HR (`leave.manage`) only.
+
+## 64. Onboarding and offboarding
+
+Templates per employment type and kind, with items owned by HR, IT, the line manager or finance and due a number of days from the start or leaving date. A checklist copies its template when started, so later template changes don't rewrite open checklists. HR can tick anything; IT items need `users.manage`, finance items `rates.edit`, line manager items the person's line manager. A checklist closes when every item is done and reopens if one is unticked. Templates are seeded, not yet editable in the app (Settings, phase 8). Liam Walsh has a leaving date of 27 Nov 2026 in the demo so offboarding has an example.
+
+## 65. Travel and accommodation
+
+Hive records travel booked elsewhere (it doesn't book with suppliers). Each leg or stay posts its cost as an actual on the Travel or Accommodation line, drawing down the remaining estimate; a change posts the difference, a currency change reverses and reposts, and a cancellation reverses it all. Cost entries are never edited (as section 3). Times are the local time at the place of departure, as on a ticket, and are stored as entered. People who run the event's crew manage travel; producers who can see the budget see costs. The manifest includes passport number, expiry, nationality and access needs only for `people.view_restricted`, and each export is logged with whether those fields were included.
+
+## 66. Reports
+
+Each report is a class in `app/Reports` that declares its permission, filters and columns and returns raw rows (pence, numbers, Y-m-d), which the page formats and the CSV keeps plain, with a total row where it adds up. Every row goes through the same viewer scopes as the screens: profitability only for events whose budget you can see, pipeline fees hidden from anyone without budget access, freelancer spend only with `rates.view`. Timesheet compliance counts a week as on time if submitted by noon on the following Monday, and an approval as on time within the reminder threshold (three days). Exports are logged.
+
+## 67. Dashboards
+
+Leadership figures need `budgets.approve` as well as company-wide events and reports, so finance sees its own row (committed and actual this month, invoices and POs) rather than the director's. HR sees starters and leavers in the next six weeks (so a leaver at the end of next month shows) and checklist progress.
+
+## 68. Notification preferences and the digest
+
+In-app notices are always on. Each person chooses, per type, whether they also get an email, and can switch to a daily digest at 07:30 UK time with everything of those types from the previous 24 hours. Preferences live on the person, so freelancers without a sign-in can still be configured later. Call sheets and purchase orders sent to suppliers are documents, not notices, and are always emailed. Event stage changes now notify the producer and the event team (section 5.10), apart from whoever made the change.

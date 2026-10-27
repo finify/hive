@@ -106,8 +106,9 @@ class Travel extends Component
         $canManage = Gate::allows('event.manage-crew', [$event]);
         $showCosts = $this->viewer()->canSeeBudget($event);
 
-        $bookings = TravelBooking::query()->where('event_id', $this->eventId)
-            ->orderByRaw('coalesce(depart_at, check_in)')->get()
+        // Hotels sort at a 15:00 check-in, after the morning's flight.
+        $bookings = TravelBooking::query()->where('event_id', $this->eventId)->get()
+            ->sortBy(fn (TravelBooking $b) => $b->depart_at?->format('Y-m-d H:i') ?? $b->check_in?->format('Y-m-d').' 15:00')
             ->groupBy('person_id');
 
         $people = $workspace->assignments()->where('event_id', $this->eventId)

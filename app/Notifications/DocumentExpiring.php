@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Document;
 use App\Support\Display;
+use App\Support\NotificationPreferences;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -24,7 +25,7 @@ class DocumentExpiring extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return NotificationPreferences::of($notifiable)->channels('document');
     }
 
     public function title(): string

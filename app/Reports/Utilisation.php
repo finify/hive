@@ -82,7 +82,7 @@ class Utilisation extends Report
             $grouped = [];
 
             foreach ($rows as $r) {
-                $g = $grouped[$r['department']] ?? ['name' => $r['department'], 'department' => $r['department'], 'type' => '', 'weekdays' => 0, 'booked' => 0];
+                $g = $grouped[$r['department']] ?? ['name' => $r['department'], 'department' => '', 'type' => '', 'weekdays' => 0, 'booked' => 0];
                 $g['weekdays'] += $r['weekdays'];
                 $g['booked'] += $r['booked'];
                 $g['people'] = ($g['people'] ?? 0) + 1;

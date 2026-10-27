@@ -59,15 +59,17 @@ Sign-in, roles, permissions, invitations, two-factor, the audit log, people, the
 |---|---|
 | Sign-in, two-factor (mandatory for four roles), invitations, roles and permissions, deactivation, audit log | Built and tested (phase 0) |
 | Layout, light and dark themes, toasts, modals, empty states, status pills, global search | Built |
-| Dashboards for every role, with "Needs attention" ranked by urgency | Built on demo data |
+| Dashboards for every role, with "Needs attention" ranked by urgency | Built and tested per role (phase 6) |
 | Events: add and edit with phases and team, stage rules with history, task lists from templates per event type, private event files with signed links; list, pipeline board, calendar | Built on the database and tested (phase 2) |
 | Resourcing: crew calls, booking with clash and working time checks, booking requests freelancers accept or decline, holds and bulk confirm, unavailability, basic leave requests, rota (week or month), clashes and the resolve flow, availability search, call sheet PDFs, weekly rota digest | Built on the database and tested (phase 3) |
 | Time: weekly timesheets (add, change, remove, submit), entry-level approval by each event's producer, return with comment, working time flags, payroll locks with logged unlocks, Friday and Monday reminders; shared approvals engine with an all-modules inbox and delegation | Built on the database and tested (phase 4) |
 | Finance: budgets with versions against an approved baseline, revenue, purchase orders with approval limits and PDFs, supplier invoices with three-way matching and tolerance, freelancer invoices (upload and self-billing), expenses with receipts and mileage, billing milestones, exchange rates, CSV exports, the reconciliation rule | Built on the database and tested (phase 5) |
 | People and directory: add and edit staff and freelancers, skills, effective-dated day rates, encrypted restricted fields, document uploads with signed links, expiry reminders; clients, suppliers and venues with contacts | Built on the database and tested (phase 1) |
-| Leave | Requests and approval built (phase 3); balances and the full module are phase 5 |
+| Leave: allowances by leave year with carry-over, balances, TOIL from weekend and bank holiday event work, bank holidays by region, absence recorded by HR or line managers, sensitive types shown as Absent | Built on the database and tested (phase 6) |
+| Onboarding and offboarding checklists per employment type, with owners and due dates; travel and accommodation per event with costs to the budget and a manifest; skills catalogue | Built on the database and tested (phase 6) |
+| Reports (profitability, utilisation, freelancer and supplier spend, pipeline, leave, timesheet compliance, working time flags), filterable with CSV export; notification preferences and a daily digest | Built and tested (phase 6) |
 | Ask Hive: Claude through the official SDK with policy-scoped read-only tools, verified citations, queued answers, logging and rate limits; timesheet summaries, budget risk narratives, wrap report drafts and crew suggestions | Built and tested (phase 7); a deterministic local engine runs without an API key |
-| Onboarding, skills admin, reports, settings, integrations | Later phases (each has a page saying which) |
+| Settings, integrations | Phase 8 (each has a page saying so) |
 
 ## Ask Hive with Claude
 

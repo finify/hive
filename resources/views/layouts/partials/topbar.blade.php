@@ -34,6 +34,7 @@
                 @if (auth()->user()->person_id)
                     <a class="dropdown-item rounded" href="{{ route('people.show', auth()->user()->person_id) }}" wire:navigate>My profile</a>
                 @endif
+                <a class="dropdown-item rounded" href="{{ route('notification-settings') }}" wire:navigate>Notification settings</a>
                 <a class="dropdown-item rounded" href="{{ route('security') }}" wire:navigate>Security and two-factor</a>
                 <div class="dropdown-divider"></div>
                 <div class="px-2 pb-1 small text-muted">Appearance</div>

@@ -36,6 +36,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string $location_city
  * @property string $location_country
  * @property string $bank_holiday_region
+ * @property array{email?: array<string, bool>, digest?: bool}|null $notification_preferences
  * @property Carbon $start_date
  * @property Carbon|null $end_date
  * @property string|null $company_name
@@ -78,6 +79,7 @@ class Person extends Model
             'languages' => 'array',
             'notes' => 'encrypted',
             'is_active' => 'boolean',
+            'notification_preferences' => 'array',
         ];
     }
 
