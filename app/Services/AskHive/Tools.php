@@ -8,6 +8,7 @@ use App\Demo\Viewer;
 use App\Demo\Workspace;
 use App\Enums\DocumentStatus;
 use App\Enums\EventStage;
+use App\Services\Leave\LeaveBook;
 use App\Support\DateRange;
 use App\Support\Display;
 use App\Support\Money;
@@ -52,6 +53,7 @@ class Tools
             ['name' => 'list_pending_approvals', 'description' => 'Counts of everything waiting for the user to approve: timesheets, supplier invoices, leave.', 'input_schema' => $none],
             ['name' => 'list_pending_timesheet_entries', 'description' => 'Timesheet entries waiting for the user to approve, with hours and working-time flags.', 'input_schema' => $none],
             ['name' => 'get_leave_calendar', 'description' => 'Who is away between two dates. Sensitive leave shows only as "Absent".', 'input_schema' => ['type' => 'object', 'properties' => ['start_date' => $date, 'end_date' => $date], 'required' => ['start_date', 'end_date']]],
+            ['name' => 'get_my_leave_balance', 'description' => 'The user’s own annual leave and time off in lieu for this leave year.', 'input_schema' => $none],
             ['name' => 'list_my_bookings', 'description' => 'The user’s own upcoming bookings.', 'input_schema' => $none],
             ['name' => 'list_expiring_documents', 'description' => 'Documents that have expired or expire within 30 days. HR only.', 'input_schema' => $none],
             ['name' => 'list_crew_calls', 'description' => 'An event’s crew calls with how many places are filled and open.', 'input_schema' => ['type' => 'object', 'properties' => ['event_code' => $code], 'required' => ['event_code']]],
@@ -91,6 +93,7 @@ class Tools
                 ? $this->getLeaveCalendar((string) $date('start_date'), (string) $date('end_date'))
                 : $missing('start_date', 'end_date'),
             'list_my_bookings' => $this->listMyBookings(),
+            'get_my_leave_balance' => $this->getMyLeaveBalance(),
             'list_expiring_documents' => $this->listExpiringDocuments(),
             'list_crew_calls' => $str('event_code') ? $this->listCrewCalls((string) $str('event_code')) : $missing('event_code'),
             'get_event_wrap_facts' => $str('event_code') ? $this->getEventWrapFacts((string) $str('event_code')) : $missing('event_code'),
@@ -307,6 +310,28 @@ class Tools
             ->values()->all();
 
         return ['allowed' => true, 'bookings' => $bookings];
+    }
+
+    /**
+     * @return array{allowed: bool, balance: array<string, mixed>|null}
+     */
+    public function getMyLeaveBalance(): array
+    {
+        $personId = $this->viewer->personId();
+        $allowed = $personId !== null && $this->viewer->can('leave.request');
+        $this->record('get_my_leave_balance', [], $allowed);
+
+        if (! $allowed) {
+            return ['allowed' => false, 'balance' => null];
+        }
+
+        $b = app(LeaveBook::class)->balance($personId);
+
+        return ['allowed' => true, 'balance' => [
+            'leave_year' => $b->year, 'entitlement_days' => $b->entitlement(), 'carried_over_days' => $b->carriedOver,
+            'taken_days' => $b->taken, 'booked_days' => $b->booked, 'waiting_for_approval_days' => $b->pending,
+            'remaining_days' => $b->remaining(), 'toil_remaining_days' => $b->toilRemaining(),
+        ]];
     }
 
     /**

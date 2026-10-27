@@ -4,6 +4,7 @@ namespace App\Actions\People;
 
 use App\Demo\Rows;
 use App\Enums\EmploymentType;
+use App\Models\BankHoliday;
 use App\Models\Person;
 use App\Models\User;
 use App\Support\Money;
@@ -54,6 +55,7 @@ class SavePerson
                 'line_manager_id' => $data['line_manager_id'] ?? null,
                 'location_city' => $data['location_city'],
                 'location_country' => $data['location_country'],
+                'bank_holiday_region' => $data['bank_holiday_region'] ?? 'england-and-wales',
                 'start_date' => $data['start_date'],
                 'end_date' => $data['end_date'] ?? null,
                 'company_name' => $isFreelance ? ($data['company_name'] ?? null) : null,
@@ -119,6 +121,7 @@ class SavePerson
             'line_manager_id' => ['nullable', 'integer', 'exists:people,id', Rule::notIn(array_filter([$person?->id]))],
             'location_city' => ['required', 'string', 'max:80'],
             'location_country' => ['required', 'string', 'max:80'],
+            'bank_holiday_region' => ['nullable', Rule::in(array_keys(BankHoliday::REGIONS))],
             'start_date' => ['required', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'company_name' => ['nullable', 'string', 'max:120'],

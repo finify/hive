@@ -32,7 +32,7 @@ function everyTool(): array
         'search_events' => [], 'get_event_summary' => ['event_code' => 'EV-26114'],
         'find_available_people' => ['role' => 'AV Technician', 'start_date' => '2026-11-09', 'end_date' => '2026-11-13'],
         'list_clashes' => [], 'get_budget_health' => [], 'list_pending_approvals' => [], 'list_pending_timesheet_entries' => [],
-        'get_leave_calendar' => ['start_date' => '2026-09-01', 'end_date' => '2026-12-31'], 'list_my_bookings' => [],
+        'get_leave_calendar' => ['start_date' => '2026-09-01', 'end_date' => '2026-12-31'], 'list_my_bookings' => [], 'get_my_leave_balance' => [],
         'list_expiring_documents' => [], 'list_crew_calls' => ['event_code' => 'EV-26114'], 'get_event_wrap_facts' => ['event_code' => 'EV-26104'],
     ];
 }

@@ -1,0 +1,23 @@
+[
+  {
+    "person_id": 4,
+    "date": "2026-10-04",
+    "days": 1,
+    "reason": "EV-26104 travel day on a weekend",
+    "event_id": 4
+  },
+  {
+    "person_id": 10,
+    "date": "2026-10-18",
+    "days": 1,
+    "reason": "EV-26114 build on a weekend",
+    "event_id": 7
+  },
+  {
+    "person_id": 10,
+    "date": "2026-08-31",
+    "days": 0.5,
+    "reason": "EV-26103 site visit on a bank holiday",
+    "event_id": 3
+  }
+]

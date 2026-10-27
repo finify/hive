@@ -8,22 +8,25 @@ use App\Enums\LeaveStatus;
 use App\Models\LeaveRequest;
 use App\Models\User;
 use App\Services\Approvals\ApprovalEngine;
+use App\Services\Leave\LeaveBook;
 use App\Support\DateRange;
-use Carbon\CarbonImmutable;
+use App\Support\Display;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Basic leave for phase 3: an employee asks for days off, their line manager
- * or HR decides, through the approvals engine. Days count weekdays that aren't bank holidays. Balances,
- * half days and the full leave module arrive in phase 5.
+ * An employee asks for days off; their line manager or HR decides, through
+ * the approvals engine. Days count weekdays that aren't bank holidays where
+ * the person works. Annual leave can't go beyond what is available in its
+ * leave year, nor TOIL beyond what has been earned.
  */
 class RequestLeave
 {
     public function __construct(
         private readonly Workspace $workspace,
         private readonly ApprovalEngine $approvals,
+        private readonly LeaveBook $leave,
     ) {}
 
     /**
@@ -42,11 +45,13 @@ class RequestLeave
             'reason' => ['nullable', 'string', 'max:500'],
         ])->validate();
 
-        $days = $this->workingDays(DateRange::of($data['start_date'], $data['end_date']));
+        $days = $this->leave->workingDays($user->person_id, DateRange::of($data['start_date'], $data['end_date']));
 
         if ($days === 0) {
             throw ValidationException::withMessages(['end_date' => 'Those dates are all weekends or bank holidays.']);
         }
+
+        $this->checkBalance($user->person_id, $data['leave_type'], $data['start_date'], $days);
 
         $overlaps = $this->workspace->leaveRequests()->contains(fn ($l) => $l['person_id'] === $user->person_id
             && in_array($l['status'], [LeaveStatus::Pending->value, LeaveStatus::Approved->value], true)
@@ -102,10 +107,32 @@ class RequestLeave
             ->log('Cancelled leave, '.DateRange::of($leave->start_date->toDateString(), $leave->end_date->toDateString())->format());
     }
 
-    public function workingDays(DateRange $range): int
+    /**
+     * Annual leave against its leave year's allowance; TOIL against what has
+     * been earned. Other types have no balance.
+     */
+    private function checkBalance(int $personId, string $type, string $start, int $days): void
     {
-        $holidays = collect($this->workspace->data->raw('bank_holidays'))->pluck('date')->all();
+        if ($type === 'annual') {
+            $balance = $this->leave->balance($personId, $this->leave->yearOf($start));
 
-        return count(array_filter($range->dates(), fn (string $d) => CarbonImmutable::parse($d)->isWeekday() && ! in_array($d, $holidays, true)));
+            if ($days > $balance->available()) {
+                throw ValidationException::withMessages(['end_date' => sprintf(
+                    'That’s %s, and you have %s of annual leave left to ask for in %d.',
+                    Display::days($days), Display::days(max(0, $balance->available())), $balance->year,
+                )]);
+            }
+        }
+
+        if ($type === 'toil') {
+            $balance = $this->leave->balance($personId);
+
+            if ($days > $balance->toilAvailable()) {
+                throw ValidationException::withMessages(['end_date' => sprintf(
+                    'That’s %s, and you have %s of time off in lieu to take.',
+                    Display::days($days), Display::days(max(0, $balance->toilAvailable())),
+                )]);
+            }
+        }
     }
 }

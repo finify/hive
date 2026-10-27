@@ -5,21 +5,27 @@ namespace App\Console\Commands;
 use App\Enums\DocumentType;
 use App\Models\Approval;
 use App\Models\ApprovalDelegation;
+use App\Models\BankHoliday;
+use App\Models\Checklist;
+use App\Models\ChecklistTemplate;
 use App\Models\Document;
 use App\Models\Event;
 use App\Models\ExchangeRate;
 use App\Models\Expense;
 use App\Models\FreelancerInvoice;
+use App\Models\LeaveAllowance;
 use App\Models\LeaveRequest;
 use App\Models\PeriodLock;
 use App\Models\Task;
 use App\Models\TaskTemplate;
 use App\Models\Timesheet;
+use App\Models\ToilAccrual;
 use App\Models\Unavailability;
 use App\Notifications\CallSheetIssued;
 use App\Notifications\HiveNotice;
 use Database\Seeders\DemoEventsSeeder;
 use Database\Seeders\DemoFinanceSeeder;
+use Database\Seeders\DemoHrSeeder;
 use Database\Seeders\DemoResourcingSeeder;
 use Database\Seeders\DemoTimeSeeder;
 use Illuminate\Console\Command;
@@ -36,7 +42,7 @@ class RefreshDemo extends Command
 {
     protected $signature = 'hive:demo-refresh';
 
-    protected $description = 'Put the demo events, resourcing, time, finance and notices back to the seeded state';
+    protected $description = 'Put the demo events, resourcing, time, finance, leave, checklists and notices back to the seeded state';
 
     public function handle(): int
     {
@@ -65,6 +71,11 @@ class RefreshDemo extends Command
             ExchangeRate::query()->delete();
             Document::query()->where('type', DocumentType::SelfBillingAgreement)->delete();
             LeaveRequest::query()->delete();
+            ToilAccrual::query()->delete();
+            LeaveAllowance::query()->delete();
+            BankHoliday::query()->delete();
+            Checklist::query()->delete();
+            ChecklistTemplate::query()->delete();
             Unavailability::query()->delete();
             DB::table('notifications')->whereIn('type', [HiveNotice::class, CallSheetIssued::class])->delete();
         });
@@ -74,6 +85,7 @@ class RefreshDemo extends Command
         $this->callSilently('db:seed', ['--class' => DemoResourcingSeeder::class, '--force' => true]);
         $this->callSilently('db:seed', ['--class' => DemoTimeSeeder::class, '--force' => true]);
         $this->callSilently('db:seed', ['--class' => DemoFinanceSeeder::class, '--force' => true]);
+        $this->callSilently('db:seed', ['--class' => DemoHrSeeder::class, '--force' => true]);
         $this->info('Demo data refreshed.');
 
         return self::SUCCESS;

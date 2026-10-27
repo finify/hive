@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Enums\EventStage;
 use App\Livewire\Concerns\UsesWorkspace;
+use App\Models\Checklist;
+use App\Services\Leave\LeaveBook;
 use App\Support\DateRange;
 use App\Support\Money;
 use Illuminate\Contracts\View\View;
@@ -48,6 +50,8 @@ class Dashboard extends Component
         $postedThisMonth = $workspace->costEntries()->filter(fn ($c) => str_starts_with((string) $c['posted_at'], $today->format('Y-m')));
         $visibleEventIds = $insights->activeEventsWithBudgets()->keys();
 
+        $checklists = $user->can('people.manage') ? Checklist::query()->with('items')->whereNull('completed_at')->get() : collect();
+
         return view('livewire.dashboard', [
             'today' => $today,
             'attention' => $insights->needsAttention(),
@@ -77,7 +81,10 @@ class Dashboard extends Component
             'pendingPos' => $workspace->purchaseOrders()->where('status', 'pending-approval'),
             'expiring' => $workspace->documents()->filter(fn ($d) => $workspace->documentStatus($d)->value !== 'valid')->sortBy('expires_at'),
             'starters' => $workspace->people()->filter(fn ($p) => $p['start_date'] >= $today->subDays(30)->toDateString() && $p['start_date'] <= $today->addDays(30)->toDateString()),
-            'leaveBalance' => $personId ? collect($workspace->data->raw('leave_allowances'))->firstWhere('person_id', $personId) : null,
+            'leavers' => $workspace->people()->filter(fn ($p) => $p['end_date'] !== null && $p['end_date'] >= $today->toDateString() && $p['end_date'] <= $today->addDays(30)->toDateString()),
+            'checklists' => $checklists,
+            'checklistItems' => $checklists->flatMap->items,
+            'leaveBalance' => $personId && $user->can('leave.request') ? app(LeaveBook::class)->balance($personId) : null,
             'mySheets' => $workspace->timesheets()->where('person_id', $personId)->sortByDesc('week_start')->take(4),
             'myDocuments' => $workspace->documents()->where('person_id', $personId)->filter(fn ($d) => $workspace->documentStatus($d)->value !== 'valid'),
             'month' => $month,

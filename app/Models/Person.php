@@ -35,6 +35,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int|null $line_manager_id
  * @property string $location_city
  * @property string $location_country
+ * @property string $bank_holiday_region
  * @property Carbon $start_date
  * @property Carbon|null $end_date
  * @property string|null $company_name
@@ -59,7 +60,7 @@ class Person extends Model
 
     protected $fillable = [
         'first_name', 'last_name', 'preferred_name', 'pronouns', 'email', 'phone', 'employment_type',
-        'department_id', 'job_title', 'line_manager_id', 'location_city', 'location_country', 'start_date',
+        'department_id', 'job_title', 'line_manager_id', 'location_city', 'location_country', 'bank_holiday_region', 'start_date',
         'end_date', 'company_name', 'vat_registered', 'vat_number', 'payment_terms_days', 'languages',
         'rating', 'notes', 'is_active',
     ];
@@ -181,6 +182,7 @@ class Person extends Model
             'line_manager_id' => $this->line_manager_id,
             'location_city' => $this->location_city,
             'location_country' => $this->location_country,
+            'bank_holiday_region' => $this->bank_holiday_region,
             'start_date' => $this->start_date->toDateString(),
             'end_date' => $this->end_date?->toDateString(),
             'company_name' => $this->company_name,

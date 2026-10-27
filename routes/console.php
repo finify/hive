@@ -16,6 +16,10 @@ Schedule::job(new RemindApproversOfPendingItems)->weeklyOn(1, '09:00')->timezone
 Schedule::job(new SendWeeklyRotaDigest)->weeklyOn(1, '08:00')->timezone('Europe/London')->name('weekly-rota-digest');
 Schedule::job(new SendDocumentExpiryReminders)->dailyAt('07:00')->timezone('Europe/London')->name('document-expiry-reminders');
 
+// Opens the new leave year with carry-over, on the day it starts.
+[$leaveMonth, $leaveDay] = array_map('intval', explode('-', (string) config('hive.leave.year_start')));
+Schedule::command('hive:leave-year')->yearlyOn($leaveMonth, $leaveDay, '01:00')->timezone('Europe/London')->name('leave-year');
+
 // The demo's events and bookings are shared by every visitor; put them back each hour.
 Schedule::command('hive:demo-refresh')->hourly()
     ->when(fn () => (bool) config('hive.demo.enabled') && ! app()->isProduction())

@@ -79,6 +79,14 @@
                     <input id="f-country" @class(['form-control', 'is-invalid' => $err('form.location_country')]) wire:model="form.location_country">
                 </div>
                 <div class="col-sm-6">
+                    <label for="f-region" class="form-label">Bank holidays</label>
+                    <select id="f-region" class="form-select" wire:model="form.bank_holiday_region">
+                        @foreach (\App\Models\BankHoliday::REGIONS as $key => $label)
+                            <option value="{{ $key }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-sm-6">
                     <label for="f-start" class="form-label">Start date</label>
                     <input id="f-start" type="date" @class(['form-control', 'is-invalid' => $err('form.start_date')]) wire:model="form.start_date">
                     @if ($err('form.start_date'))<div class="invalid-feedback">{{ $err('form.start_date') }}</div>@endif

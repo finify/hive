@@ -47,7 +47,7 @@ class Form extends Component
                 'pronouns' => $person->pronouns, 'email' => $person->email, 'phone' => $person->phone,
                 'employment_type' => $person->employment_type->value, 'department_id' => $person->department_id,
                 'job_title' => $person->job_title, 'line_manager_id' => $person->line_manager_id,
-                'location_city' => $person->location_city, 'location_country' => $person->location_country,
+                'location_city' => $person->location_city, 'location_country' => $person->location_country, 'bank_holiday_region' => $person->bank_holiday_region,
                 'start_date' => $person->start_date->toDateString(), 'end_date' => $person->end_date?->toDateString(),
                 'company_name' => $person->company_name, 'vat_registered' => $person->vat_registered, 'vat_number' => $person->vat_number,
                 'payment_terms_days' => $person->payment_terms_days, 'languages' => implode(', ', $person->languages ?? []),
@@ -71,7 +71,7 @@ class Form extends Component
         $this->form = [
             'first_name' => '', 'last_name' => '', 'preferred_name' => '', 'pronouns' => '', 'email' => '', 'phone' => '',
             'employment_type' => request('type') === 'freelancer' ? 'freelancer' : 'employee', 'department_id' => '',
-            'job_title' => '', 'line_manager_id' => '', 'location_city' => 'London', 'location_country' => 'United Kingdom',
+            'job_title' => '', 'line_manager_id' => '', 'location_city' => 'London', 'location_country' => 'United Kingdom', 'bank_holiday_region' => 'england-and-wales',
             'start_date' => $this->workspace()->today()->toDateString(), 'end_date' => '', 'company_name' => '',
             'vat_registered' => false, 'vat_number' => '', 'payment_terms_days' => 30, 'languages' => 'English', 'notes' => '',
         ];

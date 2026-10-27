@@ -2,6 +2,7 @@
 
 namespace App\Actions\Time;
 
+use App\Actions\Leave\AccrueToil;
 use App\Demo\Workspace;
 use App\Enums\ApprovalStatus;
 use App\Enums\EntryStatus;
@@ -16,8 +17,9 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Approves one entry. Freelancer time on an event becomes an Actual crew
- * cost at the day rate in force that day (rule 7); the week is Approved
- * once every entry is.
+ * cost at the day rate in force that day (rule 7); an employee's weekend or
+ * bank holiday on an event earns TOIL. The week is Approved once every
+ * entry is.
  */
 class ApproveTimesheetEntry
 {
@@ -25,6 +27,7 @@ class ApproveTimesheetEntry
         private readonly Workspace $workspace,
         private readonly ApprovalEngine $approvals,
         private readonly PostTimesheetCost $postCost,
+        private readonly AccrueToil $toil,
     ) {}
 
     public function handle(User $approver, int $entryId): void
@@ -54,6 +57,10 @@ class ApproveTimesheetEntry
 
         $this->workspace->forget();
         $cost = $outcome === ApprovalStatus::Approved ? $this->postCost->handle($sheet['person_id'], $entryId) : null;
+
+        if ($outcome === ApprovalStatus::Approved) {
+            $this->toil->forEntry($entryId, $approver);
+        }
 
         activity('time')
             ->causedBy($approver)

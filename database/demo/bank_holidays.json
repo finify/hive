@@ -1,6 +1,31 @@
 [
   {
     "region": "england-and-wales",
+    "date": "2026-01-01",
+    "name": "New Year’s Day"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2026-04-03",
+    "name": "Good Friday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2026-04-06",
+    "name": "Easter Monday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2026-05-04",
+    "name": "Early May bank holiday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2026-05-25",
+    "name": "Spring bank holiday"
+  },
+  {
+    "region": "england-and-wales",
     "date": "2026-08-31",
     "name": "Summer bank holiday"
   },
@@ -20,8 +45,228 @@
     "name": "New Year’s Day"
   },
   {
+    "region": "england-and-wales",
+    "date": "2027-03-26",
+    "name": "Good Friday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2027-03-29",
+    "name": "Easter Monday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2027-05-03",
+    "name": "Early May bank holiday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2027-05-31",
+    "name": "Spring bank holiday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2027-08-30",
+    "name": "Summer bank holiday"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2027-12-27",
+    "name": "Christmas Day (substitute day)"
+  },
+  {
+    "region": "england-and-wales",
+    "date": "2027-12-28",
+    "name": "Boxing Day (substitute day)"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-01-01",
+    "name": "New Year’s Day"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-01-02",
+    "name": "2nd January"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-04-03",
+    "name": "Good Friday"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-05-04",
+    "name": "Early May bank holiday"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-05-25",
+    "name": "Spring bank holiday"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-08-03",
+    "name": "Summer bank holiday"
+  },
+  {
     "region": "scotland",
     "date": "2026-11-30",
     "name": "St Andrew’s Day"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-12-25",
+    "name": "Christmas Day"
+  },
+  {
+    "region": "scotland",
+    "date": "2026-12-28",
+    "name": "Boxing Day (substitute day)"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-01-01",
+    "name": "New Year’s Day"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-01-04",
+    "name": "2nd January (substitute day)"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-03-26",
+    "name": "Good Friday"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-05-03",
+    "name": "Early May bank holiday"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-05-31",
+    "name": "Spring bank holiday"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-08-02",
+    "name": "Summer bank holiday"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-11-30",
+    "name": "St Andrew’s Day"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-12-27",
+    "name": "Christmas Day (substitute day)"
+  },
+  {
+    "region": "scotland",
+    "date": "2027-12-28",
+    "name": "Boxing Day (substitute day)"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-01-01",
+    "name": "New Year’s Day"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-03-17",
+    "name": "St Patrick’s Day"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-04-03",
+    "name": "Good Friday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-04-06",
+    "name": "Easter Monday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-05-04",
+    "name": "Early May bank holiday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-05-25",
+    "name": "Spring bank holiday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-07-13",
+    "name": "Battle of the Boyne (substitute day)"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-08-31",
+    "name": "Summer bank holiday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-12-25",
+    "name": "Christmas Day"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2026-12-28",
+    "name": "Boxing Day (substitute day)"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-01-01",
+    "name": "New Year’s Day"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-03-17",
+    "name": "St Patrick’s Day"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-03-26",
+    "name": "Good Friday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-03-29",
+    "name": "Easter Monday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-05-03",
+    "name": "Early May bank holiday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-05-31",
+    "name": "Spring bank holiday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-07-12",
+    "name": "Battle of the Boyne"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-08-30",
+    "name": "Summer bank holiday"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-12-27",
+    "name": "Christmas Day (substitute day)"
+  },
+  {
+    "region": "northern-ireland",
+    "date": "2027-12-28",
+    "name": "Boxing Day (substitute day)"
   }
 ]

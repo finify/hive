@@ -54,7 +54,6 @@ final class Navigation
     public static function planned(): array
     {
         return [
-            'onboarding' => ['title' => 'Onboarding', 'phase' => 6, 'summary' => 'Checklists for new starters and leavers, with an owner and a due date for each item. Joel Mendes starts on 2 Nov.'],
             'skills' => ['title' => 'Skills', 'phase' => 6, 'summary' => 'The skills catalogue, with levels from 1 to 5 and who verified them.'],
             'reports' => ['title' => 'Reports', 'phase' => 6, 'summary' => 'Event profitability, utilisation, freelancer and supplier spend, pipeline and win rate, leave, timesheet compliance and working time flags, each exportable to CSV.'],
             'settings' => ['title' => 'Settings', 'phase' => 8, 'summary' => 'Organisation details, approval limits, thresholds, leave years and Ask Hive controls.'],
@@ -101,7 +100,7 @@ final class Navigation
             'People' => [
                 ['label' => 'Directory', 'icon' => 'people', 'route' => 'people.index', 'active' => 'people.*', 'can' => ['people.view', 'people.view_basic']],
                 ['label' => 'Leave', 'icon' => 'sun', 'route' => 'leave', 'can' => ['leave.view_calendar', 'leave.request']],
-                ['label' => 'Onboarding', 'icon' => 'list-check', 'planned' => 'onboarding', 'can' => ['people.manage']],
+                ['label' => 'Onboarding', 'icon' => 'list-check', 'route' => 'onboarding', 'can' => ['people.manage', 'leave.approve', 'rates.edit', 'users.manage']],
                 ['label' => 'Documents', 'icon' => 'folder2', 'route' => 'documents', 'can' => ['documents.view', 'documents.view_status']],
                 ['label' => 'Skills', 'icon' => 'stars', 'planned' => 'skills', 'can' => ['people.view_basic']],
             ],

@@ -6,6 +6,7 @@ use App\Demo\Rows;
 use App\Demo\Viewer;
 use App\Demo\Workspace;
 use App\Support\DateRange;
+use App\Support\Display;
 
 /**
  * A deterministic engine for the demo and for tests: it reads the question,
@@ -53,6 +54,7 @@ class LocalEngine implements AskHiveEngine
             $this->mentions($q, ['clash', 'double-book', 'double book', 'overbook']) => $this->clashes($tools),
             $this->mentions($q, ['approv', 'waiting for me', 'waiting for my', 'to sign off']) => $this->approvals($tools),
             $this->mentions($q, ['document', 'insurance', 'expir', 'certificate']) => $this->documents($tools),
+            $this->mentions($q, ['leave left', 'leave do i have', 'holiday left', 'days left', 'my balance', 'toil']) => $this->myLeave($tools),
             $this->mentions($q, ['booked on', 'my next', 'am i booked', 'my booking', 'next booking', 'day off']) => $this->myBookings($q, $tools),
             $this->mentions($q, ['off next week', 'who is off', 'who’s off', 'on leave', 'holiday', 'away']) => $this->leave($tools),
             default => new Answer([
@@ -432,5 +434,28 @@ class LocalEngine implements AskHiveEngine
             array_values($sources),
             $tools->calls(),
         );
+    }
+
+    private function myLeave(Tools $tools): Answer
+    {
+        $r = $tools->getMyLeaveBalance();
+        $b = $r['balance'];
+
+        if (! $r['allowed'] || $b === null) {
+            return new Answer(['Leave balances are for employees; Hive doesn’t hold one for you.'], tools: $tools->calls(), refused: true);
+        }
+
+        $paragraphs = [sprintf('You have %s of annual leave left in %d, of %s.', Display::days($b['remaining_days']), $b['leave_year'], Display::days($b['entitlement_days']))];
+        $bullets = [Display::days($b['taken_days']).' taken, '.Display::days($b['booked_days']).' booked.'];
+
+        if ($b['waiting_for_approval_days'] > 0) {
+            $bullets[] = Display::days($b['waiting_for_approval_days']).' waiting for approval.';
+        }
+
+        if ($b['toil_remaining_days'] > 0) {
+            $bullets[] = Display::days($b['toil_remaining_days']).' of time off in lieu to take.';
+        }
+
+        return new Answer($paragraphs, $bullets, [['label' => 'Leave', 'href' => route('leave')]], $tools->calls());
     }
 }

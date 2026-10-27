@@ -131,6 +131,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Leave
+    |--------------------------------------------------------------------------
+    |
+    | The leave year starts on year_start (month-day). Up to carry_over_max
+    | unused days of annual leave move into the next year. TOIL is earned
+    | from approved event time on the days listed in toil.accrue_on, at
+    | toil.hours_per_day hours to a day, by employees only.
+    |
+    */
+
+    'leave' => [
+        'year_start' => env('HIVE_LEAVE_YEAR_START', '01-01'),
+        'default_allowance' => 25,
+        'carry_over_max' => 5,
+        'toil' => [
+            'accrue_on' => ['weekend', 'bank_holiday'],
+            'hours_per_day' => 7.5,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Approvals engine
     |--------------------------------------------------------------------------
     |

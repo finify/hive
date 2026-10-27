@@ -46,10 +46,10 @@
         </div>
     @elseif ($showHr)
         <div class="figure-row">
-            <x-figure label="Starters in the next 30 days" :value="$starters->count()" :caption="$starters->map(fn ($p) => $p['first_name'].' '.$p['last_name'].', '.Display::shortDate($p['start_date']))->implode('; ') ?: 'None'" />
+            <x-figure label="Starters and leavers, next 30 days" :value="$starters->count() + $leavers->count()" :caption="$starters->map(fn ($p) => $p['first_name'].' '.$p['last_name'].' starts '.Display::shortDate($p['start_date']))->merge($leavers->map(fn ($p) => $p['first_name'].' '.$p['last_name'].' leaves '.Display::shortDate($p['end_date'])))->implode('; ') ?: 'None'" />
             <x-figure label="Documents expiring or expired" :value="$expiring->count()" :caption="$expiring->filter(fn ($d) => app(\App\Demo\Workspace::class)->documentStatus($d)->value === 'expired')->count().' already expired'" :href="route('documents')" />
             <x-figure label="Leave to decide" :value="$leave->count()" caption="Waiting on you" :href="route('approvals', ['tab' => 'leave'])" />
-            <x-figure label="Onboarding" value="1 open" caption="Checklists arrive in Phase 6" :href="route('planned', 'onboarding')" />
+            <x-figure label="Onboarding and offboarding" :value="$checklists->count().' open'" :caption="$checklistItems->isEmpty() ? 'Nothing open' : $checklistItems->whereNotNull('completed_at')->count().' of '.$checklistItems->count().' items done, '.$checklistItems->filter(fn ($i) => $i->completed_at === null && $i->due_date->toDateString() < $today->toDateString())->count().' overdue'" :href="route('onboarding')" />
         </div>
     @elseif ($myEvents->isNotEmpty())
         <div class="figure-row">
@@ -64,7 +64,7 @@
             <x-figure label="Booking requests" :value="$bookingRequests->count()" caption="Waiting for your answer" :href="route('my-work')" />
             <x-figure label="Timesheets" :value="$mySheets->whereIn('status', ['draft', 'returned'])->count()" caption="Draft or returned" :href="route('timesheets')" />
             @if ($leaveBalance)
-                <x-figure label="Leave left this year" :value="Display::days($leaveBalance['days_allowed'] + $leaveBalance['days_carried_over'] - $leaveBalance['days_taken'])" :caption="'of '.($leaveBalance['days_allowed'] + $leaveBalance['days_carried_over']).' days'" :href="route('leave')" />
+                <x-figure label="Leave left this year" :value="Display::days($leaveBalance->remaining())" :caption="'of '.Display::days($leaveBalance->entitlement()).($leaveBalance->toilRemaining() > 0 ? ', plus '.Display::days($leaveBalance->toilRemaining()).' TOIL' : '')" :href="route('leave')" />
             @else
                 <x-figure label="Documents to update" :value="$myDocuments->count()" caption="Insurance and certificates" :href="route('my-work')" />
             @endif

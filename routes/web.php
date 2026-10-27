@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/documents/{document}/download', DocumentDownloadController::class)->name('documents.download')->middleware('signed');
         Route::get('/people/{person}', Livewire\People\Show::class)->name('people.show')->whereNumber('person');
         Route::get('/people/leave', Livewire\People\Leave::class)->name('leave')->middleware('can_any:leave.view_calendar,leave.request');
+        Route::get('/people/onboarding', Livewire\People\Onboarding::class)->name('onboarding')->middleware('can_any:people.manage,leave.approve,rates.edit,users.manage');
         Route::get('/people/documents', Livewire\People\Documents::class)->name('documents')->middleware('can_any:documents.view,documents.view_status');
 
         Route::get('/directory/clients', Livewire\Directory\Clients::class)->name('clients')->middleware('can:directory.view');
