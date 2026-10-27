@@ -4,34 +4,38 @@ namespace App\Livewire;
 
 use App\Actions\Ai\AskHive as AskHiveAction;
 use App\Demo\Workspace;
+use App\Models\AiRequest;
+use App\Services\AskHive\Workflow;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 /**
- * The Ask Hive panel. Answers are drafts to read, with the records they used;
+ * The Ask Hive panel. Questions are queued and the panel polls until each
+ * one is answered. Answers are drafts to read, with the records they used;
  * nothing here approves, books, pays or deletes anything.
  */
 class AskHive extends Component
 {
     public string $question = '';
 
-    /** @var list<array{q: string, a: array<string, mixed>}> */
-    public array $conversation = [];
+    /** @var list<int> Ask Hive requests in this conversation, oldest first. */
+    public array $requestIds = [];
 
     public function ask(AskHiveAction $ask): void
     {
         $this->resetValidation();
+
         try {
-            $answer = $ask->handle(auth()->user(), $this->question);
+            $request = $ask->handle(auth()->user(), $this->question);
         } catch (ValidationException $e) {
             $this->setErrorBag($e->validator->errors());
 
             return;
         }
 
-        $this->resetValidation();
-        $this->conversation[] = ['q' => $this->question, 'a' => $answer->toArray()];
+        $this->requestIds[] = $request->id;
         $this->question = '';
     }
 
@@ -41,16 +45,40 @@ class AskHive extends Component
         $this->ask($ask);
     }
 
+    /**
+     * Started by a button elsewhere: "Explain budget risk", "Draft wrap report"...
+     */
+    #[On('ask-hive-workflow')]
+    public function workflow(string $workflow, ?string $subject, AskHiveAction $ask): void
+    {
+        $this->resetValidation();
+
+        try {
+            $request = $ask->handle(auth()->user(), '', Workflow::from($workflow), $subject);
+        } catch (ValidationException $e) {
+            $this->setErrorBag($e->validator->errors());
+
+            return;
+        }
+
+        $this->requestIds[] = $request->id;
+    }
+
     public function clear(): void
     {
-        $this->conversation = [];
+        $this->requestIds = [];
     }
 
     public function render(): View
     {
+        $requests = AiRequest::query()
+            ->where('user_id', auth()->id())
+            ->whereIn('id', $this->requestIds)
+            ->orderBy('id')
+            ->get();
+
         $suggestions = app(Workspace::class)->askHiveSuggestions();
-        $role = auth()->user()->primaryRole()?->value;
-        $key = match ($role) {
+        $key = match (auth()->user()->primaryRole()?->value) {
             'producer', 'head-of-department' => 'producer',
             'freelancer' => 'freelancer',
             'employee' => 'employee',
@@ -58,6 +86,10 @@ class AskHive extends Component
             default => 'default',
         };
 
-        return view('livewire.ask-hive', ['suggestions' => $suggestions[$key] ?? $suggestions['default']]);
+        return view('livewire.ask-hive', [
+            'conversation' => $requests->map(fn (AiRequest $r) => ['id' => $r->id, 'q' => $r->prompt, 'pending' => $r->isPending(), 'a' => $r->panelAnswer()])->all(),
+            'waiting' => $requests->contains(fn (AiRequest $r) => $r->isPending()),
+            'suggestions' => $suggestions[$key] ?? $suggestions['default'],
+        ]);
     }
 }

@@ -17,6 +17,7 @@
         <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
             @if ($canManage)
                 <button type="button" class="btn btn-primary" wire:click="startCall">Add crew call</button>
+                <x-ask-hive-button workflow="crew-suggestions" :subject="$event['code']" size="md" />
                 @if ($firstHolds > 0)
                     <button type="button" class="btn btn-secondary" wire:click="confirmFirstHolds" wire:loading.attr="disabled" wire:confirm="Confirm every first hold on this event? Holds that can’t be confirmed stay as they are.">Confirm {{ $firstHolds }} first {{ $firstHolds === 1 ? 'hold' : 'holds' }}</button>
                 @endif

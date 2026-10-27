@@ -7,12 +7,16 @@ use App\Demo\Viewer;
 /**
  * Answers a question using only the read-only tools, as the asking user.
  *
- * The demo uses LocalEngine (deterministic, no network). Phase 7 adds an
- * engine that calls the Anthropic Messages API with the same tools.
+ * LocalEngine is deterministic and needs no network (tests, and the demo
+ * without an API key); ClaudeEngine calls the Anthropic Messages API with the
+ * same tools.
  */
 interface AskHiveEngine
 {
     public function name(): string;
 
-    public function answer(string $question, Viewer $viewer, Tools $tools): Answer;
+    /** The model behind the engine, for the log; null when there is none. */
+    public function model(): ?string;
+
+    public function answer(Question $question, Viewer $viewer, Tools $tools): Answer;
 }

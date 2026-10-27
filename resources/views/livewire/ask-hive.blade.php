@@ -1,4 +1,5 @@
-<div class="offcanvas offcanvas-end ask-panel" tabindex="-1" id="ask-hive" aria-labelledby="ask-hive-title" wire:ignore.self>
+<div class="offcanvas offcanvas-end ask-panel" tabindex="-1" id="ask-hive" aria-labelledby="ask-hive-title" wire:ignore.self
+     x-data x-on:ask-hive-open.window="bootstrap.Offcanvas.getOrCreateInstance($el).show()">
     <div class="offcanvas-header border-bottom">
         <div>
             <h2 class="offcanvas-title fs-6 fw-medium" id="ask-hive-title">Ask Hive</h2>
@@ -7,29 +8,42 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close Ask Hive"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column">
-        <div class="ask-log flex-grow-1" aria-live="polite">
+        <div class="ask-log flex-grow-1" aria-live="polite" @if ($waiting) wire:poll.1500ms @endif>
             @forelse ($conversation as $turn)
-                <div class="ask-q">{{ $turn['q'] }}</div>
-                <div class="ask-a">
-                    @foreach ($turn['a']['paragraphs'] as $p)
-                        <p>{{ $p }}</p>
-                    @endforeach
-                    @if ($turn['a']['bullets'])
-                        <ul>
-                            @foreach ($turn['a']['bullets'] as $b)
-                                <li>{{ $b }}</li>
+                <div class="ask-q" wire:key="q-{{ $turn['id'] }}">{{ $turn['q'] }}</div>
+                <div class="ask-a" wire:key="a-{{ $turn['id'] }}">
+                    @if ($turn['pending'])
+                        <p class="text-muted mb-0">Looking through Hive…</p>
+                    @else
+                        <div @class(['ask-answer', 'text-negative' => $turn['a']['failed'] ?? false])>
+                            @foreach ($turn['a']['paragraphs'] as $p)
+                                <p>{{ $p }}</p>
                             @endforeach
-                        </ul>
-                    @endif
-                    @if ($turn['a']['sources'])
-                        <div class="ask-sources" aria-label="Sources">
-                            @foreach ($turn['a']['sources'] as $s)
-                                <a href="{{ $s['href'] }}" wire:navigate>{{ $s['label'] }}</a>
-                            @endforeach
+                            @if ($turn['a']['bullets'])
+                                <ul>
+                                    @foreach ($turn['a']['bullets'] as $b)
+                                        <li>{{ $b }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </div>
-                    @endif
-                    @if ($turn['a']['tools'])
-                        <div class="ask-tools mt-2">Looked at: {{ implode(', ', array_unique(array_map(fn ($t) => str_replace('_', ' ', $t), $turn['a']['tools']))) }}</div>
+                        @if ($turn['a']['sources'])
+                            <div class="ask-sources" aria-label="Sources">
+                                @foreach ($turn['a']['sources'] as $s)
+                                    <a href="{{ $s['href'] }}" wire:navigate>{{ $s['label'] }}</a>
+                                @endforeach
+                            </div>
+                        @endif
+                        <div class="ask-tools mt-2 d-flex flex-wrap gap-2 align-items-center">
+                            @if ($turn['a']['tools'])
+                                <span>Looked at: {{ implode(', ', array_unique(array_map(fn ($t) => str_replace('_', ' ', $t), $turn['a']['tools']))) }}</span>
+                            @endif
+                            @unless ($turn['a']['failed'] ?? false)
+                                <button type="button" class="btn btn-link link small p-0" x-data="{ copied: false }"
+                                        x-on:click="navigator.clipboard.writeText($el.closest('.ask-a').querySelector('.ask-answer').innerText).then(() => { copied = true; setTimeout(() => copied = false, 2000) })"
+                                        x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+                            @endunless
+                        </div>
                     @endif
                 </div>
             @empty
@@ -41,7 +55,7 @@
                     <p class="small text-muted mt-3 mb-0">Ask Hive reads; people decide. It never approves, books, pays or deletes anything.</p>
                 </div>
             @endforelse
-            <div wire:loading wire:target="ask, suggest" class="text-muted small">Looking through Hive…</div>
+            <div wire:loading wire:target="ask, suggest, workflow" class="text-muted small">Sending…</div>
         </div>
 
         <form wire:submit="ask" class="pt-3 border-top mt-3">

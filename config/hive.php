@@ -117,8 +117,15 @@ return [
 
     'ai' => [
         'enabled' => (bool) env('ASK_HIVE_ENABLED', true),
+        // "claude" calls the Anthropic API; "local" is the deterministic engine
+        // used by the tests and by the demo when there is no API key.
+        'engine' => env('ASK_HIVE_ENGINE') ?: (env('ANTHROPIC_API_KEY') ? 'claude' : 'local'),
         'api_key' => env('ANTHROPIC_API_KEY'),
-        'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-5-5'),
+        'model' => env('ANTHROPIC_MODEL', 'claude-opus-5-5'),
+        // Thinking depth: low, medium, high, xhigh or max.
+        'effort' => env('ASK_HIVE_EFFORT', 'medium'),
+        'max_tokens' => (int) env('ASK_HIVE_MAX_TOKENS', 8000),
+        'timeout' => (float) env('ASK_HIVE_TIMEOUT', 120),
         'hourly_limit' => (int) env('ASK_HIVE_HOURLY_LIMIT', 30),
     ],
 

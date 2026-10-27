@@ -225,3 +225,23 @@ CSV exports of approved supplier invoices, approved freelancer time (for the pay
 ## 55. Billing
 
 Milestones can be added by amount or as a share of the event's revenue, marked invoiced with the accounting system's reference, and marked paid. The invoice itself is raised in the accounting system, as the brief says. Overdue is as recorded; flagging it automatically needs the accounting integration (later phase).
+
+## 56. Ask Hive engine and client
+
+Ask Hive calls Claude through the official Anthropic PHP SDK (`anthropic-ai/sdk`, approved for this phase), on `claude-opus-5-5` with adaptive thinking and a configurable effort (`ASK_HIVE_EFFORT`, default medium). Server-side fallbacks are on, so a request the model declines can be retried on its default fallback model. The tool definitions and the standing instructions are prompt-cached. The engine is chosen by `ASK_HIVE_ENGINE`: `claude` when an `ANTHROPIC_API_KEY` is set, otherwise `local`, the deterministic engine the tests and a keyless demo use. The SDK talks to the API only through `AnthropicGateway`, so the tool loop is tested against a scripted model that records every byte it would have been sent.
+
+## 57. What the model sees
+
+Only the question, the user's name and role, today's date, fixed instructions, and what the read-only tools return for that user. Permissions are not described to the model; the tools enforce them and answer `"allowed": false`, which the model is told to explain without hinting at the hidden data. An answer is marked refused when every tool it tried was denied, or when the model declines. Tool results are labelled as data, never instructions, because they include text people typed (event names, notes).
+
+## 58. Citations
+
+Sources are not taken on the model's word. After the answer, Hive links the event codes and people the answer names *and* the tools actually returned, plus the screen behind each tool used (Clashes, Approvals, Leave...). A code the model invents gets no link.
+
+## 59. Queued answers
+
+Asking logs the request as queued and dispatches `AnswerAskHiveQuestion`; the panel polls every 1.5 seconds until it is answered or failed. Rate limiting happens when the question is asked, so queued requests count. A failed call is stored with a message the panel shows ("busy" for 429 and 529), and the detail goes to the error log. Laravel Cloud needs a queue worker (or `QUEUE_CONNECTION=sync`). A job reads the database without the walkthrough's session overlay, which no longer matters now that events, resourcing, time and finance are in the database. `php artisan hive:ask "…" --as=email` answers at once, to check a deploy.
+
+## 60. The four workflows
+
+Timesheet approval summary (Approvals, timesheets tab), budget risk narrative (event budget tab), wrap report draft (event page from Live onwards) and crew call suggestions (crew tab). Each is a fixed question the user sees in the panel, with extra instructions to the model, answered with the same tools. The button appears only for people who may run it, and the Action checks again. Two tools were added for them: `get_event_wrap_facts` (money only with budget access) and `list_crew_calls`, plus `list_pending_timesheet_entries`, which never includes cost. Drafts can be copied; nothing is saved, booked or approved.

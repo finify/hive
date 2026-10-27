@@ -35,6 +35,7 @@
         <section class="card mb-3">
             <div class="card-header flex-wrap">
                 <h2 class="card-title">Cost lines</h2>
+                <x-ask-hive-button workflow="budget-risk" :subject="$event['code']" />
                 @if ($canEdit)
                     <button type="button" class="btn btn-secondary btn-sm" wire:click="startLine">Add a line</button>
                 @endif

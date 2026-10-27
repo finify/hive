@@ -13,18 +13,19 @@ use Livewire\Livewire;
 it('refuses a freelancer asking about budgets (phase 7)', function () {
     $answer = app(AskHive::class)->handle(persona('kofi'), 'Which events are at risk this month and why?');
 
-    expect($answer->refused)->toBeTrue()
-        ->and($answer->text())->toContain('You don’t have access to event budgets')
-        ->and($answer->text())->not->toContain('£');
+    expect($answer->status)->toBe('answered')
+        ->and($answer->refused)->toBeTrue()
+        ->and($answer->response)->toContain('You don’t have access to event budgets')
+        ->and($answer->response)->not->toContain('£');
 });
 
 it('gives the director a cited answer', function () {
     $answer = app(AskHive::class)->handle(persona('priya'), 'Which events are at risk this month and why?');
 
     expect($answer->refused)->toBeFalse()
-        ->and($answer->text())->toContain('EV-26104 Meridian Bank Leadership Forum is at risk')
-        ->and($answer->text())->toContain('disputed invoice CUBE-9921')
-        ->and(collect($answer->sources)->pluck('label'))->toContain('EV-26104 budget');
+        ->and($answer->response)->toContain('EV-26104 Meridian Bank Leadership Forum is at risk')
+        ->and($answer->response)->toContain('disputed invoice CUBE-9921')
+        ->and(collect($answer->answer['sources'])->pluck('label'))->toContain('EV-26104 budget');
 });
 
 it('logs every request with the tools called', function () {
@@ -38,10 +39,10 @@ it('logs every request with the tools called', function () {
 
 it('never sends rate fields to the model without rates.view (rule 17)', function () {
     $answer = app(AskHive::class)->handle(persona('hannah'), 'Who’s free for the Lisbon build?');
-    expect($answer->text())->not->toContain('a day');
+    expect($answer->response)->not->toContain('a day');
 
     $finance = app(AskHive::class)->handle(persona('priya'), 'Who’s free for the Lisbon build?');
-    expect($finance->text())->toContain('a day');
+    expect($finance->response)->toContain('a day');
 });
 
 it('never returns restricted fields from any tool', function (string $who) {
@@ -84,7 +85,7 @@ it('rate limits each user per hour', function () {
 it('says when it has no data rather than guessing', function () {
     $answer = app(AskHive::class)->handle(persona('priya'), 'What is the weather in Lisbon?');
 
-    expect($answer->text())->toContain('I don’t have a tool for that question');
+    expect($answer->response)->toContain('I don’t have a tool for that question');
 });
 
 it('answers in the panel with sources', function () {

@@ -36,5 +36,6 @@
         <env name="HIVE_ENFORCE_TWO_FACTOR" value="true"/>
         <env name="ASK_HIVE_ENABLED" value="true"/>
         <env name="ANTHROPIC_API_KEY" value=""/>
+        <env name="ASK_HIVE_ENGINE" value="local"/>
     </php>
 </phpunit>

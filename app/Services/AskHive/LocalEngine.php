@@ -28,9 +28,23 @@ class LocalEngine implements AskHiveEngine
         return 'local';
     }
 
-    public function answer(string $question, Viewer $viewer, Tools $tools): Answer
+    public function model(): ?string
     {
-        $q = mb_strtolower($question);
+        return null;
+    }
+
+    public function answer(Question $question, Viewer $viewer, Tools $tools): Answer
+    {
+        if ($question->workflow) {
+            return match ($question->workflow) {
+                Workflow::TimesheetSummary => $this->timesheetSummary($tools),
+                Workflow::BudgetRisk => $this->budgetRisk((string) $question->subject, $tools),
+                Workflow::WrapReport => $this->wrapReport((string) $question->subject, $tools),
+                Workflow::CrewSuggestions => $this->crewSuggestions((string) $question->subject, $tools),
+            };
+        }
+
+        $q = mb_strtolower($question->text);
 
         return match (true) {
             (bool) preg_match('/\bev-?\d{5}\b/', $q) => $this->eventSummary($q, $tools),
@@ -295,5 +309,128 @@ class LocalEngine implements AskHiveEngine
         }
 
         return new Answer($paragraphs, [], [['label' => $e['code'], 'href' => route('events.show', $e['code'])]], $tools->calls());
+    }
+
+    private function timesheetSummary(Tools $tools): Answer
+    {
+        $r = $tools->listPendingTimesheetEntries();
+
+        if (! $r['allowed'] || $r['entries'] === []) {
+            return new Answer([$r['allowed'] ? 'No timesheet entries are waiting for you.' : 'Approving timesheets isn’t part of your role.'], tools: $tools->calls(), refused: ! $r['allowed']);
+        }
+
+        $entries = collect($r['entries']);
+        $flagged = $entries->filter(fn ($e) => $e['flags'] !== []);
+        $hours = $entries->sum(fn ($e) => (float) ($e['hours'] ?? 0));
+        $byEvent = $entries->groupBy('event')->map(fn ($g, $event) => "{$event} (".count($g).' '.(count($g) === 1 ? 'entry' : 'entries').', '.rtrim(rtrim(number_format($g->sum(fn ($e) => (float) ($e['hours'] ?? 0)), 1), '0'), '.').' hours)')->values()->all();
+
+        $paragraphs = [sprintf('%d %s waiting, %s hours in all: %s.', $entries->count(), $entries->count() === 1 ? 'entry is' : 'entries are', rtrim(rtrim(number_format($hours, 1), '0'), '.'), implode('; ', $byEvent))];
+        $bullets = $flagged->map(fn ($e) => "{$e['person']}, {$e['date']} ({$e['event']}): ".implode('; ', $e['flags']).'.')->values()->all();
+        $paragraphs[] = $flagged->isEmpty()
+            ? 'None of them breaks a working-time rule. Check hours against the crew call before you approve; you decide on each entry.'
+            : ($flagged->count() === 1 ? 'Check this one first' : "Check these {$flagged->count()} first").' against the crew call; you decide on each entry:';
+
+        return new Answer($paragraphs, $bullets, [['label' => 'Approvals', 'href' => route('approvals')]], $tools->calls());
+    }
+
+    private function budgetRisk(string $code, Tools $tools): Answer
+    {
+        $r = $tools->getBudgetHealth($code);
+        $e = $r['events'][0] ?? null;
+
+        if (! $r['allowed'] || $e === null) {
+            return new Answer(['You don’t have access to this event’s budget.'], tools: $tools->calls(), refused: true);
+        }
+
+        $paragraphs = ["{$e['code']} {$e['name']} is forecast at {$e['forecast']} against a {$e['budget']} budget ({$e['forecast_percent_of_budget']}%), with a margin of {$e['margin_percent']}%. Health: ".mb_strtolower((string) ($e['health'] ?? 'not set')).'.'];
+        $bullets = [];
+
+        if ($e['over_budget_lines']) {
+            $paragraphs[] = 'The forecast is being pushed up by '.implode(', ', $e['over_budget_lines']).'.';
+            $bullets[] = 'Check the open purchase orders and remaining estimates on those lines.';
+        }
+
+        if ($e['open_disputes']) {
+            $bullets[] = 'Resolve disputed invoice '.implode(', ', $e['open_disputes']).' before reconciling.';
+        }
+
+        if ($bullets === []) {
+            $paragraphs[] = 'No line is over budget and nothing is in dispute.';
+        }
+
+        return new Answer($paragraphs, $bullets, [['label' => $e['code'].' budget', 'href' => route('events.show', [$e['code'], 'tab' => 'budget'])]], $tools->calls());
+    }
+
+    private function wrapReport(string $code, Tools $tools): Answer
+    {
+        $r = $tools->getEventWrapFacts($code);
+        $f = $r['facts'];
+
+        if (! $r['allowed'] || $f === null) {
+            return new Answer(["I can’t find {$code} among the events you can see."], tools: $tools->calls(), refused: true);
+        }
+
+        $e = $f['event'];
+        $paragraphs = ["Draft wrap report: {$e['code']} {$e['name']} for {$e['client']}, {$e['dates']} in {$e['city']}, produced by {$e['producer']}. Now at {$e['stage']}."];
+        $bullets = [];
+
+        if (! empty($e['phases'])) {
+            $bullets[] = 'Phases: '.$e['phases'].'.';
+        }
+
+        $bullets[] = "Crew: {$f['crew_confirmed']} confirmed".($f['crew_by_role'] ? ' ('.implode(', ', $f['crew_by_role']).')' : '').'.';
+        $bullets[] = "Tasks: {$f['tasks_done']} done".($f['tasks_open'] ? ', still open: '.implode('; ', $f['tasks_open']) : ', none open').'.';
+
+        if (! empty($f['disputed_invoices'])) {
+            $bullets[] = 'Disputed invoices: '.implode(', ', $f['disputed_invoices']).'.';
+        }
+
+        if (isset($f['financials'])) {
+            $m = $f['financials'];
+            $bullets[] = "Money: revenue {$m['revenue']}, forecast cost {$m['forecast']} against a {$m['budget']} budget, margin {$m['margin']} ({$m['margin_percent']}%).";
+        }
+
+        $bullets[] = 'Still to add: what went well, what to change next time, and client feedback.';
+
+        return new Answer($paragraphs, $bullets, [['label' => $e['code'], 'href' => route('events.show', $e['code'])]], $tools->calls());
+    }
+
+    private function crewSuggestions(string $code, Tools $tools): Answer
+    {
+        $r = $tools->listCrewCalls($code);
+
+        if (! $r['allowed']) {
+            return new Answer(['Suggesting crew is for producers and heads of department.'], tools: $tools->calls(), refused: true);
+        }
+
+        $open = array_filter($r['calls'], fn ($c) => $c['open'] > 0);
+
+        if ($open === []) {
+            return new Answer(["Every crew call on {$r['event']} is filled."], tools: $tools->calls());
+        }
+
+        $bullets = [];
+        $sources = [];
+
+        foreach ($open as $call) {
+            $found = $tools->findAvailablePeople($call['role'], $call['start_date'], $call['end_date']);
+            $people = array_slice($found['people'], 0, 3);
+            $bullets[] = "{$call['role']}, {$call['dates']} ({$call['open']} open): ".($people
+                ? implode('; ', array_map(fn ($p) => $p['name'].', '.$p['based_in'].(isset($p['rating']) ? ", rated {$p['rating']}" : ''), $people))
+                : 'nobody with that role is free').'.';
+
+            foreach ($people as $p) {
+                $sources['p'.$p['id']] = ['label' => $p['name'], 'href' => route('people.show', $p['id'])];
+            }
+        }
+
+        $sources[] = ['label' => $code.' crew', 'href' => route('events.show', [$code, 'tab' => 'crew'])];
+
+        return new Answer(
+            ["Free for the open places on {$r['event']}, best match first. Nobody is booked until you send the request."],
+            $bullets,
+            array_values($sources),
+            $tools->calls(),
+        );
     }
 }

@@ -13,6 +13,9 @@ use App\Policies\LeaveRequestPolicy;
 use App\Policies\SupplierInvoicePolicy;
 use App\Policies\TimesheetEntryPolicy;
 use App\Services\AskHive\AskHiveEngine;
+use App\Services\AskHive\ClaudeEngine;
+use App\Services\AskHive\Gateway\AnthropicGateway;
+use App\Services\AskHive\Gateway\ModelGateway;
 use App\Services\AskHive\LocalEngine;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
@@ -33,7 +36,10 @@ class AppServiceProvider extends ServiceProvider
             new DemoLedger($app['session.store']),
         ));
 
-        $this->app->bind(AskHiveEngine::class, LocalEngine::class);
+        $this->app->bind(ModelGateway::class, fn () => AnthropicGateway::fromConfig());
+        $this->app->bind(AskHiveEngine::class, fn ($app) => config('hive.ai.engine') === 'claude'
+            ? $app->make(ClaudeEngine::class)
+            : $app->make(LocalEngine::class));
 
         $this->app->bind(Viewer::class, function ($app) {
             /** @var User $user */

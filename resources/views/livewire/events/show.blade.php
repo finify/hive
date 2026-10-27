@@ -19,6 +19,9 @@
             <a href="{{ route('events.index') }}" wire:navigate>Events</a> <span aria-hidden="true">/</span> <span class="code">{{ $event['code'] }}</span>
         </x-slot:crumbs>
         <x-slot:actions>
+            @if (in_array($event['stage'], ['live', 'wrap', 'reconciled', 'closed'], true))
+                <x-ask-hive-button workflow="wrap-report" :subject="$event['code']" size="md" />
+            @endif
             @if ($canEdit)
                 <a href="{{ route('events.edit', $event['code']) }}" class="btn btn-secondary" wire:navigate>Edit details</a>
             @endif

@@ -66,8 +66,18 @@ Sign-in, roles, permissions, invitations, two-factor, the audit log, people, the
 | Finance: budgets with versions against an approved baseline, revenue, purchase orders with approval limits and PDFs, supplier invoices with three-way matching and tolerance, freelancer invoices (upload and self-billing), expenses with receipts and mileage, billing milestones, exchange rates, CSV exports, the reconciliation rule | Built on the database and tested (phase 5) |
 | People and directory: add and edit staff and freelancers, skills, effective-dated day rates, encrypted restricted fields, document uploads with signed links, expiry reminders; clients, suppliers and venues with contacts | Built on the database and tested (phase 1) |
 | Leave | Requests and approval built (phase 3); balances and the full module are phase 5 |
-| Ask Hive with policy-scoped read-only tools, citations, logging and rate limits | Built with a local engine; the Anthropic engine is phase 7 |
+| Ask Hive: Claude through the official SDK with policy-scoped read-only tools, verified citations, queued answers, logging and rate limits; timesheet summaries, budget risk narratives, wrap report drafts and crew suggestions | Built and tested (phase 7); a deterministic local engine runs without an API key |
 | Onboarding, skills admin, reports, settings, integrations | Later phases (each has a page saying which) |
+
+## Ask Hive with Claude
+
+Set `ANTHROPIC_API_KEY` and Ask Hive uses Claude (`claude-opus-5-5` by default; `ANTHROPIC_MODEL` and `ASK_HIVE_EFFORT` change it). Without a key it uses the local engine, which answers the demo questions deterministically. Answers are queued, so run a worker (`php artisan queue:work`, or a worker on Laravel Cloud) or set `QUEUE_CONNECTION=sync`. To check a deploy:
+
+```bash
+php artisan hive:ask "Which events are at risk this month and why?" --as=priya@lumenco.test
+```
+
+The model sees only the question, the user's name and role, and what the read-only tools return for that user. Every request is logged in `ai_requests` with the tools it called and the tokens used.
 
 ## Development
 

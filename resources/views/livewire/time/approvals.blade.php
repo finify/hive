@@ -100,6 +100,11 @@
     @endif
 
     @if ($tab === 'timesheets')
+        @if ($groups->isNotEmpty())
+            <div class="d-flex justify-content-end mb-2">
+                <x-ask-hive-button workflow="timesheet-summary" />
+            </div>
+        @endif
         @forelse ($groups as $key => $group)
             @php
                 $ids = collect($group['items'])->pluck('entry.id')->all();
