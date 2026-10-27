@@ -7,6 +7,7 @@ use App\Http\Controllers\DocumentDownloadController;
 use App\Http\Controllers\FinanceExportController;
 use App\Http\Controllers\ImportTemplateController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\PersonDataExportController;
 use App\Http\Controllers\PurchaseOrderPdfController;
 use App\Http\Controllers\ReportExportController;
 use App\Http\Controllers\SingleSignOnController;
@@ -82,6 +83,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/people/new', Livewire\People\Form::class)->name('people.create');
         Route::get('/people/{person}/edit', Livewire\People\Form::class)->name('people.edit')->whereNumber('person');
         Route::get('/documents/{document}/download', DocumentDownloadController::class)->name('documents.download')->middleware('signed');
+        Route::get('/people/{person}/export.zip', PersonDataExportController::class)->name('people.export')->whereNumber('person');
         Route::get('/people/{person}', Livewire\People\Show::class)->name('people.show')->whereNumber('person');
         Route::get('/people/leave', Livewire\People\Leave::class)->name('leave')->middleware('can_any:leave.view_calendar,leave.request');
         Route::get('/people/skills', Livewire\People\Skills::class)->name('skills')->middleware('can:people.view_basic');
@@ -106,6 +108,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/integrations', Livewire\Admin\Integrations::class)->name('integrations')->middleware('can:settings.view');
         Route::get('/admin/import', Livewire\Admin\Import::class)->name('import')->middleware('can_any:people.manage,directory.manage');
         Route::get('/admin/import/{type}/template.csv', ImportTemplateController::class)->name('import.template')->middleware('can_any:people.manage,directory.manage');
+        Route::get('/admin/settings', Livewire\Admin\Settings::class)->name('settings')->middleware('can:settings.view');
+        Route::get('/admin/retention', Livewire\Admin\Retention::class)->name('retention')->middleware('can:people.manage');
         Route::get('/admin/audit', Livewire\Admin\AuditLog::class)->name('admin.audit')->middleware('can:audit.view');
 
         Route::get('/later/{module}', Livewire\Planned::class)->name('planned');

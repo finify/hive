@@ -16,6 +16,15 @@
         @if ($canEdit)
             <x-slot:actions>
                 <a href="{{ route('people.edit', $p['id']) }}" class="btn btn-secondary" wire:navigate>Edit details</a>
+                @can('people.view_restricted')
+                    <div class="dropdown">
+                        <button class="btn btn-quiet dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Data protection</button>
+                        <div class="dropdown-menu dropdown-menu-end p-1">
+                            <a class="dropdown-item rounded" href="{{ route('people.export', $p['id']) }}">Export everything Hive holds (ZIP)</a>
+                            <button type="button" class="dropdown-item rounded text-negative" x-on:click="$dispatch('modal', { id: 'erase-modal', show: true })">Anonymise…</button>
+                        </div>
+                    </div>
+                @endcan
             </x-slot:actions>
         @endif
         <x-slot:crumbs>
@@ -305,5 +314,29 @@
                 </dl>
             </div>
         </section>
+    @endif
+
+    @if ($canEdit)
+        @can('people.view_restricted')
+            <x-modal id="erase-modal" title="Anonymise {{ $name }}">
+                @php($eraseBlockers = app(\App\Actions\Gdpr\AnonymisePerson::class)->blockers($p['id']))
+                @if ($eraseBlockers)
+                    <ul class="mb-0">@foreach ($eraseBlockers as $b)<li>{{ $b }}</li>@endforeach</ul>
+                @else
+                    <form id="erase-form" wire:submit="anonymise" novalidate>
+                        <p>Their name, contact details, restricted details, documents, skills and notices are removed for good, and their sign-in is closed. Timesheets, costs, invoices and expenses stay, under “Former staff member {{ $p['id'] }}”, so the books still add up.</p>
+                        <label for="erase-reason" class="form-label">Why (for the audit log)</label>
+                        <input id="erase-reason" @class(['form-control', 'is-invalid' => $errors->has('reason')]) wire:model="erasureReason" placeholder="Erasure request ER-0042">
+                        @error('reason')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </form>
+                @endif
+                <x-slot:footer>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    @unless ($eraseBlockers)
+                        <button type="submit" form="erase-form" class="btn btn-primary" wire:loading.attr="disabled">Anonymise</button>
+                    @endunless
+                </x-slot:footer>
+            </x-modal>
+        @endcan
     @endif
 </div>

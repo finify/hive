@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\FlagRecordsPastRetention;
 use App\Jobs\RemindApproversOfPendingItems;
 use App\Jobs\RemindMissingTimesheets;
 use App\Jobs\SendDailyDigest;
@@ -21,6 +22,9 @@ Schedule::job(new SendDocumentExpiryReminders)->dailyAt('07:00')->timezone('Euro
 // Bills to Xero and payments back, once it is connected.
 Schedule::command('hive:accounting-sync')->hourlyAt(17)->withoutOverlapping()->name('accounting-sync')
     ->when(fn () => filled(config('hive.integrations.xero.client_id')));
+
+// UK GDPR: records past retention go up for review.
+Schedule::job(new FlagRecordsPastRetention)->monthlyOn(1, '06:00')->timezone('Europe/London')->name('flag-retention');
 
 // Opens the new leave year with carry-over, on the day it starts.
 [$leaveMonth, $leaveDay] = array_map('intval', explode('-', (string) config('hive.leave.year_start')));

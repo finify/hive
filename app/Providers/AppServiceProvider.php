@@ -21,6 +21,7 @@ use App\Services\AskHive\Gateway\ModelGateway;
 use App\Services\AskHive\LocalEngine;
 use App\Services\Identity\EntraId;
 use App\Services\Identity\SingleSignOn;
+use App\Support\Settings;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Model;
@@ -70,6 +71,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('leave.approve-request', [LeaveRequestPolicy::class, 'approve']);
 
         $this->logSignIns();
+
+        // Admins' changes to thresholds and limits, over config/hive.php.
+        Settings::apply();
     }
 
     /**

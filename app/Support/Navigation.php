@@ -54,7 +54,6 @@ final class Navigation
     public static function planned(): array
     {
         return [
-            'settings' => ['title' => 'Settings', 'phase' => 8, 'summary' => 'Organisation details, approval limits, thresholds, leave years and Ask Hive controls.'],
         ];
     }
 
@@ -111,7 +110,8 @@ final class Navigation
             ],
             'Admin' => [
                 ['label' => 'Users and roles', 'icon' => 'shield-lock', 'route' => 'admin.users', 'can' => ['users.manage']],
-                ['label' => 'Settings', 'icon' => 'gear', 'planned' => 'settings', 'can' => ['settings.view']],
+                ['label' => 'Settings', 'icon' => 'gear', 'route' => 'settings', 'can' => ['settings.view']],
+                ['label' => 'Data retention', 'icon' => 'shield-check', 'route' => 'retention', 'can' => ['people.manage']],
                 ['label' => 'Integrations', 'icon' => 'plug', 'route' => 'integrations', 'can' => ['settings.view']],
                 ['label' => 'Import from CSV', 'icon' => 'upload', 'route' => 'import', 'can' => ['people.manage', 'directory.manage']],
                 ['label' => 'Audit log', 'icon' => 'journal-text', 'route' => 'admin.audit', 'can' => ['audit.view']],

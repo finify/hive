@@ -153,6 +153,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Retention (UK GDPR, section 5.14)
+    |--------------------------------------------------------------------------
+    |
+    | How long records are kept before FlagRecordsPastRetention puts them up
+    | for review on the first of each month. Financial records six years.
+    |
+    */
+
+    'retention' => [
+        'timesheets_years' => 6,
+        'expenses_years' => 6,
+        'leavers_years' => 6,
+        'expired_documents_years' => 2,
+        'ai_requests_months' => 12,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Integrations (section 5.13)
     |--------------------------------------------------------------------------
     |

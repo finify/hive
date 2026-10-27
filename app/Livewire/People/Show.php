@@ -2,6 +2,7 @@
 
 namespace App\Livewire\People;
 
+use App\Actions\Gdpr\AnonymisePerson;
 use App\Actions\People\AddDayRate;
 use App\Actions\People\UploadDocument;
 use App\Enums\DocumentType;
@@ -42,6 +43,24 @@ class Show extends Component
         $this->person = $person;
         $this->newRate['role_name'] = (string) ($this->workspace()->person($person)['job_title'] ?? '');
         $this->newRate['effective_from'] = $this->workspace()->today()->addDay()->toDateString();
+    }
+
+    public string $erasureReason = '';
+
+    public function anonymise(AnonymisePerson $anonymise): void
+    {
+        $this->resetValidation();
+
+        try {
+            $anonymise->handle(auth()->user(), $this->person, $this->erasureReason);
+        } catch (ValidationException $e) {
+            $this->setErrorBag($e->validator->errors());
+
+            return;
+        }
+
+        $this->dispatch('modal', id: 'erase-modal', show: false);
+        $this->toast('Anonymised. Their financial records stay, under “Former staff member '.$this->person.'”.');
     }
 
     private function model(): Person
