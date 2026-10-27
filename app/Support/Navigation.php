@@ -54,8 +54,6 @@ final class Navigation
     public static function planned(): array
     {
         return [
-            'skills' => ['title' => 'Skills', 'phase' => 6, 'summary' => 'The skills catalogue, with levels from 1 to 5 and who verified them.'],
-            'reports' => ['title' => 'Reports', 'phase' => 6, 'summary' => 'Event profitability, utilisation, freelancer and supplier spend, pipeline and win rate, leave, timesheet compliance and working time flags, each exportable to CSV.'],
             'settings' => ['title' => 'Settings', 'phase' => 8, 'summary' => 'Organisation details, approval limits, thresholds, leave years and Ask Hive controls.'],
             'integrations' => ['title' => 'Integrations', 'phase' => 8, 'summary' => 'Microsoft Entra ID sign-in, Xero, Teams or Slack, calendar feeds and outbound webhooks.'],
         ];
@@ -102,7 +100,7 @@ final class Navigation
                 ['label' => 'Leave', 'icon' => 'sun', 'route' => 'leave', 'can' => ['leave.view_calendar', 'leave.request']],
                 ['label' => 'Onboarding', 'icon' => 'list-check', 'route' => 'onboarding', 'can' => ['people.manage', 'leave.approve', 'rates.edit', 'users.manage']],
                 ['label' => 'Documents', 'icon' => 'folder2', 'route' => 'documents', 'can' => ['documents.view', 'documents.view_status']],
-                ['label' => 'Skills', 'icon' => 'stars', 'planned' => 'skills', 'can' => ['people.view_basic']],
+                ['label' => 'Skills', 'icon' => 'stars', 'route' => 'skills', 'can' => ['people.view_basic']],
             ],
             'Directory' => [
                 ['label' => 'Clients', 'icon' => 'building', 'route' => 'clients', 'can' => ['directory.view']],
@@ -110,7 +108,7 @@ final class Navigation
                 ['label' => 'Venues', 'icon' => 'geo-alt', 'route' => 'venues', 'can' => ['directory.view']],
             ],
             'Reports' => [
-                ['label' => 'Reports', 'icon' => 'graph-up', 'planned' => 'reports', 'can' => ['reports.view']],
+                ['label' => 'Reports', 'icon' => 'graph-up', 'route' => 'reports', 'active' => 'reports*', 'can' => ['reports.view']],
             ],
             'Admin' => [
                 ['label' => 'Users and roles', 'icon' => 'shield-lock', 'route' => 'admin.users', 'can' => ['users.manage']],

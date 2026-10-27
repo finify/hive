@@ -46,7 +46,7 @@
         </div>
     @elseif ($showHr)
         <div class="figure-row">
-            <x-figure label="Starters and leavers, next 30 days" :value="$starters->count() + $leavers->count()" :caption="$starters->map(fn ($p) => $p['first_name'].' '.$p['last_name'].' starts '.Display::shortDate($p['start_date']))->merge($leavers->map(fn ($p) => $p['first_name'].' '.$p['last_name'].' leaves '.Display::shortDate($p['end_date'])))->implode('; ') ?: 'None'" />
+            <x-figure label="Starters and leavers, next six weeks" :value="$starters->count() + $leavers->count()" :caption="$starters->map(fn ($p) => $p['first_name'].' '.$p['last_name'].' starts '.Display::shortDate($p['start_date']))->merge($leavers->map(fn ($p) => $p['first_name'].' '.$p['last_name'].' leaves '.Display::shortDate($p['end_date'])))->implode('; ') ?: 'None'" />
             <x-figure label="Documents expiring or expired" :value="$expiring->count()" :caption="$expiring->filter(fn ($d) => app(\App\Demo\Workspace::class)->documentStatus($d)->value === 'expired')->count().' already expired'" :href="route('documents')" />
             <x-figure label="Leave to decide" :value="$leave->count()" caption="Waiting on you" :href="route('approvals', ['tab' => 'leave'])" />
             <x-figure label="Onboarding and offboarding" :value="$checklists->count().' open'" :caption="$checklistItems->isEmpty() ? 'Nothing open' : $checklistItems->whereNotNull('completed_at')->count().' of '.$checklistItems->count().' items done, '.$checklistItems->filter(fn ($i) => $i->completed_at === null && $i->due_date->toDateString() < $today->toDateString())->count().' overdue'" :href="route('onboarding')" />

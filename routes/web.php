@@ -6,6 +6,7 @@ use App\Http\Controllers\DocumentDownloadController;
 use App\Http\Controllers\FinanceExportController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PurchaseOrderPdfController;
+use App\Http\Controllers\ReportExportController;
 use App\Http\Controllers\TravelManifestController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
@@ -71,6 +72,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/documents/{document}/download', DocumentDownloadController::class)->name('documents.download')->middleware('signed');
         Route::get('/people/{person}', Livewire\People\Show::class)->name('people.show')->whereNumber('person');
         Route::get('/people/leave', Livewire\People\Leave::class)->name('leave')->middleware('can_any:leave.view_calendar,leave.request');
+        Route::get('/people/skills', Livewire\People\Skills::class)->name('skills')->middleware('can:people.view_basic');
         Route::get('/people/onboarding', Livewire\People\Onboarding::class)->name('onboarding')->middleware('can_any:people.manage,leave.approve,rates.edit,users.manage');
         Route::get('/people/documents', Livewire\People\Documents::class)->name('documents')->middleware('can_any:documents.view,documents.view_status');
 
@@ -83,6 +85,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/directory/venues', Livewire\Directory\Venues::class)->name('venues')->middleware('can:directory.view');
         Route::get('/directory/venues/new', Livewire\Directory\VenueForm::class)->name('venues.create');
         Route::get('/directory/venues/{venue}/edit', Livewire\Directory\VenueForm::class)->name('venues.edit');
+
+        Route::get('/reports', Livewire\Reports\Index::class)->name('reports')->middleware('can:reports.view');
+        Route::get('/reports/{key}.csv', ReportExportController::class)->name('reports.csv')->middleware('can:reports.view');
+        Route::get('/reports/{key}', Livewire\Reports\Show::class)->name('reports.show')->middleware('can:reports.view');
 
         Route::get('/admin/users', Livewire\Admin\Users::class)->name('admin.users')->middleware('can:users.manage');
         Route::get('/admin/audit', Livewire\Admin\AuditLog::class)->name('admin.audit')->middleware('can:audit.view');
