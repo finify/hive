@@ -18,6 +18,9 @@ class RemindApproversOfPendingItems implements ShouldBeUnique, ShouldQueue
 {
     use Queueable;
 
+    /** Not retried: a second run would email the first people again. Failures show on the Queue page. */
+    public int $tries = 1;
+
     public function handle(Workspace $workspace): void
     {
         $cutoff = now()->subDays((int) config('hive.approvals.remind_after_days', 3));

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Database\Factories\VenueFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Venue extends Model
 {
     /** @use HasFactory<VenueFactory> */
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, TouchesWorkspace;
 
     protected $fillable = ['name', 'address', 'city', 'country', 'capacity', 'access_notes', 'power_notes'];
 

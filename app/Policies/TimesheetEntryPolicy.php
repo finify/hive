@@ -30,8 +30,6 @@ class TimesheetEntryPolicy
             return false;
         }
 
-        $model = TimesheetEntry::query()->find($entry['id']);
-
-        return $model !== null && $this->approvals->decidableBy($user->person_id, $model) !== null;
+        return $this->approvals->decides($user->person_id, TimesheetEntry::class, (int) $entry['id']);
     }
 }

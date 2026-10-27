@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -26,6 +27,8 @@ use Illuminate\Support\Carbon;
  */
 class CostEntry extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = [
         'event_id', 'budget_line_id', 'source_type', 'source_id', 'source_ref', 'kind', 'amount_minor', 'currency',
         'fx_rate', 'amount_gbp_minor', 'draws_down_remaining', 'posted_at',

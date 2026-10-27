@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AssignmentStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use App\Services\Webhooks\Webhooks;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +28,8 @@ use Illuminate\Support\Carbon;
  */
 class Assignment extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = [
         'crew_call_id', 'event_id', 'person_id', 'start_date', 'end_date', 'status', 'agreed_rate_minor', 'currency',
         'clash_override_reason', 'clash_note', 'requested_at', 'responded_at',

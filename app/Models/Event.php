@@ -6,6 +6,7 @@ use App\Casts\MoneyCast;
 use App\Enums\DocumentType;
 use App\Enums\EventStage;
 use App\Enums\EventType;
+use App\Models\Concerns\TouchesWorkspace;
 use App\Support\Money;
 use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -48,7 +49,7 @@ use Illuminate\Support\Carbon;
 class Event extends Model
 {
     /** @use HasFactory<EventFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, TouchesWorkspace;
 
     protected $fillable = [
         'code', 'name', 'client_id', 'producer_id', 'event_type', 'stage', 'venue_id', 'city', 'country', 'timezone',

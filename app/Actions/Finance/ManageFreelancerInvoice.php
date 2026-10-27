@@ -89,12 +89,17 @@ class ManageFreelancerInvoice
         return $this->create($user, $personId, $start, $end, $number, $net, $vat, true, null);
     }
 
+    /** @var list<int>|null people with a current self-billing agreement */
+    private ?array $agreements = null;
+
     public function hasAgreement(int $personId): bool
     {
-        return Document::query()->where('documentable_type', Person::class)->where('documentable_id', $personId)
+        $this->agreements ??= Document::query()->where('documentable_type', Person::class)
             ->where('type', DocumentType::SelfBillingAgreement)
             ->where(fn ($q) => $q->whereNull('expires_at')->orWhereDate('expires_at', '>=', $this->workspace->today()->toDateString()))
-            ->exists();
+            ->pluck('documentable_id')->map(fn ($id) => (int) $id)->all();
+
+        return in_array($personId, $this->agreements, true);
     }
 
     public function decide(User $user, int $invoiceId, bool $approve, ?string $note = null): void

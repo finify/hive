@@ -71,7 +71,7 @@ class AskHive extends Component
 
     public function render(): View
     {
-        $requests = AiRequest::query()
+        $requests = $this->requestIds === [] ? collect() : AiRequest::query()
             ->where('user_id', auth()->id())
             ->whereIn('id', $this->requestIds)
             ->orderBy('id')

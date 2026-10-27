@@ -6,6 +6,7 @@ use App\Models\Person;
 use App\Models\User;
 use App\Notifications\DailyDigest;
 use App\Support\NotificationPreferences;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
@@ -15,9 +16,12 @@ use Illuminate\Support\Facades\DB;
  * last day's notices of the types they want by email. Nothing is sent to
  * someone with nothing new.
  */
-class SendDailyDigest implements ShouldQueue
+class SendDailyDigest implements ShouldBeUnique, ShouldQueue
 {
     use Queueable;
+
+    /** Not retried: a second run would email the first people again. Failures show on the Queue page. */
+    public int $tries = 1;
 
     public function handle(): void
     {

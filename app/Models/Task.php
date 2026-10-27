@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\TaskStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -18,6 +19,8 @@ use Illuminate\Support\Carbon;
  */
 class Task extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['event_id', 'title', 'assignee_id', 'due_date', 'status', 'sort_order'];
 
     /**

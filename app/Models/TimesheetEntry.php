@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EntryStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -31,6 +32,8 @@ use Illuminate\Support\Carbon;
  */
 class TimesheetEntry extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = [
         'timesheet_id', 'date', 'event_id', 'internal_code', 'phase', 'start_time', 'end_time', 'break_minutes',
         'hours', 'days', 'notes', 'status', 'approved_by', 'approved_at', 'return_comment',

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -21,6 +22,8 @@ use Illuminate\Support\Carbon;
  */
 class PersonRestricted extends Model
 {
+    use TouchesWorkspace;
+
     protected $table = 'person_restricted';
 
     protected $fillable = ['person_id', 'emergency_contact', 'passport_number', 'passport_expiry', 'nationality', 'dietary_requirements', 'access_needs'];

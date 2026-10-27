@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Contact extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['contactable_type', 'contactable_id', 'name', 'role', 'email', 'phone', 'is_primary'];
 
     /**

@@ -24,6 +24,12 @@ class FlagRecordsPastRetention implements ShouldBeUnique, ShouldQueue
 {
     use Queueable;
 
+    /** Retried with backoff: a minute, then five. */
+    public int $tries = 3;
+
+    /** @var list<int> */
+    public array $backoff = [60, 300];
+
     public function handle(DemoData $data): int
     {
         $today = config('hive.demo.enabled') ? $data->today() : CarbonImmutable::today();

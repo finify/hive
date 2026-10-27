@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BillingStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -24,6 +25,8 @@ use Illuminate\Support\Carbon;
  */
 class BillingMilestone extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['event_id', 'description', 'percentage', 'amount_minor', 'currency', 'due_date', 'status', 'invoice_reference', 'invoiced_on', 'paid_on'];
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -21,6 +22,8 @@ use Illuminate\Support\Carbon;
  */
 class PeriodLock extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['period_start', 'period_end', 'locked_by', 'locked_at', 'unlocked_by', 'unlocked_at', 'reason'];
 
     /**

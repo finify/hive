@@ -23,6 +23,7 @@ final class NotificationPreferences
         'po' => 'Purchase orders',
         'invoice' => 'Invoices and disputes',
         'billing' => 'Client billing',
+        'budget' => 'Budget health warnings',
         'people' => 'Onboarding and offboarding',
         'stage' => 'Event stage changes',
     ];

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BudgetLine extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['event_id', 'category', 'description', 'supplier_id', 'budget_minor', 'currency', 'fx_rate', 'budget_gbp_minor', 'remaining_gbp_minor', 'notes', 'sort_order'];
 
     /**

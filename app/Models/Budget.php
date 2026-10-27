@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BudgetStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -22,6 +23,8 @@ use Illuminate\Support\Carbon;
  */
 class Budget extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['event_id', 'version', 'status', 'total_gbp_minor', 'lines_snapshot', 'approved_by', 'approved_at', 'notes'];
 
     /**

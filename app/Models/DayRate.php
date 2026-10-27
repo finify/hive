@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\MoneyCast;
+use App\Models\Concerns\TouchesWorkspace;
 use App\Support\Money;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,7 +26,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class DayRate extends Model
 {
-    use LogsActivity;
+    use LogsActivity, TouchesWorkspace;
 
     protected $fillable = ['person_id', 'role_name', 'amount_minor', 'currency', 'effective_from', 'effective_to'];
 

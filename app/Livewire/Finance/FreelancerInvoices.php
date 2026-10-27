@@ -136,7 +136,7 @@ class FreelancerInvoices extends Component
             'invoices' => $invoices,
             'isFinance' => $isFinance,
             'mine' => $mine,
-            'decidable' => $invoices->filter(fn (FreelancerInvoice $i) => $engine->decidableBy($user->person_id, $i) !== null)->pluck('id')->all(),
+            'decidable' => $invoices->filter(fn (FreelancerInvoice $i) => $engine->decides($user->person_id, FreelancerInvoice::class, $i->id))->pluck('id')->all(),
             'deciding' => $deciding,
             'selfBilling' => config('hive.finance.self_billing'),
             'selfBillPeople' => $isFinance

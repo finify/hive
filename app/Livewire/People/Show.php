@@ -148,7 +148,7 @@ class Show extends Component
             $this->tab = 'overview';
         }
 
-        $person = $viewer->presentPerson($workspace->person($this->person));
+        $person = $viewer->presentPerson($workspace->personWithSensitive($this->person) ?? abort(404));
         $today = $workspace->today()->toDateString();
 
         $bookings = $workspace->assignments()

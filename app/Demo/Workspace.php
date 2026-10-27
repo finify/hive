@@ -50,6 +50,7 @@ use App\Support\Time\WorkingTimeRules;
 use Carbon\CarbonImmutable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * The agency: people and the directory from the database (phase 1), and the
@@ -64,6 +65,22 @@ class Workspace
     /** @var array<string, mixed> */
     private array $memo = [];
 
+    private ?int $version = null;
+
+    /** @var array<string, mixed>|null */
+    private ?array $shared = null;
+
+    /**
+     * Table reads shared between requests through the cache, until the data
+     * changes. People go in without their encrypted fields, which are never
+     * cached (see personWithSensitive()).
+     */
+    private const SHARED = [
+        'people', 'departments', 'skills', 'clients', 'suppliers', 'venues', 'documents', 'events', 'crew_calls', 'assignments', 'leave',
+        'unavailability', 'timesheets', 'period_locks', 'budgets', 'cost_entries', 'revenue', 'purchase_orders', 'supplier_invoices',
+        'billing', 'expenses',
+    ];
+
     public function __construct(
         public readonly DemoData $data,
         public readonly DemoLedger $ledger,
@@ -77,6 +94,8 @@ class Workspace
     public function forget(): void
     {
         $this->memo = [];
+        $this->version = $this->shared = null;
+        WorkspaceVersion::bump();
     }
 
     /**
@@ -87,7 +106,25 @@ class Workspace
      */
     private function memo(string $key, callable $build): mixed
     {
-        return $this->memo[$key] ??= $build();
+        if (! in_array($key, self::SHARED, true)) {
+            return $this->memo[$key] ??= $build();
+        }
+
+        if (array_key_exists($key, $this->memo)) {
+            return $this->memo[$key];
+        }
+
+        // One cache entry holds every shared read for this version, so a
+        // database cache store costs one query, not one per table.
+        $this->version ??= WorkspaceVersion::current();
+        $this->shared ??= (array) Cache::get("workspace.{$this->version}", []);
+
+        if (! array_key_exists($key, $this->shared)) {
+            $this->shared[$key] = $build();
+            Cache::put("workspace.{$this->version}", $this->shared, now()->addHour());
+        }
+
+        return $this->memo[$key] = $this->shared[$key];
     }
 
     // ================================================================== organisation
@@ -135,9 +172,22 @@ class Workspace
      */
     public function people(): Collection
     {
+        // Shared through the cache, so without the encrypted fields (restricted
+        // details and notes); personWithSensitive() reads those fresh.
         return $this->memo('people', fn () => Rows::keyed(
-            Person::query()->with(['restricted', 'dayRates', 'skills'])->orderBy('id')->get()->map(fn (Person $p) => $p->toWorkspaceArray())->all(),
+            Person::query()->with(['dayRates', 'skills'])->orderBy('id')->get()->map(fn (Person $p) => $p->toWorkspaceArray(sensitive: false))->all(),
         ));
+    }
+
+    /**
+     * One person with their restricted details and notes, for the profile.
+     * Never cached.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function personWithSensitive(int $id): ?array
+    {
+        return $this->memo("person_sensitive_{$id}", fn () => Person::query()->with(['restricted', 'dayRates', 'skills'])->find($id)?->toWorkspaceArray());
     }
 
     /**
@@ -954,10 +1004,13 @@ class Workspace
                 return $n;
             });
 
-        $user = User::query()->where('person_id', $personId)->first();
-        $person = Person::query()->withTrashed()->find($personId);
+        // One query for what is stored on the person and on their sign-in.
+        $stored = $this->memo("notices_{$personId}", fn () => DatabaseNotification::query()
+            ->where(fn ($q) => $q->where(fn ($q) => $q->where('notifiable_type', Person::class)->where('notifiable_id', $personId))
+                ->orWhere(fn ($q) => $q->where('notifiable_type', User::class)->whereIn('notifiable_id', User::query()->select('id')->where('person_id', $personId))))
+            ->latest()->limit(100)->get());
 
-        return $this->stored($person)->merge($user ? $this->stored($user) : collect())->merge($seeded)->sortByDesc('at')->values();
+        return $this->present($stored, $personId)->merge($seeded)->sortByDesc('at')->values();
     }
 
     /**
@@ -973,15 +1026,20 @@ class Workspace
     /**
      * @return Collection<int, array<string, mixed>>
      */
-    private function stored(User|Person|null $owner): Collection
+    private function stored(User $owner): Collection
     {
-        if ($owner === null) {
-            return collect();
-        }
+        return $this->present($owner->notifications()->latest()->limit(50)->get(), $owner->person_id);
+    }
 
-        return Rows::of($owner->notifications()->latest()->limit(50)->get()->toBase()->map(fn (DatabaseNotification $n) => [
+    /**
+     * @param  iterable<DatabaseNotification>  $notifications
+     * @return Collection<int, array<string, mixed>>
+     */
+    private function present(iterable $notifications, ?int $personId): Collection
+    {
+        return Rows::of(collect($notifications)->map(fn (DatabaseNotification $n) => [
             'key' => $n->id,
-            'person_id' => $owner instanceof Person ? $owner->id : $owner->person_id,
+            'person_id' => $personId,
             'type' => $n->data['type'] ?? 'notice',
             'title' => $n->data['title'] ?? 'Notice',
             'body' => $n->data['body'] ?? '',

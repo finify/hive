@@ -16,6 +16,9 @@ class DetectClashes implements ShouldQueue
 {
     use Queueable;
 
+    /** Not retried: producers would be told twice. */
+    public int $tries = 1;
+
     public function __construct(
         public readonly int $personId,
         public readonly string $startDate,

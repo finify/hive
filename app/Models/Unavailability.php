@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -17,6 +18,8 @@ use Illuminate\Support\Carbon;
  */
 class Unavailability extends Model
 {
+    use TouchesWorkspace;
+
     protected $table = 'unavailability';
 
     protected $fillable = ['person_id', 'start_date', 'end_date', 'note'];

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ExpenseCategory;
 use App\Enums\ExpenseStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -31,6 +32,8 @@ use Illuminate\Support\Carbon;
  */
 class Expense extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = [
         'person_id', 'event_id', 'category', 'date', 'description', 'amount_minor', 'currency', 'fx_rate', 'amount_gbp_minor', 'vat_minor',
         'mileage_miles', 'receipt_path', 'receipt_name', 'status', 'decision_comment', 'submitted_at', 'decided_at',

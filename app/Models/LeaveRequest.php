@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\LeaveStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -25,6 +26,8 @@ use Illuminate\Support\Carbon;
  */
 class LeaveRequest extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['person_id', 'leave_type', 'start_date', 'end_date', 'days', 'reason', 'status', 'approved_by', 'approved_at', 'requested_at'];
 
     /**

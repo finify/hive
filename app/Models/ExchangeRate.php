@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -16,6 +17,8 @@ use Illuminate\Support\Carbon;
  */
 class ExchangeRate extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['currency', 'rate_to_gbp', 'effective_on', 'set_by'];
 
     /**

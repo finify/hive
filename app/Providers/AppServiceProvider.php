@@ -14,6 +14,7 @@ use App\Policies\SupplierInvoicePolicy;
 use App\Policies\TimesheetEntryPolicy;
 use App\Services\Accounting\AccountingGateway;
 use App\Services\Accounting\XeroGateway;
+use App\Services\Approvals\ApprovalEngine;
 use App\Services\AskHive\AskHiveEngine;
 use App\Services\AskHive\ClaudeEngine;
 use App\Services\AskHive\Gateway\AnthropicGateway;
@@ -25,7 +26,10 @@ use App\Support\Settings;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Events\DiagnosingHealth;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -41,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
             new DemoLedger($app['session.store']),
         ));
 
+        // One engine per request, so its memo of delegations and inboxes is shared.
+        $this->app->scoped(ApprovalEngine::class);
         $this->app->bind(ModelGateway::class, fn () => AnthropicGateway::fromConfig());
         $this->app->bind(AccountingGateway::class, XeroGateway::class);
         $this->app->bind(SingleSignOn::class, EntraId::class);
@@ -71,6 +77,12 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('leave.approve-request', [LeaveRequestPolicy::class, 'approve']);
 
         $this->logSignIns();
+
+        // /up fails if the database or cache can't be reached.
+        Event::listen(DiagnosingHealth::class, function () {
+            DB::select('select 1');
+            Cache::put('health-check', now()->timestamp, 60);
+        });
 
         // Admins' changes to thresholds and limits, over config/hive.php.
         Settings::apply();

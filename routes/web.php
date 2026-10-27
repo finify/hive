@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/import/{type}/template.csv', ImportTemplateController::class)->name('import.template')->middleware('can_any:people.manage,directory.manage');
         Route::get('/admin/settings', Livewire\Admin\Settings::class)->name('settings')->middleware('can:settings.view');
         Route::get('/admin/retention', Livewire\Admin\Retention::class)->name('retention')->middleware('can:people.manage');
+        Route::get('/admin/queue', Livewire\Admin\Queue::class)->name('queue')->middleware('can:settings.view');
         Route::get('/admin/audit', Livewire\Admin\AuditLog::class)->name('admin.audit')->middleware('can:audit.view');
 
         Route::get('/later/{module}', Livewire\Planned::class)->name('planned');

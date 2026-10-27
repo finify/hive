@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EmploymentType;
+use App\Models\Concerns\TouchesWorkspace;
 use Database\Factories\PersonFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -55,7 +56,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Person extends Model
 {
     /** @use HasFactory<PersonFactory> */
-    use HasFactory, LogsActivity, Notifiable, SoftDeletes;
+    use HasFactory, LogsActivity, Notifiable, SoftDeletes, TouchesWorkspace;
 
     protected $table = 'people';
 
@@ -168,7 +169,7 @@ class Person extends Model
      *
      * @return array<string, mixed>
      */
-    public function toWorkspaceArray(): array
+    public function toWorkspaceArray(bool $sensitive = true): array
     {
         return [
             'id' => $this->id,
@@ -206,7 +207,7 @@ class Person extends Model
                 'effective_to' => $rate->effective_to?->toDateString(),
             ])->values()->all(),
             'rating' => $this->rating === null ? null : (float) $this->rating,
-            'restricted' => [
+            'restricted' => ! $sensitive ? null : [
                 'emergency_contact' => $this->restricted?->emergency_contact,
                 'passport_number' => $this->restricted?->passport_number,
                 'passport_expiry' => $this->restricted?->passport_expiry?->toDateString(),
@@ -214,7 +215,7 @@ class Person extends Model
                 'dietary_requirements' => $this->restricted?->dietary_requirements,
                 'access_needs' => $this->restricted?->access_needs,
             ],
-            'notes' => $this->notes,
+            'notes' => $sensitive ? $this->notes : null,
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RevenueType;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RevenueLine extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['event_id', 'type', 'description', 'amount_minor', 'currency'];
 
     /**

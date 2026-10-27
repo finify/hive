@@ -23,8 +23,6 @@ class LeaveRequestPolicy
             return false;
         }
 
-        $model = LeaveRequest::query()->find($leave['id']);
-
-        return $model !== null && $this->approvals->decidableBy($user->person_id, $model) !== null;
+        return $this->approvals->decides($user->person_id, LeaveRequest::class, (int) $leave['id']);
     }
 }

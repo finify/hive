@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class EventTeamMember extends Model
 {
+    use TouchesWorkspace;
+
     protected $table = 'event_team';
 
     protected $fillable = ['event_id', 'person_id', 'role'];

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PurchaseOrderLine extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['purchase_order_id', 'description', 'quantity', 'unit_price_minor', 'vat_rate'];
 
     /**

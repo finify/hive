@@ -21,7 +21,23 @@ use InvalidArgumentException;
  */
 class ApprovalEngine
 {
+    /** @var array<int, list<int>>|null delegate => people they cover, today */
+    private ?array $delegations = null;
+
+    /** @var array<int, Collection<int, Approval>> */
+    private array $inboxes = [];
+
     public function __construct(private readonly Workspace $workspace) {}
+
+    /**
+     * Drops what this engine has read, after anything changes approvals or
+     * delegations.
+     */
+    public function forget(): void
+    {
+        $this->delegations = null;
+        $this->inboxes = [];
+    }
 
     public function rule(Model|string $approvable): ApprovalRule
     {
@@ -60,6 +76,8 @@ class ApprovalEngine
             throw ValidationException::withMessages(['approval' => 'There is nobody to approve this yet. Ask an administrator to set a line manager.']);
         }
 
+        $this->forget();
+
         return DB::transaction(function () use ($approvable, $rule, $requester, $steps) {
             $this->withdraw($approvable);
             $rows = collect();
@@ -88,6 +106,7 @@ class ApprovalEngine
      */
     public function withdraw(Model $approvable): void
     {
+        $this->forget();
         $this->open($approvable)->update(['status' => ApprovalStatus::Closed]);
     }
 
@@ -99,11 +118,15 @@ class ApprovalEngine
      */
     public function actingFor(int $personId): array
     {
-        return array_values(array_unique([
-            $personId,
-            ...ApprovalDelegation::query()->activeOn($this->workspace->today()->toDateString())
-                ->where('delegate_id', $personId)->pluck('person_id')->map(fn ($id) => (int) $id)->all(),
-        ]));
+        if ($this->delegations === null) {
+            $this->delegations = [];
+
+            foreach (ApprovalDelegation::query()->activeOn($this->workspace->today()->toDateString())->get(['person_id', 'delegate_id']) as $d) {
+                $this->delegations[(int) $d->delegate_id][] = (int) $d->person_id;
+            }
+        }
+
+        return array_values(array_unique([$personId, ...($this->delegations[$personId] ?? [])]));
     }
 
     public function canDecide(?int $personId, Approval $approval): bool
@@ -112,6 +135,17 @@ class ApprovalEngine
             && $approval->status === ApprovalStatus::Pending
             && $approval->requested_by !== $personId
             && in_array($approval->approver_id, $this->actingFor($personId), true);
+    }
+
+    /**
+     * Whether this person can decide on the item now, from their memoised
+     * inbox: no query per item on lists.
+     *
+     * @param  class-string<Model>  $type
+     */
+    public function decides(?int $personId, string $type, int $id): bool
+    {
+        return $personId !== null && $this->inbox($personId)->contains(fn (Approval $a) => $a->approvable_type === $type && (int) $a->approvable_id === $id);
     }
 
     /**
@@ -137,6 +171,8 @@ class ApprovalEngine
         if ($approval === null) {
             throw new AuthorizationException('You can’t decide on this.');
         }
+
+        $this->forget();
 
         return DB::transaction(function () use ($approval, $approvable, $personId, $approve, $comment) {
             $approval->update([
@@ -185,7 +221,7 @@ class ApprovalEngine
      */
     public function inbox(int $personId): Collection
     {
-        return Approval::query()
+        return $this->inboxes[$personId] ??= Approval::query()
             ->where('status', ApprovalStatus::Pending)
             ->whereIn('approver_id', $this->actingFor($personId))
             ->where(fn ($q) => $q->whereNull('requested_by')->orWhere('requested_by', '!=', $personId))

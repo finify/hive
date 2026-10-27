@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\DocumentStatus;
 use App\Enums\DocumentType;
+use App\Models\Concerns\TouchesWorkspace;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,7 +32,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Document extends Model
 {
-    use LogsActivity;
+    use LogsActivity, TouchesWorkspace;
 
     protected $fillable = ['documentable_type', 'documentable_id', 'type', 'title', 'file_path', 'original_name', 'issued_at', 'expires_at', 'mandatory', 'uploaded_by', 'reminded_days'];
 

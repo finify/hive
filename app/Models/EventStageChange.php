@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EventStage;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -18,6 +19,8 @@ use Illuminate\Support\Carbon;
  */
 class EventStageChange extends Model
 {
+    use TouchesWorkspace;
+
     public $timestamps = false;
 
     protected $fillable = ['event_id', 'from_stage', 'to_stage', 'changed_by', 'note', 'changed_at'];

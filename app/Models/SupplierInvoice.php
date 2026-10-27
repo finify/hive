@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\SupplierInvoiceStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -41,6 +42,8 @@ use Illuminate\Support\Carbon;
  */
 class SupplierInvoice extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = [
         'supplier_id', 'purchase_order_id', 'event_id', 'budget_line_id', 'invoice_number', 'invoice_date', 'due_date', 'currency', 'fx_rate', 'net_minor', 'vat_minor',
         'gross_minor', 'status', 'variance_minor', 'approved_by', 'approved_at', 'approval_note', 'no_po_reason', 'notes', 'file_path', 'original_name',

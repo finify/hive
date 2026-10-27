@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\FlagRecordsPastRetention;
+use App\Jobs\RefreshEventHealth;
 use App\Jobs\RemindApproversOfPendingItems;
 use App\Jobs\RemindMissingTimesheets;
 use App\Jobs\SendDailyDigest;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::job(new RemindMissingTimesheets)->weeklyOn(5, '14:00')->timezone('Europe/London')->name('remind-missing-timesheets');
 Schedule::job(new RemindApproversOfPendingItems)->weeklyOn(1, '09:00')->timezone('Europe/London')->name('remind-approvers');
 Schedule::job(new SendWeeklyRotaDigest)->weeklyOn(1, '08:00')->timezone('Europe/London')->name('weekly-rota-digest');
+Schedule::job(new RefreshEventHealth)->dailyAt('07:30')->timezone('Europe/London')->name('refresh-event-health');
 Schedule::job(new SendDailyDigest)->dailyAt('08:00')->timezone('Europe/London')->name('daily-digest');
 Schedule::job(new SendDocumentExpiryReminders)->dailyAt('07:00')->timezone('Europe/London')->name('document-expiry-reminders');
 

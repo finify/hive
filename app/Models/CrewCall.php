@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -30,6 +31,8 @@ use Illuminate\Support\Carbon;
  */
 class CrewCall extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = [
         'event_id', 'role_name', 'skill_id', 'min_skill_level', 'quantity', 'start_date', 'end_date', 'phase',
         'call_time', 'wrap_time', 'location', 'budgeted_rate_minor', 'currency', 'notes',

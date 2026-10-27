@@ -111,6 +111,7 @@ final class Navigation
             'Admin' => [
                 ['label' => 'Users and roles', 'icon' => 'shield-lock', 'route' => 'admin.users', 'can' => ['users.manage']],
                 ['label' => 'Settings', 'icon' => 'gear', 'route' => 'settings', 'can' => ['settings.view']],
+                ['label' => 'Queue', 'icon' => 'hourglass-split', 'route' => 'queue', 'can' => ['settings.view']],
                 ['label' => 'Data retention', 'icon' => 'shield-check', 'route' => 'retention', 'can' => ['people.manage']],
                 ['label' => 'Integrations', 'icon' => 'plug', 'route' => 'integrations', 'can' => ['settings.view']],
                 ['label' => 'Import from CSV', 'icon' => 'upload', 'route' => 'import', 'can' => ['people.manage', 'directory.manage']],

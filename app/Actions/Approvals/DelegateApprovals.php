@@ -5,6 +5,7 @@ namespace App\Actions\Approvals;
 use App\Demo\Workspace;
 use App\Models\ApprovalDelegation;
 use App\Models\User;
+use App\Services\Approvals\ApprovalEngine;
 use App\Support\DateRange;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,10 @@ class DelegateApprovals
 {
     public const PERMISSIONS = ['timesheets.approve', 'leave.approve', 'supplier_invoices.approve', 'expenses.approve', 'po.approve'];
 
-    public function __construct(private readonly Workspace $workspace) {}
+    public function __construct(
+        private readonly Workspace $workspace,
+        private readonly ApprovalEngine $approvals,
+    ) {}
 
     /**
      * @param  array{delegate_id?: mixed, starts_on?: mixed, ends_on?: mixed, reason?: mixed}  $input
@@ -58,6 +62,7 @@ class DelegateApprovals
             'person_id' => $user->person_id, 'delegate_id' => (int) $data['delegate_id'],
             'starts_on' => $data['starts_on'], 'ends_on' => $data['ends_on'], 'reason' => $data['reason'] ?? null,
         ]);
+        $this->approvals->forget();
 
         $dates = DateRange::of($data['starts_on'], $data['ends_on'])->format();
         $name = $this->workspace->personName($user->person_id);
@@ -82,7 +87,7 @@ class DelegateApprovals
      */
     public function candidates(User $user): Collection
     {
-        return User::query()->active()->whereNotNull('person_id')->where('person_id', '!=', $user->person_id)->get()
+        return User::query()->with(['roles.permissions', 'permissions'])->active()->whereNotNull('person_id')->where('person_id', '!=', $user->person_id)->get()
             ->filter(fn (User $u) => $u->canAny(self::PERMISSIONS))
             ->mapWithKeys(fn (User $u) => [(int) $u->person_id => $this->workspace->personName($u->person_id)])
             ->sort()
@@ -93,6 +98,7 @@ class DelegateApprovals
     {
         $delegation = ApprovalDelegation::query()->whereNull('cancelled_at')->where('person_id', $user->person_id)->findOrFail($id);
         $delegation->update(['cancelled_at' => now()]);
+        $this->approvals->forget();
 
         activity('approvals')
             ->causedBy($user)

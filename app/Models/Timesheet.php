@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\EntryStatus;
 use App\Enums\TimesheetStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,8 @@ use Illuminate\Support\Carbon;
  */
 class Timesheet extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = ['person_id', 'week_start', 'status', 'submitted_at', 'locked_at'];
 
     /**

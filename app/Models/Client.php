@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TouchesWorkspace;
 use Database\Factories\ClientFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +27,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Client extends Model
 {
     /** @use HasFactory<ClientFactory> */
-    use HasFactory, LogsActivity, SoftDeletes;
+    use HasFactory, LogsActivity, SoftDeletes, TouchesWorkspace;
 
     protected $fillable = ['name', 'sector', 'billing_address', 'vat_number', 'payment_terms_days', 'account_lead_id', 'notes'];
 

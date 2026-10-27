@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PurchaseOrderStatus;
+use App\Models\Concerns\TouchesWorkspace;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,6 +36,8 @@ use Illuminate\Support\Carbon;
  */
 class PurchaseOrder extends Model
 {
+    use TouchesWorkspace;
+
     protected $fillable = [
         'code', 'event_id', 'supplier_id', 'budget_line_id', 'status', 'currency', 'fx_rate', 'subtotal_minor', 'vat_minor', 'total_minor',
         'raised_by', 'approved_by', 'approved_at', 'sent_at', 'goods_received_at', 'goods_received_by', 'notes',

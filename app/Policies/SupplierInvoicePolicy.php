@@ -23,8 +23,6 @@ class SupplierInvoicePolicy
             return false;
         }
 
-        $model = SupplierInvoice::query()->find($invoice['id']);
-
-        return $model !== null && $this->approvals->decidableBy($user->person_id, $model) !== null;
+        return $this->approvals->decides($user->person_id, SupplierInvoice::class, (int) $invoice['id']);
     }
 }

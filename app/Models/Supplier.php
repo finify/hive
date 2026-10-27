@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\DocumentType;
 use App\Enums\SupplierCategory;
+use App\Models\Concerns\TouchesWorkspace;
 use Database\Factories\SupplierFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +29,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Supplier extends Model
 {
     /** @use HasFactory<SupplierFactory> */
-    use HasFactory, LogsActivity, SoftDeletes;
+    use HasFactory, LogsActivity, SoftDeletes, TouchesWorkspace;
 
     protected $fillable = ['name', 'category', 'vat_number', 'payment_terms_days', 'is_approved', 'rating', 'notes'];
 
