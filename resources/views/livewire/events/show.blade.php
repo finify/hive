@@ -10,7 +10,7 @@
     use App\Support\Display;
     use App\Support\Money;
     $workspace = app(\App\Demo\Workspace::class);
-    $tabLabels = ['overview' => 'Overview', 'tasks' => 'Tasks', 'crew' => 'Crew and resourcing', 'budget' => 'Budget', 'purchase-orders' => 'Purchase orders', 'invoices' => 'Invoices', 'timesheets' => 'Timesheets', 'files' => 'Files', 'activity' => 'Activity'];
+    $tabLabels = ['overview' => 'Overview', 'tasks' => 'Tasks', 'crew' => 'Crew and resourcing', 'travel' => 'Travel', 'budget' => 'Budget', 'purchase-orders' => 'Purchase orders', 'invoices' => 'Invoices', 'timesheets' => 'Timesheets', 'files' => 'Files', 'activity' => 'Activity'];
     $span = $workspace->eventSpan($event);
 @endphp
 <div>
@@ -223,6 +223,10 @@
     @endif
 
     {{-- ============================================================ budget --}}
+    @if ($tab === 'travel')
+        <livewire:events.travel :event-id="$event['id']" :key="'travel-'.$event['id']" />
+    @endif
+
     @if ($tab === 'budget')
         <livewire:events.budget :event-id="$event['id']" :key="'budget-'.$event['id']" />
     @endif

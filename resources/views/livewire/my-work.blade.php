@@ -73,6 +73,22 @@
         </section>
 
         <div class="span-5 d-grid gap-3 align-content-start">
+            @if ($travel->isNotEmpty())
+                <section class="card">
+                    <div class="card-header"><h2 class="card-title">My travel</h2></div>
+                    <ul class="list-rows">
+                        @foreach ($travel as $t)
+                            <li wire:key="trv-{{ $t->id }}">
+                                <i class="bi bi-{{ $t->mode->icon() }}" aria-hidden="true"></i>
+                                <div class="row-main">
+                                    <div class="row-title">{{ $t->summary() }}</div>
+                                    <div class="row-sub">{{ app(\App\Demo\Workspace::class)->event($t->event_id)['code'] ?? '' }}{{ $t->reference ? ' · Ref '.$t->reference : '' }}{{ $t->notes ? ' · '.$t->notes : '' }}</div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
+            @endif
             <section class="card">
                 <div class="card-header"><h2 class="card-title">My documents</h2></div>
                 @if ($documents->isEmpty())

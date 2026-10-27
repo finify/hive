@@ -4,7 +4,9 @@ namespace App\Livewire;
 
 use App\Actions\Resourcing\RespondToBookingRequest;
 use App\Actions\Resourcing\SetUnavailability;
+use App\Enums\TravelStatus;
 use App\Livewire\Concerns\UsesWorkspace;
+use App\Models\TravelBooking;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
@@ -71,6 +73,9 @@ class MyWork extends Component
             'unavailable' => $workspace->unavailability()->where('person_id', $personId)->filter(fn ($u) => $u['end_date'] >= $today),
             'isFreelancer' => $workspace->isFreelancer($personId),
             'clashes' => collect($this->insights()->clashes())->filter(fn ($c) => $c->personId === $personId),
+            'travel' => TravelBooking::query()->where('person_id', $personId)->where('status', TravelStatus::Booked)
+                ->where(fn ($q) => $q->whereDate('depart_at', '>=', $today)->orWhereDate('check_out', '>=', $today))
+                ->orderByRaw('coalesce(depart_at, check_in)')->get(),
         ]);
     }
 }

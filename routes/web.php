@@ -6,6 +6,7 @@ use App\Http\Controllers\DocumentDownloadController;
 use App\Http\Controllers\FinanceExportController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PurchaseOrderPdfController;
+use App\Http\Controllers\TravelManifestController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/events/new', Livewire\Events\Form::class)->name('events.create')->middleware('can:events.create');
         Route::get('/events/{code}/edit', Livewire\Events\Form::class)->name('events.edit')->middleware('can:events.edit');
         Route::get('/events/{code}/call-sheets/{date}', CallSheetController::class)->name('call-sheets.show');
+        Route::get('/events/{code}/travel-manifest.csv', TravelManifestController::class)->name('travel.manifest');
         Route::get('/events/{code}', Livewire\Events\Show::class)->name('events.show')->middleware('can:events.view');
 
         Route::get('/resourcing/rota', Livewire\Resourcing\Rota::class)->name('rota')->middleware('can:rota.view');

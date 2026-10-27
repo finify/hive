@@ -75,6 +75,10 @@ class Show extends Component
     {
         $tabs = ['overview', 'tasks', 'crew'];
 
+        if (Gate::allows('event.manage-crew', [$event]) || auth()->user()->can('rota.view_all')) {
+            $tabs[] = 'travel';
+        }
+
         if ($this->viewer()->canSeeBudget($event)) {
             array_push($tabs, 'budget', 'purchase-orders', 'invoices');
         }

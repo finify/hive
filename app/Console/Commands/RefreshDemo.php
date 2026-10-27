@@ -28,6 +28,7 @@ use Database\Seeders\DemoFinanceSeeder;
 use Database\Seeders\DemoHrSeeder;
 use Database\Seeders\DemoResourcingSeeder;
 use Database\Seeders\DemoTimeSeeder;
+use Database\Seeders\DemoTravelSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -64,7 +65,7 @@ class RefreshDemo extends Command
             Approval::query()->delete();
             ApprovalDelegation::query()->delete();
             PeriodLock::query()->delete();
-            // Budgets, POs, invoices, billing and cost entries went with their events.
+            // Budgets, POs, invoices, billing, cost entries and travel went with their events.
             Timesheet::query()->delete();
             Expense::query()->delete();
             FreelancerInvoice::query()->delete();
@@ -86,6 +87,7 @@ class RefreshDemo extends Command
         $this->callSilently('db:seed', ['--class' => DemoTimeSeeder::class, '--force' => true]);
         $this->callSilently('db:seed', ['--class' => DemoFinanceSeeder::class, '--force' => true]);
         $this->callSilently('db:seed', ['--class' => DemoHrSeeder::class, '--force' => true]);
+        $this->callSilently('db:seed', ['--class' => DemoTravelSeeder::class, '--force' => true]);
         $this->info('Demo data refreshed.');
 
         return self::SUCCESS;
