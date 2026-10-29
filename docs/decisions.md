@@ -315,3 +315,7 @@ The panel is now a conversation: each request links to the one before (`previous
 ## 77. Ask Hive answers from the staff guide
 
 "How do I…" and "what does … mean" questions are answered from `resources/help`, the same guides as /help, through the `get_help` tool, so Ask Hive explains Hive the way the guide does rather than from the model's own idea of it, and the answer links the guide it used. Only the guides the user's role is shown are searchable. Matching is plain word scoring over title, summary and text (no embeddings, no new packages): the best guide goes to the model in full, with three related titles; a guide must match on its title or summary, or on two of the question's words, so a city named in an example doesn't count. The local engine answers with the guide's opening and its best-matching passage.
+
+## 78. The Ask Hive conversation lives in the session
+
+The panel's list of requests is kept in the user's session (one key per user, the last 30 turns), so moving between pages carries on the same conversation, and signing out or the session expiring ends it. Nothing new is stored: the questions and answers were already in `ai_requests` for the audit trail; the session only holds which of them make up the current conversation. The model still receives the last six turns (decision 76).

@@ -15,7 +15,8 @@ use Livewire\Component;
 /**
  * The Ask Hive panel. Questions are queued and the panel polls until each
  * one is answered; each follows on from the one before, so the conversation
- * carries context. Answers are drafts to read, with the records they used.
+ * carries context. The conversation lives in the session, so it survives
+ * moving between pages and ends with the session (sign-out or expiry). Answers are drafts to read, with the records they used.
  * A change Ask Hive proposes happens only when the user confirms it here.
  */
 class AskHive extends Component
@@ -24,6 +25,30 @@ class AskHive extends Component
 
     /** @var list<int> Ask Hive requests in this conversation, oldest first. */
     public array $requestIds = [];
+
+    /** The most turns kept in the session; older ones drop off the top. */
+    private const KEEP = 30;
+
+    public function mount(): void
+    {
+        $ids = session($this->sessionKey(), []);
+        $this->requestIds = is_array($ids) ? array_values(array_map('intval', $ids)) : [];
+    }
+
+    /**
+     * Per user, so switching persona in the demo never shows someone
+     * else's conversation.
+     */
+    private function sessionKey(): string
+    {
+        return 'ask-hive.conversation.'.auth()->id();
+    }
+
+    private function remember(int $requestId): void
+    {
+        $this->requestIds = array_slice([...$this->requestIds, $requestId], -self::KEEP);
+        session()->put($this->sessionKey(), $this->requestIds);
+    }
 
     public function ask(AskHiveAction $ask): void
     {
@@ -37,7 +62,7 @@ class AskHive extends Component
             return;
         }
 
-        $this->requestIds[] = $request->id;
+        $this->remember($request->id);
         $this->question = '';
     }
 
@@ -63,7 +88,7 @@ class AskHive extends Component
             return;
         }
 
-        $this->requestIds[] = $request->id;
+        $this->remember($request->id);
     }
 
     public function confirm(int $requestId, string $proposalId, ConfirmProposal $proposals): void
@@ -101,6 +126,7 @@ class AskHive extends Component
     public function clear(): void
     {
         $this->requestIds = [];
+        session()->forget($this->sessionKey());
     }
 
     public function render(): View

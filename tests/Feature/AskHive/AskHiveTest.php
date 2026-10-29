@@ -101,3 +101,46 @@ it('tells a line manager the leave type of their own reports', function () {
 
     expect($answer)->toContain('Sick');
 });
+
+it('keeps the conversation through the session, so moving to another page carries on the same chat', function () {
+    $jamie = persona('jamie');
+
+    $first = Livewire::actingAs($jamie)->test(AskHivePanel::class)
+        ->set('question', 'How much leave do I have left?')->call('ask')
+        ->get('requestIds');
+
+    // A new page mounts a fresh panel in the same session.
+    $panel = Livewire::actingAs($jamie)->test(AskHivePanel::class)
+        ->assertSet('requestIds', $first)
+        ->assertSee('How much leave do I have left?')
+        ->set('question', 'And TOIL?')->call('ask');
+
+    [$one, $two] = $panel->get('requestIds');
+
+    expect(AiRequest::query()->find($two)->previous_id)->toBe($one);
+});
+
+it('keeps each person’s conversation to themselves', function () {
+    Livewire::actingAs(persona('jamie'))->test(AskHivePanel::class)
+        ->set('question', 'How much leave do I have left?')->call('ask');
+
+    Livewire::actingAs(persona('leah'))->test(AskHivePanel::class)
+        ->assertSet('requestIds', [])
+        ->assertDontSee('How much leave do I have left?');
+});
+
+it('forgets the conversation on Start again, and when the session ends', function () {
+    $jamie = persona('jamie');
+
+    Livewire::actingAs($jamie)->test(AskHivePanel::class)
+        ->set('question', 'How much leave do I have left?')->call('ask')
+        ->call('clear');
+
+    Livewire::actingAs($jamie)->test(AskHivePanel::class)->assertSet('requestIds', []);
+
+    Livewire::actingAs($jamie)->test(AskHivePanel::class)
+        ->set('question', 'How much leave do I have left?')->call('ask');
+    session()->invalidate();
+
+    Livewire::actingAs($jamie)->test(AskHivePanel::class)->assertSet('requestIds', []);
+});

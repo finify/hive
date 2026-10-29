@@ -24,7 +24,7 @@ Ask Hive knows this staff guide. Ask it what a page, tab, status or term means, 
 
 It only uses the guides your role can see on the Help page. If it can make the change for you, it offers to.
 
-It remembers the conversation, so you can follow up: “and the week after?”, “what about Kofi?”. **Start again** clears it.
+It remembers the conversation, so you can follow up: “and the week after?”, “what about Kofi?”. The conversation stays with you as you move between pages until you sign out or your session ends; **Start again** clears it sooner.
 
 Answers come with **links** to the records they used (events, people, pages), and a line saying which records Ask Hive looked at.
 
