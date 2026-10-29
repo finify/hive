@@ -52,6 +52,7 @@ class LocalEngine implements AskHiveEngine
             (bool) preg_match('/\b(accept|decline)\b.*\bev-?\d{5}\b/', $q) => $this->respondToBooking($q, $tools),
             (bool) preg_match('/\b(book|request|take|ask for)\b.*\b(leave|holiday|time off)\b/', $q) => $this->requestLeave($q, $tools),
             (bool) preg_match('/\bev-?\d{5}\b/', $q) => $this->eventSummary($q, $tools),
+            (bool) preg_match('/^(how (do|can|should) (i|we|you)|how to|where (do|can|is|are)|what (is|are|does|do) (a |an |the )?[a-z -]+ mean|what (is|are) (a|an|the) |explain|help with)\b|\bwhat does .+ mean\b/', $q) => $this->help($q, $tools),
             $this->mentions($q, ['risk', 'over budget', 'budget', 'margin', 'trending', 'overspend']) => $this->budgetHealth($tools),
             $this->mentions($q, ['free', 'available', 'availability', 'who can', 'cover']) => $this->whoIsFree($q, $tools),
             $this->mentions($q, ['clash', 'double-book', 'double book', 'overbook']) => $this->clashes($tools),
@@ -61,11 +62,16 @@ class LocalEngine implements AskHiveEngine
             $this->mentions($q, ['my leave', 'leave request', 'go through', 'been approved']) => $this->myLeaveRequests($tools),
             $this->mentions($q, ['booked on', 'my next', 'am i booked', 'my booking', 'next booking', 'day off']) => $this->myBookings($q, $tools),
             $this->mentions($q, ['off next week', 'who is off', 'who’s off', 'on leave', 'holiday', 'away']) => $this->leave($tools),
-            default => new Answer([
-                'I can only answer from Hive’s own records, and I don’t have a tool for that question.',
-                'Try asking about events at risk, who is free for a role, clashes, your approvals, leave or your bookings.',
-            ]),
+            default => $this->noTool($tools),
         };
+    }
+
+    private function noTool(Tools $tools): Answer
+    {
+        return new Answer([
+            'I can only answer from Hive’s own records, and I don’t have a tool for that question.',
+            'Try asking about events at risk, who is free for a role, clashes, your approvals, leave or your bookings, or how to do something in Hive.',
+        ], tools: $tools->calls());
     }
 
     /**
@@ -347,6 +353,37 @@ class LocalEngine implements AskHiveEngine
             array_map(fn ($l) => "{$l['type']}, {$l['dates']} (".Display::days((float) $l['days']).'): '.($l['status'] === 'pending' ? 'waiting for your manager' : $l['status']).'.', $upcoming),
             [['label' => 'Leave', 'href' => route('leave')]],
             $tools->calls(),
+        );
+    }
+
+    /**
+     * "How do I submit my timesheet?": the most relevant guide's opening and
+     * the passage that matches best, with a link to the guide.
+     */
+    private function help(string $q, Tools $tools): Answer
+    {
+        $r = $tools->getHelp($q);
+        $guide = $r['guide'] ?? null;
+
+        if ($guide === null) {
+            return $this->noTool($tools);
+        }
+
+        // Words naming the guide itself say nothing about which passage.
+        $title = mb_strtolower($guide['title']);
+        $words = array_filter(preg_split('/\W+/u', $q) ?: [], fn ($w) => mb_strlen($w) >= 4 && ! str_contains($title, rtrim($w, 's')));
+        $blocks = array_values(array_filter(array_map('trim', preg_split('/\n\s*\n/', $guide['text']) ?: []), fn ($b) => $b !== '' && ! str_starts_with($b, '#') && ! str_starts_with($b, '|')));
+        $plain = fn (string $b): string => trim((string) preg_replace(['/\[([^\]]+)\]\([^)]*\)/', '/\*\*|__|`/', '/^\s*[-*]\s+/m', '/\s+/'], ['$1', '', '', ' '], $b));
+        $scores = array_map(fn ($b) => collect($words)->sum(fn ($w) => substr_count(mb_strtolower($b), $w)), $blocks);
+        $i = $scores !== [] && max($scores) > 0 ? (int) array_search(max($scores), $scores, true) : 0;
+        // A passage that introduces a list ("choose Resolve:") brings the list.
+        $best = $plain($blocks[$i] ?? '').(str_ends_with($blocks[$i] ?? '', ':') && isset($blocks[$i + 1]) ? ' '.$plain($blocks[$i + 1]) : '');
+        $paragraphs = array_values(array_unique(array_filter([$plain($blocks[0] ?? ''), $best])));
+
+        return new Answer(
+            [...$paragraphs, 'There’s more in the '.$guide['title'].' guide.'],
+            sources: [['label' => 'Guide: '.$guide['title'], 'href' => $guide['url']]],
+            tools: $tools->calls(),
         );
     }
 

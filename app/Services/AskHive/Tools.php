@@ -13,6 +13,7 @@ use App\Reports\Reports;
 use App\Services\Leave\LeaveBook;
 use App\Support\DateRange;
 use App\Support\Display;
+use App\Support\Help;
 use App\Support\Money;
 use Carbon\CarbonImmutable;
 
@@ -73,6 +74,7 @@ class Tools
             ['name' => 'list_my_bookings', 'description' => 'The user’s own upcoming bookings.', 'input_schema' => $none],
             ['name' => 'list_expiring_documents', 'description' => 'Documents that have expired or expire within 30 days. HR only.', 'input_schema' => $none],
             ['name' => 'list_crew_calls', 'description' => 'An event’s crew calls with how many places are filled and open.', 'input_schema' => ['type' => 'object', 'properties' => ['event_code' => $code], 'required' => ['event_code']]],
+            ['name' => 'get_help', 'description' => 'The staff guide to Hive itself: what a page, section, status or term means, and how to do things step by step. Give a topic in the user’s words (for example "how do I submit my timesheet", "what is a first hold") or a guide key; with neither, lists the guides. Answer how-to and what-does-this-mean questions from this, not from memory.', 'input_schema' => ['type' => 'object', 'properties' => ['topic' => ['type' => 'string'], 'guide' => ['type' => 'string', 'description' => 'A guide key from an earlier get_help result']]]],
             ['name' => 'list_my_leave', 'description' => 'The user’s own leave requests this leave year and next, with ids, dates, days and status.', 'input_schema' => $none],
             ['name' => 'list_leave_to_decide', 'description' => 'Leave requests waiting for the user to approve, with ids, and any bookings each one overlaps.', 'input_schema' => $none],
             ['name' => 'get_my_timesheet', 'description' => 'The user’s own timesheet for the week containing a date (default this week): entries with ids, hours, status and any return comment.', 'input_schema' => ['type' => 'object', 'properties' => ['week' => $date]]],
@@ -132,6 +134,7 @@ class Tools
         }
 
         return match ($name) {
+            'get_help' => $this->getHelp($str('topic'), $str('guide')),
             'list_my_leave' => $this->listMyLeave(),
             'list_leave_to_decide' => $this->listLeaveToDecide(),
             'get_my_timesheet' => $this->getMyTimesheet($date('week')),
@@ -596,6 +599,66 @@ class Tools
         }
 
         return ['allowed' => true, 'facts' => $facts];
+    }
+
+    /** Words that say nothing about which guide a question is about. */
+    private const HELP_STOPWORDS = ['the', 'and', 'for', 'how', 'what', 'does', 'did', 'can', 'where', 'when', 'who', 'why', 'which', 'with', 'from', 'that', 'this', 'there', 'are', 'was', 'you', 'your', 'mean', 'means', 'hive', 'page', 'section', 'tab', 'into', 'about', 'need', 'want', 'get', 'use', 'have', 'has', 'not', 'should', 'would', 'could', 'they', 'them', 'our', 'out', 'all', 'any', 'one', 'its', 'tell', 'explain', 'work', 'works'];
+
+    /**
+     * The staff guide, limited to the guides this user's role is shown at
+     * /help. With a topic, the best-matching guide in full and the next few
+     * by title; with a key, that guide; with neither, the list.
+     *
+     * @return array{allowed: bool, guide?: array{key: string, title: string, url: string, text: string}|null, related?: list<array{key: string, title: string, summary: string}>, guides?: list<array{key: string, title: string, summary: string}>}
+     */
+    public function getHelp(?string $topic = null, ?string $key = null): array
+    {
+        $this->record('get_help', ['topic' => $topic, 'guide' => $key], true);
+        $guides = Help::for($this->viewer->user);
+        $summary = fn (string $k): array => ['key' => $k, 'title' => $guides[$k]['title'], 'summary' => $guides[$k]['summary']];
+        $full = fn (string $k): array => [
+            'key' => $k, 'title' => $guides[$k]['title'], 'url' => route('help.show', $k),
+            'text' => trim((string) file_get_contents(resource_path("help/{$k}.md"))),
+        ];
+
+        if ($key !== null) {
+            return isset($guides[$key])
+                ? ['allowed' => true, 'guide' => $full($key)]
+                : ['allowed' => true, 'guide' => null, 'guides' => array_map($summary, array_keys($guides))];
+        }
+
+        if ($topic === null) {
+            return ['allowed' => true, 'guides' => array_map($summary, array_keys($guides))];
+        }
+
+        $words = array_values(array_filter(
+            array_map(fn ($w) => preg_replace('/(ies|es|s)$/u', '', $w), preg_split('/[^\p{L}\p{N}]+/u', mb_strtolower($topic)) ?: []),
+            fn ($w) => mb_strlen((string) $w) >= 3 && ! in_array($w, self::HELP_STOPWORDS, true),
+        ));
+
+        $scores = [];
+
+        foreach ($guides as $k => $g) {
+            $title = mb_strtolower($g['title'].' '.$k);
+            $lead = mb_strtolower($g['summary']);
+            $body = Help::text($k);
+            $headline = array_filter($words, fn ($w) => str_contains($title, $w) || str_contains($lead, $w));
+            $found = array_filter($words, fn ($w) => str_contains($body, $w));
+
+            // One word in passing (a city in an example) isn't a match.
+            $scores[$k] = $headline !== [] || count($found) >= min(2, count($words))
+                ? array_sum(array_map(fn ($w) => (str_contains($title, $w) ? 6 : 0) + (str_contains($lead, $w) ? 3 : 0) + min(substr_count($body, $w), 5), $words))
+                : 0;
+        }
+
+        arsort($scores);
+        $ranked = array_keys(array_filter($scores));
+
+        if ($ranked === []) {
+            return ['allowed' => true, 'guide' => null, 'guides' => array_map($summary, array_keys($guides))];
+        }
+
+        return ['allowed' => true, 'guide' => $full($ranked[0]), 'related' => array_map($summary, array_slice($ranked, 1, 3))];
     }
 
     /**

@@ -32,6 +32,7 @@ function everyTool(): array
         'search_people' => ['text' => 'a'], 'get_person' => ['person_id' => 2], 'search_directory' => ['text' => 'a'],
         'list_purchase_orders' => [], 'list_supplier_invoices' => [], 'list_my_expenses' => [], 'list_my_notifications' => [],
         'list_my_checklist_items' => [], 'list_reports' => [], 'run_report' => ['key' => 'leave'],
+        'get_help' => ['topic' => 'how do I submit my timesheet'],
     ];
 }
 

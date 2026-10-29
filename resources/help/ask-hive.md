@@ -13,6 +13,17 @@
 - “Find me a lighting designer in Manchester.”
 - “Which supplier invoices are disputed?” or “Run the utilisation report for October.”
 
+## Asking how Hive works
+
+Ask Hive knows this staff guide. Ask it what a page, tab, status or term means, or how to do something, and it answers in a few steps with a link to the guide it used:
+
+- “How do I submit my timesheet?”
+- “What does first hold mean?”
+- “Where do I find the call sheet?”
+- “How do I resolve a clash?”
+
+It only uses the guides your role can see on the Help page. If it can make the change for you, it offers to.
+
 It remembers the conversation, so you can follow up: “and the week after?”, “what about Kofi?”. **Start again** clears it.
 
 Answers come with **links** to the records they used (events, people, pages), and a line saying which records Ask Hive looked at.
